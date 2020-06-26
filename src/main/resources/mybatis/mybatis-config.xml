@@ -5,6 +5,7 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="dto" type="com.care.dto.TestDTO"/>
+		<typeAlias alias="dto" type="com.cpkl.dto.ReviewBoardDTO"/>
+		<typeAlias alias="mdto" type="com.cpkl.dto.ReviewBoardCommentsDTO"/>
 	</typeAliases>
 </configuration>

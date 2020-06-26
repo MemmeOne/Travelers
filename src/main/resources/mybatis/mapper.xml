@@ -2,26 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.care.mybatis.myMapper">
-	<select id="listAll" resultType="dto">
-		select * from mybatis_test
+<mapper namespace="Mapper">
+	<select id="reviewboard" resultType="dto">
+		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between #{num} and #{num+9}
 	</select>
+	
+	<!-- 
 	<select id="list" resultType="com.care.dto.TestDTO">
 		select * from mybatis_test where num=#{num}
 	</select>
 	
-	<!-- parameterType => 넘어오는 값을 dto 타입으로 받아줌. 생략 가능 -->
 	<insert id="savedata" parameterType="dto"> 
 		insert into mybatis_test values(#{num},#{name},#{mydate})
 	</insert>
 	
-	<!-- update문 -->
 	<update id="updatedata" parameterType="dto">
 		update mybatis_test set name=#{name}, mydate=#{mydate} where num=#{num}
 	</update>
-	<!-- delete문 -->
+
 	<delete id="delete" parameterType="String">
 		delete from mybatis_test where num=#{num}
 	</delete>
+	 -->
 	
 </mapper>

@@ -4,8 +4,38 @@
 
 <mapper namespace="Mapper">
 	<select id="reviewboard" resultType="dto">
-		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between #{num} and #{num+9}
+		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between #{num} and #{num}+9
 	</select>
+	
+	<select id="contentview" resultType="dto">
+		select*from board where id=#{id}
+	</select>
+	
+	<update id="uphit">
+		update board set hit=hit+1 where id=#{id}
+	</update>
+	
+	<delete id="delete">
+		delete from board where id=#{id}
+	</delete>
+	
+	<update id="modify">
+		update board set content=#{content} where id=#{id}
+	</update>
+	
+	<insert id="contentreg">
+		insert into board(id,name,title,content,hit,idgroup,step,indent) values(board_seq.nextval,#{name},#{title},#{content},0,board_seq.currval,0,0)
+	</insert>
+	
+	<select id="comments" resultType="cdto">
+		select*from comments where id=#{id}
+	</select>
+	
+	<insert id="comment">
+		insert into comments(id,name,comments) values(#{id},#{cname},#{comments})
+	</insert>
+	
+	
 	
 	<!-- 
 	<select id="list" resultType="com.care.dto.TestDTO">

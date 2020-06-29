@@ -4,7 +4,11 @@
 
 <mapper namespace="Mapper">
 	<select id="reviewboard" resultType="dto">
-		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between #{num} and #{num}+9
+		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between (1+(#{num}-1)*10) and (1+(#{num}-1)*10)+9
+	</select>
+	
+	<select id="totalcontent" resultType="int">
+		select count(*) from board
 	</select>
 	
 	<select id="contentview" resultType="dto">

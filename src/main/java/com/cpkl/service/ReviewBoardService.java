@@ -16,6 +16,11 @@ public class ReviewBoardService {
 	
 	public void reviewBoard(int num, Model model) {
 		model.addAttribute("list", dao.reviewBoard(num));
+		int totalpage = (dao.totalContent()/10);
+		if(dao.totalContent()%10 != 0) {
+			totalpage = (dao.totalContent()/10)+1;
+		}
+		model.addAttribute("totalpage", totalpage);
 	}
 	
 	public void contentReg(ReviewBoardDTO dto) {

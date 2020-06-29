@@ -49,4 +49,8 @@ public class ReviewBoardDAO {
 		sqlSession.insert(namespace+".comment", dto);
 	}
 	
+	public int totalContent() {
+		return sqlSession.selectOne(namespace+".totalcontent");
+	}
+	
 }

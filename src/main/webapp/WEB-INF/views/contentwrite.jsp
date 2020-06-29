@@ -23,7 +23,7 @@
 		<tr>
 		<td align="center" colspan="2">
 		<input type="submit" value="확인" >
-		<input type="button" value="목록" onclick="location.href='reviewboard'">
+		<input type="button" value="목록" onclick="location.href='reviewboard?page=1'">
 		</td>
 		</tr>			
 	</table>

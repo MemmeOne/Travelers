@@ -11,7 +11,6 @@
 <body>
 
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy.MM.dd"/>
-
 <div align="center">
 	<table border="1" style="border-collapse: collapse;">
 		<caption><font size="6">게시판</font></caption>
@@ -60,8 +59,29 @@
 	<input type="button" value="글작성" onclick="location.href='contentwrite'">
 	</th>
 	</tr>
-	
-	
+	<tr>
+	<th class="nb" colspan="5">
+	<c:choose>
+		<c:when test="${param.page > 1 }">
+			<button type="button" onclick="location.href='reviewboard?page=${param.page-1}'">이전</button>
+		</c:when>
+		<c:otherwise>
+			<button type="button" disabled>이전</button>
+		</c:otherwise>
+	</c:choose>
+	<c:forEach begin="1" end="${totalpage }" step="1" var="cnt">
+			<a href="reviewboard?page=${cnt}">[${cnt }]</a>
+	</c:forEach>
+	<c:choose>
+		<c:when test="${param.page < totalpage }">
+			<button type="button" onclick="location.href='reviewboard?page=${param.page+1}'">다음</button>
+		</c:when>
+		<c:otherwise>
+			<button type="button" disabled>다음</button>
+		</c:otherwise>
+	</c:choose>
+			${param.page } / ${totalpage }
+	</tr>
 	<tr>
 	<th colspan="5">
 	<form action="list.jsp">

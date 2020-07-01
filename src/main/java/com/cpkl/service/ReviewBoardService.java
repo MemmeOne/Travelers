@@ -1,8 +1,13 @@
 package com.cpkl.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cpkl.dao.ReviewBoardDAO;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
@@ -14,8 +19,8 @@ public class ReviewBoardService {
 	@Autowired
 	ReviewBoardDAO dao;
 	
-	public void reviewBoard(int num, Model model) {
-		model.addAttribute("list", dao.reviewBoard(num));
+	public void reviewBoard(String page, Model model) {
+		model.addAttribute("list", dao.reviewBoard(page));
 		int totalpage = (dao.totalContent()/10);
 		if(dao.totalContent()%10 != 0) {
 			totalpage = (dao.totalContent()/10)+1;
@@ -48,4 +53,14 @@ public class ReviewBoardService {
 	public void comment(ReviewBoardCommentsDTO dto) {
 		dao.comment(dto);
 	}
+	
+	public void reviewBoard(Map<String,	Object> map, Model model) {
+		model.addAttribute("list", dao.search(map));
+		int totalpage = (dao.totalSearch(map)/10);
+		if(dao.totalContent()%10 != 0) {
+			totalpage = (dao.totalSearch(map)/10)+1;
+		}
+		model.addAttribute("totalpage", totalpage);
+	}
+	
 }

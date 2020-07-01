@@ -1,7 +1,10 @@
 package com.cpkl.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +28,19 @@ public class ReviewBoardController {
 	private HttpSession session;
 		
 	@RequestMapping("reviewboard")
-	public String reviewBoard(@RequestParam int page,Model model) {
-		rbs.reviewBoard(page, model);
+	public String reviewBoard(HttpServletRequest request, Model model) {
+		String page = request.getParameter("page");
+		String searchtype = (String) request.getParameter("searchtype");
+		String search = (String) request.getParameter("search");
+		if(search == null) {
+			rbs.reviewBoard(page, model);
+		}else {
+			Map<String,	Object> map = new HashMap<String, Object>();
+			map.put("page", page);
+			map.put("searchtype", searchtype);
+			map.put("search", search);
+			rbs.reviewBoard(map, model);
+		}
 		UserDTO user = new UserDTO();
 		user.setId("aa"); user.setName("aa");
 		session.setAttribute("user", user);
@@ -77,4 +91,5 @@ public class ReviewBoardController {
 		ra.addAttribute("id", dto.getId());
 		return "redirect:contentview";
 	}
+
 }

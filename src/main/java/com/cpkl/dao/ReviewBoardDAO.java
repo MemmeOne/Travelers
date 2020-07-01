@@ -2,6 +2,7 @@ package com.cpkl.dao;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class ReviewBoardDAO {
 	private SqlSession sqlSession;
 	public static final String namespace = "Mapper";
 	
-	public List<ReviewBoardDTO> reviewBoard(int num){
-		return sqlSession.selectList(namespace+".reviewboard",num);
+	public List<ReviewBoardDTO> reviewBoard(String page){
+		return sqlSession.selectList(namespace+".reviewboard",page);
 	}
 	
 	public int contentReg(ReviewBoardDTO dto) {
@@ -51,6 +52,15 @@ public class ReviewBoardDAO {
 	
 	public int totalContent() {
 		return sqlSession.selectOne(namespace+".totalcontent");
+	}
+	
+	public List<ReviewBoardDTO> search(Map<String, Object> map){
+		return sqlSession.selectList(namespace+".search",map);
+	}
+	
+	
+	public int totalSearch(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+".totalsearch", map);
 	}
 	
 }

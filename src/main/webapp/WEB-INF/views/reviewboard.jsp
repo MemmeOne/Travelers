@@ -63,18 +63,39 @@
 	<th class="nb" colspan="5">
 	<c:choose>
 		<c:when test="${param.page > 1 }">
+			<c:choose>
+			<c:when test="${param.search eq null }">
 			<button type="button" onclick="location.href='reviewboard?page=${param.page-1}'">이전</button>
+			</c:when>
+			<c:otherwise>
+			<button type="button" onclick="location.href='reviewboard?page=${param.page-1}&searchtype=${param.searchtype }&search=${param.search }'">다음</button>
+			</c:otherwise>
+			</c:choose>
 		</c:when>
 		<c:otherwise>
 			<button type="button" disabled>이전</button>
 		</c:otherwise>
 	</c:choose>
 	<c:forEach begin="1" end="${totalpage }" step="1" var="cnt">
+			<c:choose>
+			<c:when test="${param.search eq null }">
 			<a href="reviewboard?page=${cnt}">[${cnt }]</a>
+			</c:when>
+			<c:otherwise>
+			<a href="reviewboard?page=${cnt}&searchtype=${param.searchtype }&search=${param.search }">[${cnt }]</a>
+			</c:otherwise>
+			</c:choose>
 	</c:forEach>
 	<c:choose>
 		<c:when test="${param.page < totalpage }">
+			<c:choose>
+			<c:when test="${param.search eq null }">
 			<button type="button" onclick="location.href='reviewboard?page=${param.page+1}'">다음</button>
+			</c:when>
+			<c:otherwise>
+			<button type="button" onclick="location.href='reviewboard?page=${param.page+1}&searchtype=${param.searchtype }&search=${param.search }'">다음</button>
+			</c:otherwise>
+			</c:choose>
 		</c:when>
 		<c:otherwise>
 			<button type="button" disabled>다음</button>
@@ -84,7 +105,13 @@
 	</tr>
 	<tr>
 	<th colspan="5">
-	<form action="list.jsp">
+	<form action="reviewboard" method="get">
+	<input type="hidden" name="page" value="1">
+	<select name="searchtype">
+		<option value="title">제목
+		<option value="content">내용
+		<option value="name">작성자
+	</select>
 	<input type="text" name="search">
 	<input type="submit" value="검색">
 	</form>

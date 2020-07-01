@@ -18,7 +18,9 @@
 		</tr>			
 		<tr>
 		<td style="vertical-align: top;">내용</td>
-		<td><textarea name="content" rows="10" cols="50"></textarea></td>
+		<td>
+			<textarea id="content" name="content" rows="10" cols="50"></textarea>
+		</td>
 		</tr>			
 		<tr>
 		<td align="center" colspan="2">

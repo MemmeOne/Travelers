@@ -36,7 +36,7 @@
 	</select>
 	
 	<insert id="comment">
-		insert into comments(id,name,comments) values(#{id},#{cname},#{comments})
+		insert into comments(id,cname,comments) values(#{id},#{cname},#{comments})
 	</insert>
 	
 	<select id="search" resultType="dto">
@@ -45,6 +45,10 @@
 	
 	<select id="totalsearch" resultType="int">
 		select count(*) from board where ${searchtype} like '%${search}%'
+	</select>
+	
+	<select id="commentcount" resultType="cn">
+		select id, (count(*))count from comments group by id
 	</select>
 	
 	<!-- 

@@ -7,14 +7,45 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
-<body>
-<fmt:requestEncoding value="UTF-8"/>
+<script src="resources/jquery-3.5.1.min.js" ></script>
 <script>
 	function commentReg(){
-		document.getElementById("form").action = "comment";
-		document.getElementById("form").submit();
+		var id = $("#id").val();
+		var cname = $("#cname").val();
+		var comments = $("#comments").val();
+		var form={id:id, cname:cname, comments:comments}
+		$.ajax({
+			url:"comment",
+			type:"POST",
+			data:form,
+			success:function(){
+				
+			},error:function(){
+				alert("댓글 등록 실패")
+			}
+		})
 	}
+	
+	function comments(){
+		var id = $("#id").val();
+		var form={id:id}
+		$.ajax({
+			url:"comment",
+			type:"POST",
+			data:form,
+			success:function(data){
+				let html = ""
+				$.each(data, function(index,item){
+					html += "<td>"+${item.cname }+"<br>"+${item.savedate }+"</td>"
+					html += "<td align='left' width='350px'>"+ ${item.comments }+"</td>"
+				})
+				$("#commenttr").html(html)
+			},error:function(){
+				alert("댓글 보기 실패")
+			}
+		})
+	}
+	
 	function modify(){
 		document.getElementById("form").action = "contentmodify";
 		document.getElementById("form").submit();
@@ -27,12 +58,14 @@
 		document.getElementById("form").action = "reply_view";
 		document.getElementById("form").submit();
 	}
-	
 </script>
+</head>
+<body>
+<fmt:requestEncoding value="UTF-8"/>
 <div align="center">
 <form id="form" method="post">
-	<input type="hidden" name="id" value="${content.id }">
-	<input type="hidden" name="cname" value="${user.name }">
+	<input type="hidden" id="id" name="id" value="${content.id }">
+	<input type="hidden" id="cname" name="cname" value="${user.name }">
 	<table border="1" style="width: 500px; border-collapse: collapse;">
 		<c:choose>
 		<c:when test="${user.name ne null && user.name eq content.name}">
@@ -54,12 +87,7 @@
 		<tr>
 		<td colspan="2" height="300px">${content.content }</td>
 		</tr>
-		<c:forEach var="comment" items="${comments}">
-		<tr>
-		<td>${comment.cname }<br>${comment.savedate }</td>
-		<td align="left" width="350px"> ${comment.comments }</td>
-		</tr>			
-		</c:forEach>
+		<tr id="commenttr"></tr>
 		<c:choose>
 		<c:when test="${user.name ne null }">
 		<tr>
@@ -68,7 +96,7 @@
 		<legend>댓글</legend>
 		${user.name }
 		<br>
-		<textarea style="border: none; position: relative; left: 30px;" name="comments" rows="3" cols="60"></textarea>
+		<textarea style="border: none; position: relative; left: 30px;" id="comments" name="comments" rows="3" cols="60"></textarea>
 		<br>
 		<a style="position: relative; left: 450px;" onclick="commentReg()">등록</a>
 		</fieldset>

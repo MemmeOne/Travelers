@@ -2,6 +2,7 @@ package com.cpkl.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,13 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 import com.cpkl.dto.UserDTO;
 import com.cpkl.service.ReviewBoardService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class ReviewBoardController {
@@ -85,11 +90,21 @@ public class ReviewBoardController {
 	}
 	
 
-	@RequestMapping("comment")
-	public String comment(ReviewBoardCommentsDTO dto, RedirectAttributes ra) {
+	@RequestMapping(value="comment", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void comment(ReviewBoardCommentsDTO dto) {
 		rbs.comment(dto);
-		ra.addAttribute("id", dto.getId());
-		return "redirect:contentview";
+		System.out.println(dto);
 	}
-
+	
+	@RequestMapping(value="comments", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String comments(HttpServletRequest request) throws JsonProcessingException {
+		List<ReviewBoardCommentsDTO> list = rbs.comments(request.getParameter("id"));
+		System.out.println(list);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(list);
+		return json;
+	}
+	
 }

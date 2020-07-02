@@ -9,7 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy.MM.dd"/>
 <div align="center">
 	<table border="1" style="border-collapse: collapse;">
@@ -28,7 +27,16 @@
 			</th>
 			<th align="left">
 			<c:forEach begin="1" end="${dto.indent }">-></c:forEach>
-			<a href="contentview?id=${dto.id }">${dto.title }</a>
+			<a href="contentview?id=${dto.id }">
+			${dto.title }
+			<c:forEach var="cid" items="${commentcount }">
+			<c:choose>
+			<c:when test="${dto.id eq cid.id }">
+			[${cid.count }]
+			</c:when>
+			</c:choose>
+			</c:forEach>
+			</a>
 			</th>
 			<th>
 			${dto.name }

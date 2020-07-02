@@ -2,6 +2,7 @@ package com.cpkl.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class ReviewBoardService {
 	
 	public void reviewBoard(String page, Model model) {
 		model.addAttribute("list", dao.reviewBoard(page));
+		model.addAttribute("commentcount", dao.commentCount());
 		int totalpage = (dao.totalContent()/10);
 		if(dao.totalContent()%10 != 0) {
 			totalpage = (dao.totalContent()/10)+1;
@@ -47,7 +49,8 @@ public class ReviewBoardService {
 		dao.modify(dto);
 	}
 	
-	public void comments(int id, Model model) {
+	public List<ReviewBoardCommentsDTO> comments(int id) {
+		return dao.comments(id);
 	}
 	
 	public void comment(ReviewBoardCommentsDTO dto) {
@@ -56,6 +59,7 @@ public class ReviewBoardService {
 	
 	public void reviewBoard(Map<String,	Object> map, Model model) {
 		model.addAttribute("list", dao.search(map));
+		model.addAttribute("commentcount", dao.commentCount());
 		int totalpage = (dao.totalSearch(map)/10);
 		if(dao.totalContent()%10 != 0) {
 			totalpage = (dao.totalSearch(map)/10)+1;

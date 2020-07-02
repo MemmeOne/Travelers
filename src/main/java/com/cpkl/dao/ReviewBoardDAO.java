@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 
@@ -61,6 +62,10 @@ public class ReviewBoardDAO {
 	
 	public int totalSearch(Map<String, Object> map) {
 		return sqlSession.selectOne(namespace+".totalsearch", map);
+	}
+	
+	public List<CommentNumber> commentCount() {
+		return sqlSession.selectList(namespace+".commentcount");
 	}
 	
 }

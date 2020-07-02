@@ -7,5 +7,6 @@
 	<typeAliases>
 		<typeAlias alias="dto" type="com.cpkl.dto.ReviewBoardDTO"/>
 		<typeAlias alias="cdto" type="com.cpkl.dto.ReviewBoardCommentsDTO"/>
+		<typeAlias alias="cn" type="com.cpkl.dto.CommentNumber"/>
 	</typeAliases>
 </configuration>

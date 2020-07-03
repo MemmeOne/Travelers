@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+	
+	<!-- mybatis -->
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	   <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />  <!-- 자기DB아이피 -->
@@ -14,9 +15,9 @@
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation"
-			value="classpath:mybatis/mybatis-config.xml" /> <!-- 자기가 만든파일 이름으로 -->
+			value="classpath:info_mybatis/mybatis-config.xml" />
 		<property name="mapperLocations"
-			value="classpath:mybatis/mapper.xml" /> <!-- 자기가 만든파일 이름으로 -->
+			value="classpath:info_mybatis/mapper.xml" />
 	</bean>
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
@@ -24,5 +25,15 @@
 		<constructor-arg name="sqlSessionFactory"
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>  
+	
+	<!-- 트랜잭션 -->
+	<bean name="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean name="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
 
 </beans>

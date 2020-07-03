@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <script>
+	
+	
 	function commentReg(){
 		var id = $("#id").val();
 		var cname = $("#cname").val();
@@ -19,7 +21,7 @@
 			type:"POST",
 			data:form,
 			success:function(){
-				
+				comments();
 			},error:function(){
 				alert("댓글 등록 실패")
 			}
@@ -30,16 +32,16 @@
 		var id = $("#id").val();
 		var form={id:id}
 		$.ajax({
-			url:"comment",
+			url:"comments",
 			type:"POST",
 			data:form,
 			success:function(data){
-				let html = ""
-				$.each(data, function(index,item){
-					html += "<td>"+${item.cname }+"<br>"+${item.savedate }+"</td>"
-					html += "<td align='left' width='350px'>"+ ${item.comments }+"</td>"
-				})
-				$("#commenttr").html(html)
+				let html= ""
+					$.each(data, function(index,item){
+						html += "<tr> <td>"+item.cname+"<br>"+item.savedate+"</td>"
+						html += "<td align='left' width='350px'>"+item.comments+"</td> </tr>"
+					})
+					$("#comments").html(html)
 			},error:function(){
 				alert("댓글 보기 실패")
 			}
@@ -60,7 +62,7 @@
 	}
 </script>
 </head>
-<body>
+<body onload="comments()">
 <fmt:requestEncoding value="UTF-8"/>
 <div align="center">
 <form id="form" method="post">
@@ -87,7 +89,8 @@
 		<tr>
 		<td colspan="2" height="300px">${content.content }</td>
 		</tr>
-		<tr id="commenttr"></tr>
+		<tbody id="comments">
+		</tbody>
 		<c:choose>
 		<c:when test="${user.name ne null }">
 		<tr>

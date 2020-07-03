@@ -2,11 +2,14 @@ package com.cpkl.dto;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ReviewBoardCommentsDTO {
 	
 	private int id;
 	private String cname;
 	private String comments;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
 	private Timestamp savedate;
 	
 	public int getId() {

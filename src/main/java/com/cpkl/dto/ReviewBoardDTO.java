@@ -2,6 +2,8 @@ package com.cpkl.dto;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ReviewBoardDTO {
 	
 	private int id;

@@ -37,7 +37,6 @@ public class ReviewBoardService {
 	public void contentView(int id,Model model) {
 		dao.upHit(id);
 		model.addAttribute("content", dao.contentView(id));
-		model.addAttribute("comments", dao.comments(id));
 
 	}
 	

@@ -92,16 +92,15 @@ public class ReviewBoardController {
 
 	@RequestMapping(value="comment", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public void comment(ReviewBoardCommentsDTO dto) {
+	public String comment(ReviewBoardCommentsDTO dto) {
 		rbs.comment(dto);
-		System.out.println(dto);
+		return null;
 	}
 	
 	@RequestMapping(value="comments", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String comments(HttpServletRequest request) throws JsonProcessingException {
-		List<ReviewBoardCommentsDTO> list = rbs.comments(request.getParameter("id"));
-		System.out.println(list);
+	public String comments(@RequestParam int id) throws JsonProcessingException {
+		List<ReviewBoardCommentsDTO> list = rbs.comments(id);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(list);
 		return json;

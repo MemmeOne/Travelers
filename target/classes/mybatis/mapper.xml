@@ -24,7 +24,7 @@
 	</delete>
 	
 	<update id="modify">
-		update board set content=#{content} where id=#{id}
+		update board set title=#{title}, content=#{content} where id=#{id}
 	</update>
 	
 	<insert id="contentreg">
@@ -36,7 +36,7 @@
 	</select>
 	
 	<insert id="comment">
-		insert into comments(id,cname,comments) values(#{id},#{cname},#{comments})
+		insert into comments(id,num,numgroup,step,cname,comments) values(#{id},comments_seq.nextval,comments_seq.currval,0,#{cname},#{comments})
 	</insert>
 	
 	<select id="search" resultType="dto">

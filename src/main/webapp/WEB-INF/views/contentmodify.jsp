@@ -12,12 +12,14 @@
 	<table style="width: 500px">
 		<tr>
 		<td>제목</td>
-		<td>${content.title }</td> 
+		<td>
+			<input type="text" name="title" value="${content.title }">
+		</td> 
 		</tr>			
 		<tr>
 		<td style="vertical-align: top;">내용</td>
 		<td>
-			<textarea id="content" name="content" rows="10" cols="50"></textarea>
+			<textarea id="content" name="content" rows="10" cols="50">${content.content }</textarea>
 		</td>
 		</tr>
 		<tr>

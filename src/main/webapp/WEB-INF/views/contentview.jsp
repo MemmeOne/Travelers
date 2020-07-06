@@ -21,14 +21,16 @@
 			type:"POST",
 			data:form,
 			success:function(){
-				comments();
+				$("#comments").empty;
+				$("#commentlist").empty;
+				commentlist();
 			},error:function(){
 				alert("댓글 등록 실패")
 			}
 		})
 	}
 	
-	function comments(){
+	function commentlist(){
 		var id = $("#id").val();
 		var form={id:id}
 		$.ajax({
@@ -39,9 +41,12 @@
 				let html= ""
 					$.each(data, function(index,item){
 						html += "<tr> <td>"+item.cname+"<br>"+item.savedate+"</td>"
-						html += "<td align='left' width='350px'>"+item.comments+"</td> </tr>"
+						html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
+						html += "<tr> <td colspan='2'><input type='button' value='수정'>"+
+								"<input type='button' value='삭제'>"+
+								"<input type='button' value='답글'></td> </tr>"
 					})
-					$("#comments").html(html)
+					$("#commentlist").html(html)
 			},error:function(){
 				alert("댓글 보기 실패")
 			}
@@ -62,7 +67,7 @@
 	}
 </script>
 </head>
-<body onload="comments()">
+<body onload="commentlist()">
 <fmt:requestEncoding value="UTF-8"/>
 <div align="center">
 <form id="form" method="post">
@@ -89,7 +94,7 @@
 		<tr>
 		<td colspan="2" height="300px">${content.content }</td>
 		</tr>
-		<tbody id="comments">
+		<tbody id="commentlist">
 		</tbody>
 		<c:choose>
 		<c:when test="${user.name ne null }">

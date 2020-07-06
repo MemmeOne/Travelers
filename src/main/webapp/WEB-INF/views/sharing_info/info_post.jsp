@@ -16,15 +16,15 @@
 		let html=""
 		var cnt=1;
 		$.each(list, function(index,item) {
-		 	html += "<input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
+		 	html += "<tr id='modify"+cnt+"'><input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
 			html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
 			html += "<input type='hidden' id='numgroup"+cnt+"' value='"+item.numgroup+"'>"
 			html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
 			html += "<input type='hidden' id='indent"+cnt+"' value='"+item.indent+"'>"
-			html += "<tr><th>"+item.nick+"</th>"
+			html += "<th>"+item.nick+"</th>"
 			html += "<td>"+item.content+"</td>"
 			html += "<th>"+item.savedate+"</th>"
-			html += "<th><input type='button' value='수정' onclick='comment_modify()'> "
+			html += "<th><input type='button' value='수정' onclick='comment_modify("+cnt+")'> "
 			html += "<input type='button' value='삭제' onclick='comment_delete("+cnt+")'></th></tr>"
 			cnt++;
 		})
@@ -58,11 +58,12 @@
 			}
 		})
 	}
-	function comment_modify() {
+	function comment_modify(cnt) {
 		let html=""
-		html += "<td colspan="3"><input type='text' id='nick"+cnt+"' value='"+$("#nick"+cnt).val()+"'>"
-		html += "<textarea rows="3" cols="50" id='content"+cnt+"'>"+$("#content"+cnt).val()+"</textarea></td>"
+		html += "<td colspan='3'><input type='text' id='nick"+cnt+"' value='"+$("#nick"+cnt).val()+"'>"
+		html += "<textarea rows='3' cols='50' id='content"+cnt+"'>"+$("#content"+cnt).val()+"</textarea></td>"
 		html += "<input type='hidden' id='numgroup"+cnt+"' value='"+$("#numgroup"+cnt).val()+"'>"
+		html += "<input type='hidden' id='savedate"+cnt+"' value='"+$("#savedate"+cnt).val()+"'>"
 		html += "<input type='hidden' id='step"+cnt+"' value='"+$("#step"+cnt).val()+"'>"
 		html += "<input type='hidden' id='indent"+cnt+"' value='"+$("#indent"+cnt).val()+"'>"
 		html += "<td><input type='button' value='수정완료' onclick='comment_modify_save("+cnt+")'><br>"
@@ -171,22 +172,23 @@
 				<table border="1" id="comment_table">
 					<c:set var="cnt" value="0" />
 					<c:forEach items="${comment_list}" var="com">
+						<tr id="modify${cnt}">
 						<input type="hidden" id="nick${cnt}" value="${com.nick}">
 						<input type="hidden" id="content${cnt}" value="${com.content }">
 						<input type="hidden" id="numgroup${cnt}" value="${com.numgroup }">
 						<input type="hidden" id="step${cnt}" value="${com.step }">
 						<input type="hidden" id="indent${cnt}" value="${com.indent }">
-						<tr id="modify${cnt}">
+						<fmt:formatDate  var="savedate" value="${com.savedate}" pattern="yyyy-MM-dd"/>
+						<input type="hidden" id="savedate${cnt}" value="${savedate}">
 							<th id="modify_nick${cnt}">${com.nick}</th>
 							<td id="modify_content${cnt}">${com.content}</td>
-							<fmt:formatDate  var="savedate" value="${com.savedate}" pattern="yyyy-MM-dd"/>
 							<th id="modify_savedate${cnt}">${savedate}</th>
 							<th>
 								<input type="button" value="수정" onclick="comment_modify(${cnt})"> 
 								<input type="button" value="삭제" onclick="comment_delete(${cnt})">
 							</th>
-						</tr>
 						<c:set var="cnt" value="${cnt+1}" />
+						</tr>
 					</c:forEach>
 				</table>
 			</table>

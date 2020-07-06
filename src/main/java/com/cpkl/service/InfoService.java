@@ -31,9 +31,9 @@ public class InfoService {
 		return dao.info_save(dto);
 	}
 	public void info_post(int num,Model model) {
+		dao.info_uphit(num);
 		model.addAttribute("info_post",dao.info_post(num));
 		model.addAttribute("comment_list",dao.comment_list(num));
-		dao.info_uphit(num);
 	}
 	public List<InfoCommentDTO> comment_save(InfoCommentDTO dto) {
 		dao.comment_save(dto);

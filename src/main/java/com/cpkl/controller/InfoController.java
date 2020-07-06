@@ -76,7 +76,15 @@ public class InfoController {
 		String strJson=mapper.writeValueAsString(list);
 		return strJson;
 	}
-	
+	@RequestMapping(value="info_comment_reply_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String info_comment_reply_save(InfoCommentDTO dto) throws JsonProcessingException {
+		List<InfoCommentDTO> list=service.comment_reply_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
 	
 	@RequestMapping("info_rewrite")
 	public String info_rewrite(@RequestParam int num, Model model) {

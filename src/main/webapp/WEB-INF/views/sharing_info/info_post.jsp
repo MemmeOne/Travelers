@@ -19,13 +19,15 @@
 		 	html += "<tr id='modify"+cnt+"'><input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
 			html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
 			html += "<input type='hidden' id='numgroup"+cnt+"' value='"+item.numgroup+"'>"
+			html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+item.commentgroup+"'>"
 			html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
 			html += "<input type='hidden' id='indent"+cnt+"' value='"+item.indent+"'>"
 			html += "<th>"+item.nick+"</th>"
 			html += "<td>"+item.content+"</td>"
 			html += "<th>"+item.savedate+"</th>"
 			html += "<th><input type='button' value='수정' onclick='comment_modify("+cnt+")'> "
-			html += "<input type='button' value='삭제' onclick='comment_delete("+cnt+")'></th></tr>"
+			html += "<input type='button' value='삭제' onclick='comment_delete("+cnt+")'> "
+			html += "<input type='button' value='댓글쓰기' onclick='comment_reply("+cnt+")'></th></tr>"
 			cnt++;
 		})
 		$("#comment_table").html(html)
@@ -63,6 +65,7 @@
 		html += "<td colspan='3'><input type='text' id='nick"+cnt+"' value='"+$("#nick"+cnt).val()+"'>"
 		html += "<textarea rows='3' cols='50' id='content"+cnt+"'>"+$("#content"+cnt).val()+"</textarea></td>"
 		html += "<input type='hidden' id='numgroup"+cnt+"' value='"+$("#numgroup"+cnt).val()+"'>"
+		html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+$("#commentgroup"+cnt).val()+"'>"
 		html += "<input type='hidden' id='savedate"+cnt+"' value='"+$("#savedate"+cnt).val()+"'>"
 		html += "<input type='hidden' id='step"+cnt+"' value='"+$("#step"+cnt).val()+"'>"
 		html += "<input type='hidden' id='indent"+cnt+"' value='"+$("#indent"+cnt).val()+"'>"
@@ -74,9 +77,11 @@
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
 		var numgroup = $("#numgroup" + cnt).val();
+		var commentgroup = $("#commentgroup" + cnt).val();
+		console.log(commentgroup)
 		var step = $("#step" + cnt).val();
 		var indent = $("#indent" + cnt).val();
-		var form = { nick : nick, content : content, numgroup : numgroup, step : step, indent : indent }
+		var form = { nick : nick, content : content, numgroup : numgroup, commentgroup : commentgroup, step : step, indent : indent }
 		$.ajax({
 			url : "info_comment_modify",
 			type : "POST",
@@ -94,20 +99,53 @@
 	}
 	function comment_delete(cnt) {
 		var nick = $("#nick" + cnt).val();
-		console.log("#nick" + cnt)
 		var content = $("#content" + cnt).val();
 		var numgroup = $("#numgroup" + cnt).val();
+		var commentgroup = $("#commentgroup" + cnt).val();
 		var step = $("#step" + cnt).val();
 		var indent = $("#indent" + cnt).val();
-		var form = {
-			nick : nick,
-			content : content,
-			numgroup : numgroup,
-			step : step,
-			indent : indent
-		}
+		var form = { nick : nick, content : content, numgroup : numgroup, commentgroup : commentgroup, step : step, indent : indent }
 		$.ajax({
 			url : "info_comment_delete",
+			type : "POST",
+			data : form,
+			success : function(list) {
+				showComment(list);
+				console.log("성공")
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		})
+	}
+	
+	function comment_reply(cnt) {
+		var num=$('input[name=num]').val();
+		var commentgroup=$('commentgroup'+cnt).val();
+		let html=""
+		html += "<tr>"
+		html += "<input type='hidden' id='renumgroup"+cnt+"' value='"+num+" '>"
+		html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+commentgroup+"'>"
+		html += "<input type='hidden' id='restep"+cnt+"' value='1'>"
+		html += "<input type='hidden' id='reindent"+cnt+"' value='1'>"
+		html += "<td colspan='3'><input type='text' id='renick"+cnt+"' placeholder='닉네임'>"
+		html += "<textarea rows='3' cols='50' id='recontent"+cnt+"'></textarea></td><td>"
+		html += "<input type='button' value='댓글달기' onclick='comment_reply_save("+cnt+")'></td></tr>"
+		$("#reply"+cnt).html(html)
+	}
+	function comment_reply_save(cnt) {
+		var nick = $("#renick" + cnt).val();
+		var content = $("#recontent" + cnt).val();
+		var numgroup = $("#renumgroup" + cnt).val();
+		var commentgroup = $("#commentgroup" + cnt).val();
+		var step = $("#restep" + cnt).val();
+		var indent = $("#reindent" + cnt).val();
+		var form = { nick : nick, content : content, numgroup : numgroup,
+				commentgroup : commentgroup, step : step, indent : indent }
+		$.ajax({
+			url : "info_comment_reply_save",
 			type : "POST",
 			data : form,
 			success : function(list) {
@@ -178,6 +216,7 @@
 						<input type="hidden" id="numgroup${cnt}" value="${com.numgroup }">
 						<input type="hidden" id="step${cnt}" value="${com.step }">
 						<input type="hidden" id="indent${cnt}" value="${com.indent }">
+						<input type="hidden" id="commentgroup${cnt}" value="${com.commentgroup }">
 						<fmt:formatDate  var="savedate" value="${com.savedate}" pattern="yyyy-MM-dd"/>
 						<input type="hidden" id="savedate${cnt}" value="${savedate}">
 							<th id="modify_nick${cnt}">${com.nick}</th>
@@ -186,9 +225,11 @@
 							<th>
 								<input type="button" value="수정" onclick="comment_modify(${cnt})"> 
 								<input type="button" value="삭제" onclick="comment_delete(${cnt})">
+								<input type="button" value="댓글쓰기" onclick="comment_reply(${cnt})">
 							</th>
-						<c:set var="cnt" value="${cnt+1}" />
 						</tr>
+						<tr id="reply${cnt}"></tr>
+						<c:set var="cnt" value="${cnt+1}" />
 					</c:forEach>
 				</table>
 			</table>

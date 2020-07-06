@@ -6,11 +6,11 @@
 	<!-- 전체 글 목록 가져오기 기능 -->
 	<select id="listAll" resultType="infodto" parameterType="map">
 		select B.* from(select rownum rn, A.* from(select * from info_board order by num desc)A)B
-		where rn between #{str} and #{end} and step=0
+		where rn between #{str} and #{end}
 	</select>
 	<!-- 글 전체 수 -->
 	<select id="totPage" resultType="int" >
-		select count(*) from info_board where step=0
+		select count(*) from info_board
 	</select>
 	
 	<!-- 검색 글 목록 가져오기 기능 -->
@@ -20,15 +20,13 @@
 	</select>
 	<!-- 검색 글 전체 수 -->
 	<select id="totPageSearch" resultType="int" parameterType="map">
-		select count(*) from info_board where ${tag} like '%${word}%' and step=0
+		select count(*) from info_board where ${tag} like '%${word}%'
 	</select>
-	
 	<!-- 글 저장 기능 -->
 	<insert id="info_save" parameterType="infodto">
 		insert into info_board(num,nick,tag,title,content,numgroup,step,indent)
 		values (info_board_seq.nextval,#{nick},#{tag},#{title},#{content},info_board_seq.currval,0,0)
 	</insert>
-	
 	<!-- 글 내용 가져오기 기능 -->
 	<select id="info_post" resultType="infodto" parameterType="int">
 		select * from info_board where num=#{num}
@@ -37,12 +35,10 @@
 	<update id="info_uphit" parameterType="int">
 		update info_board set hit=hit+1 where num=#{num}
 	</update>
-	
 	<!-- 글 수정 기능 -->
 	<update id="info_modify" parameterType="infodto">
 		update info_board set tag=#{tag}, title=#{title}, content=#{content} where num=#{num}
 	</update>
-	
 	<!-- 글 삭제 기능 -->
 	<delete id="info_delete" parameterType="int">
 		delete from info_board where num=#{num}
@@ -51,26 +47,33 @@
 	
 	<!-- 댓글 전체 목록 가져오기 -->
 	<select id="comment_list" resultType="commentdto">
-		select * from info_board_comment where numgroup=#{num} order by savedate desc, numgroup desc, step asc
+		select * from info_board_comment where numgroup=#{numgroup}
+		order by commentgroup desc, step asc, indent asc, savedate desc
 	</select>
 	<!-- 댓글 저장 기능 -->
 	<insert id="comment_save" parameterType="commentdto">
-		insert into info_board_comment(nick,content,numgroup,step,indent)
-		values(#{nick},#{content},#{numgroup},#{step},#{indent})
+		insert into info_board_comment(numgroup,commentgroup,nick,content,step,indent)
+		values(#{numgroup},info_board_comment_seq.nextval,#{nick},#{content},#{step},#{indent})
+	</insert>
+	<!-- 대댓글 저장 기능 -->
+	<insert id="comment_reply_save" parameterType="commentdto">
+		insert into info_board_comment(numgroup,commentgroup,nick,content,step,indent)
+		values(#{numgroup},#{commentgroup},#{nick},#{content},#{step},#{indent})
 	</insert>
 	<!-- 원글 - 댓글 정렬하는 기능 -->
 	<update id="replyShape" >
 		update info_board_comment set step=step+1 where numgroup=#{numgroup} and step > #{step}
 	</update>
-	
 	<!-- 댓글 수정 기능 -->
 	<update id="comment_modify" parameterType="commentdto">
-		update info_board_comment set content=#{content}
-		where nick=#{nick} and step=#{step} and step=#{indent} and numgroup=#{numgroup}
+		update info_board_comment set content=#{content} where numgroup=#{numgroup} and commentgroup=#{commentgroup}
+		and step=#{step} and indent=#{indent}
 	</update>
-	<!-- 글 삭제 기능 -->
+	<!-- 댓글 삭제 기능 -->
 	<delete id="comment_delete" parameterType="commentdto">
-		delete from info_board_comment where nick=#{nick} and content=#{content} and numgroup=#{numgroup}
+		delete from info_board_comment 
+		where commentgroup=#{commentgroup} and nick=#{nick} and content=#{content} and numgroup=#{numgroup}
+		and step=#{step} and indent=#{indent}
 	</delete>
 	
 </mapper>

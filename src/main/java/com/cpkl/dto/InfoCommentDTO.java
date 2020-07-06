@@ -5,10 +5,24 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class InfoCommentDTO {
+	private int numgroup, commentgroup;
 	private String nick, content;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Timestamp savedate;
-	private int numgroup, step, indent;
+	private int step, indent;
+	
+	public int getNumgroup() {
+		return numgroup;
+	}
+	public void setNumgroup(int numgroup) {
+		this.numgroup = numgroup;
+	}
+	public int getCommentgroup() {
+		return commentgroup;
+	}
+	public void setCommentgroup(int commentgroup) {
+		this.commentgroup = commentgroup;
+	}
 	public String getNick() {
 		return nick;
 	}
@@ -26,12 +40,6 @@ public class InfoCommentDTO {
 	}
 	public void setSavedate(Timestamp savedate) {
 		this.savedate = savedate;
-	}
-	public int getNumgroup() {
-		return numgroup;
-	}
-	public void setNumgroup(int numgroup) {
-		this.numgroup = numgroup;
 	}
 	public int getStep() {
 		return step;

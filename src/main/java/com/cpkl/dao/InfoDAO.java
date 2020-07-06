@@ -236,4 +236,16 @@ public class InfoDAO {
 		}
 		return result;
 	}
+	public void comment_reply_save(final InfoCommentDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=sqlSession.delete(namespace+".comment_reply_save",dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

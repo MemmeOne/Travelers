@@ -15,7 +15,6 @@ import com.cpkl.dto.InfoDTO;
 @Service
 public class InfoService {
 	@Autowired
-	@Qualifier("infoDAO")
 	private InfoDAO dao;
 	public void listAll(Model model, int page) {
 		model.addAttribute("info_list",dao.listAll(page));
@@ -45,6 +44,10 @@ public class InfoService {
 	}
 	public List<InfoCommentDTO> comment_delete(InfoCommentDTO dto) {
 		dao.comment_delete(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	public List<InfoCommentDTO> comment_reply_save(InfoCommentDTO dto) {
+		dao.comment_reply_save(dto);
 		return dao.comment_list(dto.getNumgroup());
 	}
 	public int info_modify(InfoDTO dto) {

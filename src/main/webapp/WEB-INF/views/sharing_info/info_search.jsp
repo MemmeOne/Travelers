@@ -21,7 +21,7 @@
 		<form action="info_search">
 			<table border="1">
 				<tr>
-					<th>${totPage }글번호</th> <th>글 제목</th> <th>닉네임</th> <th>날짜</th> <th>조회수</th>
+					<th>글번호</th> <th>글 제목</th> <th>닉네임</th> <th>날짜</th> <th>조회수</th>
 					<!-- <th>group</th> <th>step</th> <th>indent</th>  -->
 				</tr>
 				<c:choose >
@@ -46,9 +46,9 @@
 				<tr>
 					<td colspan="5" align="right">
 						<c:choose>
-							<c:when test="${page > 1 }">
+							<c:when test="${param.page > 1 }">
 								<button type="button"
-									onclick="location.href='info_search?page=${page-1}&tag=${tag}&word=${word}'">
+									onclick="location.href='info_search?page=${page-1}&tag=${param.tag}&word=${param.word}'">
 									이전
 								</button>
 							</c:when>
@@ -59,12 +59,12 @@
 						<c:set var="num" value="0" />
 						<c:forEach begin="1" end="${totPage }" step="3" var="cnt">
 							<c:set var="num" value="${num+1 }" />
-							<a href="info_search?page=${num }&tag=${tag}&word=${word}">[${num }]</a>
+							<a href="info_search?page=${num }&tag=${param.tag}&word=${param.word}">[${num }]</a>
 						</c:forEach>
 						<c:choose>
-							<c:when test="${page < num }">
+							<c:when test="${param.page < num }">
 								<button type="button"
-									onclick="location.href='info_search?page=${page+1}&tag=${tag}&word=${word}'">
+									onclick="location.href='info_search?page=${page+1}&tag=${param.tag}&word=${param.word}'">
 									다음
 								</button>
 							</c:when>
@@ -77,7 +77,7 @@
 								0 / ${num}
 							</c:when>
 							<c:otherwise>
-								${page } / ${num}
+								${param.page } / ${num}
 							</c:otherwise>
 						</c:choose>
 					</td>

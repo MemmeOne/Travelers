@@ -16,7 +16,6 @@
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<fmt:requestEncoding value="utf-8"/>
-				
 	<div id="body">
 		<form action="info_search"><input type="hidden" name="page" value="1">
 			<table border="1">
@@ -46,9 +45,9 @@
 				<tr>
 					<td colspan="5" align="right">
 						<c:choose>
-							<c:when test="${page > 1 }">
+							<c:when test="${param.page > 1 }">
 								<button type="button"
-									onclick="location.href='info_list?page=${page-1}'">
+									onclick="location.href='info_list?page=${param.page-1}'">
 									이전
 								</button>
 							</c:when>
@@ -62,9 +61,9 @@
 							<a href="info_list?page=${num }">[${num }]</a>
 						</c:forEach>
 						<c:choose>
-							<c:when test="${page < num }">
+							<c:when test="${param.page < num }">
 								<button type="button"
-									onclick="location.href='info_list?page=${page+1}'">
+									onclick="location.href='info_list?page=${param.page+1}'">
 									다음
 								</button>
 							</c:when>
@@ -77,7 +76,7 @@
 								0 / ${num}
 							</c:when>
 							<c:otherwise>
-								${page } / ${num}
+								${param.page } / ${num}
 							</c:otherwise>
 						</c:choose>
 					</td>

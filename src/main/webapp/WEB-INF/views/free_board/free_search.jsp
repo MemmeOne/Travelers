@@ -7,10 +7,11 @@
 <title>free_search</title>
 </head>
 <body>
-	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 	<fmt:requestEncoding value="utf-8" />
 	<form action="free_search">
+	<input type="hidden" name="page" value="1">
 		<table border="1">
 			<tr>
 				<th>번호</th>

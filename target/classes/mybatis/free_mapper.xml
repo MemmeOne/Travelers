@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cpkl.mybatis.myMapper">
+	<select id="listAll" resultType="dto">
+		select * from free_board
+	</select>
+	<select id="list" resultType="dto">
+	    select * from free_board where num=#{num}
+	</select>
+	<select id="freeboard" resultType="dto">
+		select B.* from(select rownum rn, A.* from(select * from free_board order by num desc)A)B
+		where rn between #{str} and #{end} and step=0
+    </select>
+    <select id="totPage" resultType="int">
+    select count(*) from free_board where step=0
+    </select>
+    <select id="search" resultType="dto" parameterType="map">
+      <!--   select B.* from(select rownum rn, A.* from(select * from free_board where step=0 and ${tag} like '%${word}%')A)B
+		where rn between #{str} and #{end} order by num desc-->
+		select C.* from(select rownum rn, B.* from(select A.* from (select*from free_board where step=0 and ${tag} like '%${word}%')A) B)C
+		where rn between #{str} and #{end} order by num desc
+    </select>
+    <select id="totPageSearch" resultType="int" parameterType="map">
+    select count(*) from free_board where ${tag} like '%${word}%' and step=0
+    </select>
+	<insert id="savedata"> 
+		insert into free_board (num, nick, title, content, numgroup, step,indent) 
+		values(free_board_SEQ.NEXTVAL, #{nick}, #{title}, #{content},
+		    free_board_SEQ.currval, 0, 0)
+	</insert>
+	<update id="updatedata" parameterType="dto">
+	   update free_board set title=#{title}, content=#{content} where num=#{num}
+	</update>
+	<update id="uphit">
+	   update free_board set hit=hit+1 where num=#{num}
+	</update>
+	<delete id="delete">
+		delete from free_board where num=#{num}
+	</delete>
+</mapper>

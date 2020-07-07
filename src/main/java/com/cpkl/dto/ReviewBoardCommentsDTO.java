@@ -9,7 +9,7 @@ public class ReviewBoardCommentsDTO {
 	private int id;
 	private int num;
 	private int numgroup;
-	private int step;
+	private int indent;
 	private String cname;
 	private String comments;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -27,8 +27,6 @@ public class ReviewBoardCommentsDTO {
 		return num;
 	}
 
-
-
 	public void setNum(int num) {
 		this.num = num;
 	}
@@ -41,12 +39,12 @@ public class ReviewBoardCommentsDTO {
 		this.numgroup = numgroup;
 	}
 
-	public int getStep() {
-		return step;
+	public int getIndent() {
+		return indent;
 	}
 
-	public void setStep(int step) {
-		this.step = step;
+	public void setIndent(int indent) {
+		this.indent = indent;
 	}
 
 	public String getCname() {
@@ -75,8 +73,11 @@ public class ReviewBoardCommentsDTO {
 
 	@Override
 	public String toString() {
-		return "ReviewBoardCommentsDTO [id=" + id + ", cname=" + cname + ", comments=" + comments + ", savedate="
-				+ savedate + "]";
+		return "ReviewBoardCommentsDTO [id=" + id + ", num=" + num + ", numgroup=" + numgroup + ", cname=" + cname
+				+ ", comments=" + comments + "]";
 	}
+
+
+	
 	
 }

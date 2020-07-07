@@ -8,8 +8,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
-<script>
 	
+<script>
 	
 	function commentReg(){
 		var id = $("#id").val();
@@ -30,9 +30,12 @@
 		})
 	}
 	
+	
 	function commentlist(){
 		var id = $("#id").val();
-		var form={id:id}
+		var form={id:id};
+		var i = 0;
+		var userName = '${user.name}'
 		$.ajax({
 			url:"comments",
 			type:"POST",
@@ -40,15 +43,62 @@
 			success:function(data){
 				let html= ""
 					$.each(data, function(index,item){
-						html += "<tr> <td>"+item.cname+"<br>"+item.savedate+"</td>"
-						html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
-						html += "<tr> <td colspan='2'><input type='button' value='수정'>"+
-								"<input type='button' value='삭제'>"+
-								"<input type='button' value='답글'></td> </tr>"
+						if(item.indent == 0){
+							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<td>"+item.cname+"<br>"+item.savedate+"</td>"
+							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
+							if(item.cname == userName){
+								html += "<tr id='cn"+i+"'>"+
+								"<td colspan='2' align='right'><input type='button' value='수정' onclick='commentModify'>"+
+								"<input type='button' value='삭제' onclick='commentDel()'>"+
+								"<input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
+								i += 1;
+							}else{
+								html += "<tr id='cn"+i+"'>"+
+								"<td colspan='2' align='right'><input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
+								i += 1;
+							
+							}
+						}else {
+							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<td> -> "+item.cname+"<br>"+item.savedate+"</td>"
+							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
+							if(item.cname == userName){
+								html += "<tr id='cn"+i+"'>"+
+								"<td colspan='2' align='right'><input type='button' value='수정' onclick='commentModify'>"+
+								"<input type='button' value='삭제' onclick='commentDel()'></td> </tr>"
+								i += 1;
+							}
+						}
 					})
 					$("#commentlist").html(html)
 			},error:function(){
 				alert("댓글 보기 실패")
+			}
+		})
+	}
+	
+	function reply(i){
+		$("#cn"+i).empty();
+		let html = "<td colspan='2'><input type='text' id='replycomment"+i+"'><input type='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		$("#cn"+i).html(html)
+	}	
+	
+	function replyReg(i){
+		var id = $("#id").val();
+		var cname = $("#cname").val();
+		var comments = $("#replycomment"+i).val();
+		var numgroup = $("#num"+i).val();
+		console.log(numgroup);
+		var form={id:id, numgroup:numgroup, cname:cname, comments:comments}
+		$.ajax({
+			url:"reply",
+			type:"POST",
+			data:form,
+			success:function(){
+				commentlist();
+			},error:function(){
+				alert("댓글 등록 실패")
 			}
 		})
 	}
@@ -61,10 +111,7 @@
 		document.getElementById("form").action = "delete";
 		document.getElementById("form").submit();
 	}
-	function reply(){
-		document.getElementById("form").action = "reply_view";
-		document.getElementById("form").submit();
-	}
+	
 </script>
 </head>
 <body onload="commentlist()">
@@ -116,7 +163,7 @@
 		<td>
 		<c:choose>
 		<c:when test="${user.name ne null }">
-		<input type="button" onclick="reply()" value="답글">
+		<input type="button" onclick="" value="답글">
 		</c:when>
 		</c:choose>
 		</td>

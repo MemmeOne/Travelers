@@ -68,4 +68,8 @@ public class ReviewBoardDAO {
 		return sqlSession.selectList(namespace+".commentcount");
 	}
 	
+	public void reply(ReviewBoardCommentsDTO dto) {
+		sqlSession.insert(namespace+".reply", dto);
+	}
+	
 }

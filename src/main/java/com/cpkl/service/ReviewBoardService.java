@@ -66,4 +66,8 @@ public class ReviewBoardService {
 		model.addAttribute("totalpage", totalpage);
 	}
 	
+	public void reply(ReviewBoardCommentsDTO dto) {
+		dao.reply(dto);
+	}
+	
 }

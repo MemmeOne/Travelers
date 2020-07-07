@@ -106,4 +106,11 @@ public class ReviewBoardController {
 		return json;
 	}
 	
+	@RequestMapping(value="reply", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String reply(ReviewBoardCommentsDTO dto) {
+		rbs.reply(dto);
+		return null;
+	}
+	
 }

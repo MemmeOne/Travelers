@@ -72,4 +72,8 @@ public class ReviewBoardDAO {
 		sqlSession.insert(namespace+".reply", dto);
 	}
 	
+	public void commentModify(ReviewBoardCommentsDTO dto) {
+		sqlSession.update(namespace+".commentmodify", dto);
+	}
+	
 }

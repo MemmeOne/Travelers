@@ -70,4 +70,8 @@ public class ReviewBoardService {
 		dao.reply(dto);
 	}
 	
+	public void commentModify(ReviewBoardCommentsDTO dto) {
+		dao.commentModify(dto);
+	}
+	
 }

@@ -55,6 +55,10 @@
 		insert into comments(id,num,numgroup,indent,cname,comments) values(#{id},comments_seq.nextval,#{numgroup},1,#{cname},#{comments})
 	</insert>
 	
+	<update id="commentmodify">
+		update comments set comments=#{comments} where num=#{num}
+	</update>
+	
 	<!-- 
 	<select id="list" resultType="com.care.dto.TestDTO">
 		select * from mybatis_test where num=#{num}

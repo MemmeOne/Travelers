@@ -21,8 +21,7 @@
 			type:"POST",
 			data:form,
 			success:function(){
-				$("#comments").empty;
-				$("#commentlist").empty;
+				$("#comments").val("");
 				commentlist();
 			},error:function(){
 				alert("댓글 등록 실패")
@@ -45,33 +44,33 @@
 					$.each(data, function(index,item){
 						if(item.indent == 0){
 							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
-							html += "<td>"+item.cname+"<br>"+item.savedate+"</td>"
+							html += "<td colspan='2'>"+item.cname+"<br>"+item.savedate+"</td>"
 							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
 							if(item.cname == userName){
 								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='2' align='right'><input type='button' value='수정' onclick='commentModify'>"+
+								"<td colspan='3' align='right'><input type='button' value='수정' onclick='commentModify("+i+")'>"+
 								"<input type='button' value='삭제' onclick='commentDel()'>"+
 								"<input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
 								i += 1;
 							}else{
 								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='2' align='right'><input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
+								"<td colspan='3' align='right'><input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
 								i += 1;
 							
 							}
 						}else {
 							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
-							html += "<td> -> "+item.cname+"<br>"+item.savedate+"</td>"
+							html += "<td>&#10149;</td> <td>"+item.cname+"<br>"+item.savedate+"</td>"
 							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
 							if(item.cname == userName){
 								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='2' align='right'><input type='button' value='수정' onclick='commentModify'>"+
-								"<input type='button' value='삭제' onclick='commentDel()'></td> </tr>"
+								"<td colspan='3' align='right'><input type='button' value='수정' onclick='commentModify("+i+")'>"+
+								"<input type='button' value='삭제' onclick='commentDel("+i+")'></td> </tr>"
 								i += 1;
 							}
 						}
 					})
-					$("#commentlist").html(html)
+					$("#commentlist").html(html);
 			},error:function(){
 				alert("댓글 보기 실패")
 			}
@@ -79,8 +78,7 @@
 	}
 	
 	function reply(i){
-		$("#cn"+i).empty();
-		let html = "<td colspan='2'><input type='text' id='replycomment"+i+"'><input type='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
 		$("#cn"+i).html(html)
 	}	
 	
@@ -89,10 +87,45 @@
 		var cname = $("#cname").val();
 		var comments = $("#replycomment"+i).val();
 		var numgroup = $("#num"+i).val();
-		console.log(numgroup);
 		var form={id:id, numgroup:numgroup, cname:cname, comments:comments}
 		$.ajax({
 			url:"reply",
+			type:"POST",
+			data:form,
+			success:function(){
+				commentlist();
+			},error:function(){
+				alert("댓글 등록 실패")
+			}
+		})
+	}
+	
+	function commentModify(i){
+		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		$("#cn"+i).html(html)
+	}
+	
+	function commentModifyUpdate(i){
+		var comments = $("#replycomment"+i).val();
+		var num = $("#num"+i).val();
+		var form={num:num, comments:comments}
+		$.ajax({
+			url:"commentmodify",
+			type:"POST",
+			data:form,
+			success:function(){
+				commentlist();
+			},error:function(){
+				alert("댓글 등록 실패")
+			}
+		})
+	}
+	
+	function commentDel(i){
+		var num = $("#num"+i).val();
+		var form={num:num}
+		$.ajax({
+			url:"commentdelete",
 			type:"POST",
 			data:form,
 			success:function(){
@@ -124,7 +157,7 @@
 		<c:choose>
 		<c:when test="${user.name ne null && user.name eq content.name}">
 		<tr>
-		<td colspan="2" align="right">
+		<td colspan="3" align="right">
 		<input type="button" onclick="modify()" value="수정"> 
 		<input type="button" onclick="del()" value="삭제"> 
 		</td>
@@ -132,21 +165,21 @@
 		</c:when>
 		</c:choose>
 		<tr> 
-		<td colspan="2"><h1>${content.title }</h1></td> 
+		<td colspan="3"><h1>${content.title }</h1></td> 
 		</tr>
 		<tr>
-		<td style="font-size: 12px;">작성자 : ${content.name }</td>
+		<td colspan="2" style="font-size: 12px;">작성자 : ${content.name }</td>
 		<td align="right" style="font-size: 12px;">조회수 : ${content.hit }</td>
 		</tr>			
 		<tr>
-		<td colspan="2" height="300px">${content.content }</td>
+		<td colspan="3" height="300px">${content.content }</td>
 		</tr>
 		<tbody id="commentlist">
 		</tbody>
 		<c:choose>
 		<c:when test="${user.name ne null }">
 		<tr>
-		<td colspan="2">
+		<td colspan="3">
 		<fieldset style="width: 500px;">
 		<legend>댓글</legend>
 		${user.name }

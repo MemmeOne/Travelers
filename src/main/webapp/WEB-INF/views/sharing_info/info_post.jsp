@@ -6,9 +6,10 @@
 <meta charset="UTF-8">
 <title>${info_post.title }</title>
 <style type="text/css">
-	#body { margin-top: 350px; display: flex; justify-content: center; align-items: center; }
+	#body { margin-top: 350px; }
+	/*  display: flex; justify-content: center; align-items: center; */
 	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; }
+	table { background: white; padding: 30px; } 
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
@@ -38,7 +39,7 @@
 		$.each(list, function(index,item) {
 			html += "<tr id='modify"+cnt+"'>"
 			if(item.step>0) {
-				html += "<td> → </td>"
+				html += "<th> → </th>"
 			}
 		 	html += "<input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
 			html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
@@ -244,7 +245,7 @@
 						<tr id="modify${cnt}">
 						<c:choose>
 							<c:when test="${com.step>0}">
-								<td> → </td>
+								<th> → </th>
 							</c:when>
 						</c:choose>
 						<input type="hidden" id="nick${cnt}" value="${com.nick}">

@@ -6,12 +6,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style type="text/css">
-		#travelers {color:white; text-align: center; font-size: 55pt; position:relative; top: 160px; }
-		#travelers a {text-decoration:none ;color:white;}
-		body { background-image: url('resources/main_image/01.png'); background-color: black;
-			background-repeat : no-repeat; background-size : cover;}
+		#travelers {color:black; text-align: center; font-size: 55pt; position:relative; top: 160px; }
+		#travelers a {text-decoration:none ;color:black;}
+/*		body { background-image: url('resources/main_image/01.png'); background-color: black;
+			background-repeat : no-repeat; background-size : cover;} */
 		#menu { position: absolute; right: 30px; margin: 30px;}
-		#menu a {text-decoration:none ;color:white;}
+		#menu a {text-decoration:none ;color:black;}
 		body {margin: 0 auto;}
 	</style>
 </head>

@@ -6,7 +6,7 @@ public class InfoDTO {
 	private String num, nick, tag, title, content;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Timestamp savedate;
-	private int hit, numgroup, step ,indent;
+	private int hit, numgroup;
 	// getter, setter
 	public String getNum() {
 		return num;
@@ -55,17 +55,5 @@ public class InfoDTO {
 	}
 	public void setNumgroup(int numgroup) {
 		this.numgroup = numgroup;
-	}
-	public int getStep() {
-		return step;
-	}
-	public void setStep(int step) {
-		this.step = step;
-	}
-	public int getIndent() {
-		return indent;
-	}
-	public void setIndent(int indent) {
-		this.indent = indent;
 	}
 }

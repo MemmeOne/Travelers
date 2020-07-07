@@ -15,7 +15,7 @@
 	
 	<!-- 검색 글 목록 가져오기 기능 -->
 	<select id="search" resultType="infodto" parameterType="map">
-		select B.* from(select rownum rn, A.* from(select * from info_board where step=0 and ${tag} like '%${word}%')A)B
+		select B.* from(select rownum rn, A.* from(select * from info_board where ${tag} like '%${word}%')A)B
 		where rn between #{str} and #{end} order by num desc
 	</select>
 	<!-- 검색 글 전체 수 -->
@@ -24,8 +24,8 @@
 	</select>
 	<!-- 글 저장 기능 -->
 	<insert id="info_save" parameterType="infodto">
-		insert into info_board(num,nick,tag,title,content,numgroup,step,indent)
-		values (info_board_seq.nextval,#{nick},#{tag},#{title},#{content},info_board_seq.currval,0,0)
+		insert into info_board(num,nick,tag,title,content,numgroup)
+		values (info_board_seq.nextval,#{nick},#{tag},#{title},#{content},info_board_seq.currval)
 	</insert>
 	<!-- 글 내용 가져오기 기능 -->
 	<select id="info_post" resultType="infodto" parameterType="int">
@@ -67,13 +67,11 @@
 	<!-- 댓글 수정 기능 -->
 	<update id="comment_modify" parameterType="commentdto">
 		update info_board_comment set content=#{content} where numgroup=#{numgroup} and commentgroup=#{commentgroup}
-		and step=#{step} and indent=#{indent}
 	</update>
 	<!-- 댓글 삭제 기능 -->
 	<delete id="comment_delete" parameterType="commentdto">
 		delete from info_board_comment 
 		where commentgroup=#{commentgroup} and nick=#{nick} and content=#{content} and numgroup=#{numgroup}
-		and step=#{step} and indent=#{indent}
 	</delete>
 	
 </mapper>

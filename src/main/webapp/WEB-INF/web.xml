@@ -10,7 +10,7 @@
 			/WEB-INF/spring/root-context.xml
 			<!-- 읽어야될 xml 파일들 여기다 넣어요 -->
 			classpath:database/jdbc-config.xml
-			classpath:database/free_jdbc-config.xml
+			classpath:free_database/jdbc-config.xml
 		</param-value>
 	</context-param>
 	

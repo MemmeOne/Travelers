@@ -1,14 +1,21 @@
 package com.cpkl.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
 import com.cpkl.service.FreeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class FreeController {
@@ -67,5 +74,42 @@ public class FreeController {
 			e.printStackTrace();
 		}
 		return "redirect:free_board_list?page=1";
+	}
+	//댓글
+	@RequestMapping(value="free_comment_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_save(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	@RequestMapping(value="free_comment_modify",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_modify(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_modify(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	@RequestMapping(value="free_comment_delete",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_delete(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_delete(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	@RequestMapping(value="free_comment_reply_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_reply_save(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_reply_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
 	}
 }

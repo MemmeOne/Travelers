@@ -49,7 +49,8 @@
 				</c:otherwise>
 			</c:choose>
 			<tr>
-				<td colspan="8"><a href="free_write_list">등록</a></td>${totPage }
+				<td colspan="8"><a href="free_write_list">등록</a></td>
+				<!--  ${totPage }-->
 			</tr>
 			<tr>
 				<td colspan="8" align="right"><c:choose>

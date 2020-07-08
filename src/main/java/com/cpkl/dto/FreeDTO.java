@@ -61,9 +61,4 @@ public class FreeDTO {
 	public void setIndent(int indent) {
 		this.indent = indent;
 	}
-	@Override
-	public String toString() {
-		return "FreeDTO [num=" + num + ", nick=" + nick + ", title=" + title + ", content=" + content + ", savedate="
-				+ savedate + ", hit=" + hit + ", numgroup=" + numgroup + ", step=" + step + ", indent=" + indent + "]";
-	}
 }

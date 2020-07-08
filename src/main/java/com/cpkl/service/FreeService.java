@@ -1,15 +1,16 @@
 package com.cpkl.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.cpkl.dao.FreeDAO;
+import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
 
 @Service
-//서비스가 jsp페이지와 연결?..
-//addAttribute: jsp에 뒷메소드의 리턴값을 앞 lists에 넣겠다.
 public class FreeService {
 	@Autowired
 	private FreeDAO dao;
@@ -42,5 +43,21 @@ public class FreeService {
 	public void updatedata(FreeDTO dto) {
 		dao.updatedata(dto);
 		System.out.println(dto);
+	}
+	public List<FreeCommentDTO> comment_save(FreeCommentDTO dto) {
+		dao.comment_save(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	public List<FreeCommentDTO> comment_modify(FreeCommentDTO dto) {
+		dao.comment_modify(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	public List<FreeCommentDTO> comment_delete(FreeCommentDTO dto) {
+		dao.comment_delete(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	public List<FreeCommentDTO> comment_reply_save(FreeCommentDTO dto) {
+		dao.comment_reply_save(dto);
+		return dao.comment_list(dto.getNumgroup());
 	}
 }

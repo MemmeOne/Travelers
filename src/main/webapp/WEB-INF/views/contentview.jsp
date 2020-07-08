@@ -11,6 +11,8 @@
 	
 <script>
 	
+	var commentNumber = 0;
+	
 	function commentReg(){
 		var id = $("#id").val();
 		var cname = $("#cname").val();
@@ -32,7 +34,7 @@
 	
 	function commentlist(){
 		var id = $("#id").val();
-		var form={id:id};
+		var form={id:id, count:commentNumber};
 		var i = 0;
 		var userName = '${user.name}'
 		$.ajax({
@@ -44,12 +46,13 @@
 					$.each(data, function(index,item){
 						if(item.indent == 0){
 							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
 							html += "<td colspan='2'>"+item.cname+"<br>"+item.savedate+"</td>"
 							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
 							if(item.cname == userName){
 								html += "<tr id='cn"+i+"'>"+
 								"<td colspan='3' align='right'><input type='button' value='수정' onclick='commentModify("+i+")'>"+
-								"<input type='button' value='삭제' onclick='commentDel()'>"+
+								"<input type='button' value='삭제' onclick='commentDel("+i+")'>"+
 								"<input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
 								i += 1;
 							}else{
@@ -60,6 +63,7 @@
 							}
 						}else {
 							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
 							html += "<td>&#10149;</td> <td>"+item.cname+"<br>"+item.savedate+"</td>"
 							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
 							if(item.cname == userName){
@@ -71,6 +75,7 @@
 						}
 					})
 					$("#commentlist").html(html);
+					totalComment(i);
 			},error:function(){
 				alert("댓글 보기 실패")
 			}
@@ -116,14 +121,15 @@
 			success:function(){
 				commentlist();
 			},error:function(){
-				alert("댓글 등록 실패")
+				alert("댓글 수정 실패")
 			}
 		})
 	}
 	
 	function commentDel(i){
+		var indent = $("#indent"+i).val();
 		var num = $("#num"+i).val();
-		var form={num:num}
+		var form={num:num, indent:indent}
 		$.ajax({
 			url:"commentdelete",
 			type:"POST",
@@ -131,9 +137,43 @@
 			success:function(){
 				commentlist();
 			},error:function(){
-				alert("댓글 등록 실패")
+				alert("댓글 삭제 실패")
 			}
 		})
+	}
+	
+	function totalComment(i){
+		var id = $("#id").val();
+		var form={id:id}
+		$.ajax({
+			url:"totalcomment",
+			type:"POST",
+			data:form,
+			success:function(total){
+				if(total.count > 10){
+					if(i == total.count){
+						html = "<td colspan='3'><input type='button' value='댓글 닫기' onclick='commentNumberM()'></td>"
+						$("#viewmore").html(html);
+					}else{
+						html = "<td colspan='3'><input type='button' value='댓글 열기' onclick='commentNumberP()'></td>"
+						$("#viewmore").html(html);
+					}
+				}
+			},error:function(){
+				alert("댓글 개수 실패")
+			}
+		})
+	}
+	
+	function commentNumberP(){
+		commentNumber += 10;
+		commentlist();
+
+	}
+	
+	function commentNumberM(){
+		commentNumber = 0;
+		commentlist();
 	}
 	
 	function modify(){
@@ -176,6 +216,7 @@
 		</tr>
 		<tbody id="commentlist">
 		</tbody>
+		<tr id="viewmore"></tr>
 		<c:choose>
 		<c:when test="${user.name ne null }">
 		<tr>
@@ -193,7 +234,7 @@
 		</c:when>
 		</c:choose>
 		<tr>
-		<td>
+		<td colspan="2">
 		<c:choose>
 		<c:when test="${user.name ne null }">
 		<input type="button" onclick="" value="답글">

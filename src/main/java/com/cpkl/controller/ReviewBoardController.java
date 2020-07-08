@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 import com.cpkl.dto.UserDTO;
@@ -99,8 +100,8 @@ public class ReviewBoardController {
 	
 	@RequestMapping(value="comments", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String comments(@RequestParam int id) throws JsonProcessingException {
-		List<ReviewBoardCommentsDTO> list = rbs.comments(id);
+	public String comments(CommentNumber dto) throws JsonProcessingException {
+		List<ReviewBoardCommentsDTO> list = rbs.comments(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(list);
 		return json;
@@ -120,4 +121,19 @@ public class ReviewBoardController {
 		return null;
 	}
 	
+	@RequestMapping(value="commentdelete", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String commentDelete(ReviewBoardCommentsDTO dto) {
+		rbs.commentDelete(dto);
+		return null;
+	}
+	
+	@RequestMapping(value="totalcomment", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String totalComment(@RequestParam int id) throws JsonProcessingException{
+		CommentNumber cn = rbs.totalComment(id);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(cn);
+		return json;
+	}
 }

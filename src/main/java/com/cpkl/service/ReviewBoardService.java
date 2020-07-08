@@ -1,16 +1,14 @@
 package com.cpkl.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cpkl.dao.ReviewBoardDAO;
+import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 
@@ -37,7 +35,6 @@ public class ReviewBoardService {
 	public void contentView(int id,Model model) {
 		dao.upHit(id);
 		model.addAttribute("content", dao.contentView(id));
-
 	}
 	
 	public void delete(int id) {
@@ -48,8 +45,8 @@ public class ReviewBoardService {
 		dao.modify(dto);
 	}
 	
-	public List<ReviewBoardCommentsDTO> comments(int id) {
-		return dao.comments(id);
+	public List<ReviewBoardCommentsDTO> comments(CommentNumber dto) {
+		return dao.comments(dto);
 	}
 	
 	public void comment(ReviewBoardCommentsDTO dto) {
@@ -72,6 +69,18 @@ public class ReviewBoardService {
 	
 	public void commentModify(ReviewBoardCommentsDTO dto) {
 		dao.commentModify(dto);
+	}
+	
+	public void commentDelete(ReviewBoardCommentsDTO dto) {
+		if(dto.getIndent() == 0) {
+			dao.commentDelete(dto);
+		}else {
+			dao.commentIndentDelete(dto);
+		}
+	}
+	
+	public CommentNumber totalComment(int id) {
+		return dao.totalComment(id);
 	}
 	
 }

@@ -32,7 +32,7 @@
 	</insert>
 	
 	<select id="comments" resultType="cdto">
-		select A.*from(select*from comments order by numgroup asc, indent asc, num asc)A where id=#{id}
+		select B.*from(select rownum rn, A.*from(select*from comments where id=#{id} order by numgroup asc, indent asc, num asc)A)B where rn between 1 and #{count}
 	</select>
 	
 	<insert id="comment">
@@ -59,22 +59,16 @@
 		update comments set comments=#{comments} where num=#{num}
 	</update>
 	
-	<!-- 
-	<select id="list" resultType="com.care.dto.TestDTO">
-		select * from mybatis_test where num=#{num}
-	</select>
-	
-	<insert id="savedata" parameterType="dto"> 
-		insert into mybatis_test values(#{num},#{name},#{mydate})
-	</insert>
-	
-	<update id="updatedata" parameterType="dto">
-		update mybatis_test set name=#{name}, mydate=#{mydate} where num=#{num}
-	</update>
-
-	<delete id="delete" parameterType="String">
-		delete from mybatis_test where num=#{num}
+	<delete id="commentdelete">
+		delete from comments where numgroup=#{num}
 	</delete>
-	 -->
+	
+	<delete id="commentindentdelete">
+		delete from comments where num=#{num}
+	</delete>
+	
+	<select id="totalcomment" resultType="cn">
+		select A.*from(select id, (count(*))count from comments group by id)A where id=#{id}
+	</select>
 	
 </mapper>

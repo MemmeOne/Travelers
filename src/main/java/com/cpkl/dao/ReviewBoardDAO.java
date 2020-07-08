@@ -43,8 +43,8 @@ public class ReviewBoardDAO {
 		sqlSession.update(namespace+".modify", dto);
 	}
 	
-	public List<ReviewBoardCommentsDTO> comments(int id){
-		return sqlSession.selectList(namespace+".comments", id); 
+	public List<ReviewBoardCommentsDTO> comments(CommentNumber dto){
+		return sqlSession.selectList(namespace+".comments", dto); 
 	}
 	
 	public void comment(ReviewBoardCommentsDTO dto) {
@@ -74,6 +74,18 @@ public class ReviewBoardDAO {
 	
 	public void commentModify(ReviewBoardCommentsDTO dto) {
 		sqlSession.update(namespace+".commentmodify", dto);
+	}
+	
+	public void commentDelete(ReviewBoardCommentsDTO dto) {
+		sqlSession.delete(namespace+".commentdelete", dto);
+	}
+	
+	public void commentIndentDelete(ReviewBoardCommentsDTO dto) {
+		sqlSession.delete(namespace+".commentindentdelete", dto);
+	}
+	
+	public CommentNumber totalComment(int id) {
+		return sqlSession.selectOne(namespace+".totalcomment", id);
 	}
 	
 }

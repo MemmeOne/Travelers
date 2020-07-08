@@ -18,7 +18,7 @@
 	<fmt:requestEncoding value="utf-8"/>
 				
 	<div id="body">
-		<form action="info_search">
+		<form action="info_search"><input type="hidden" name="page" value="1">
 			<table border="1">
 				<tr>
 					<th>글번호</th> <th>글 제목</th> <th>닉네임</th> <th>날짜</th> <th>조회수</th>
@@ -84,12 +84,12 @@
 				</tr>
 				<tr>
 					<th colspan="5">
-						<select>
+						<select name="tag">
 							<option value="title">제목</option>
 							<option value="tag">태그</option>
 							<option value="nick">닉네임</option>
 						</select>
-						<input type="text" placeholder="검색할 키워드를 입력하세요">
+						<input type="text" placeholder="검색할 키워드를 입력하세요" name="word">
 						<input type="submit" value="검색">
 						<input type="button" value="글쓰기" onclick="location.href='info_write'">
 					</th>

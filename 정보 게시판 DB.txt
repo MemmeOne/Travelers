@@ -13,15 +13,21 @@ create sequence info_board_seq;
 
 // 정보 게시판 댓글 Table
 create table info_board_comment(
-numgroup number(4),
-commentgroup number(4),
-nick varchar2(20),
-content varchar2(1000),
-savedate date default sysdate,
-step number(4),
-indent number(4)
+cnum number(4) PRIMARY key,
+numgroup number(4) not null,
+commentgroup number(4) not null,
+nick varchar2(20) not null,
+content varchar2(1000) not null,
+savedate date default sysdate not null,
+step number(4) not null
 );
 create sequence info_board_comment_seq;
 
 //컬럼 변경
 ALTER TABLE info_board DROP COLUMN 컬럼명
+
+//테이블, 시퀸스 삭제
+drop table info_board;
+drop SEQUENCE info_board_seq;
+drop table info_board_comment;
+drop SEQUENCE info_board_comment_seq;

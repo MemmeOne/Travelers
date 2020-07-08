@@ -1,0 +1,8 @@
+create table Travelers (
+id varchar2(30) primary key,
+pwd varchar2(30) not null,
+nick varchar2(30) not null,
+email varchar2(50) not null,
+gender varchar2(30) not null,
+age number not null
+);

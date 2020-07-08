@@ -12,6 +12,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
 
+/* 정보 게시판 DAO  */
 @Repository
 public class InfoDAO {
 	@Autowired
@@ -28,7 +29,8 @@ public class InfoDAO {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
-	// 전체 글 목록 가져오기
+	/* 게시판 기본 기능 */
+	// 정보 게시판 전체 글 목록 가져오기 기능
 	public List<InfoDTO> listAll(final int page) {
 		map=new HashMap<String, Object>();
 		if(page>1) {
@@ -50,7 +52,7 @@ public class InfoDAO {
 		}
 		return list;
 	}
-	// 전체 글 수
+	//정보 게시판 전체 글 수 가져오기 기능
 	public int totPage() {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -64,8 +66,7 @@ public class InfoDAO {
 		}
 		return result;
 	}
-	
-	// 검색된 글 목록 가져오기
+	// 정보 게시판 글 검색 목록 가져오기 기능
 	public List<InfoDTO> search(String tag, String word, int page) {
 		map=new HashMap<String, Object>();
 		map.put("tag", tag);
@@ -89,7 +90,7 @@ public class InfoDAO {
 		}
 		return list;
 	}
-	// 검색 된 글 수
+	// 정보 게시판 검색 된 글 수 가져오기 기능
 	public int totPageSearch(String tag, String word) {
 		map=new HashMap<String, Object>();
 		map.put("tag", tag);
@@ -106,8 +107,7 @@ public class InfoDAO {
 		}
 		return result;
 	}
-
-	// 글 게시
+	// 정보 게시판 글 저장 기능
 	public int info_save(final InfoDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -121,7 +121,7 @@ public class InfoDAO {
 		}
 		return result;
 	}
-	// 글 내용 가져오기
+	// 정보 게시판 글 상세보기 기능
 	public InfoDTO info_post(final int num) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -135,7 +135,7 @@ public class InfoDAO {
 		}
 		return dto;
 	}
-	// 조회수
+	// 정보 게시판 조회수 기능
 	public void info_uphit(final int num) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -148,7 +148,37 @@ public class InfoDAO {
 			e.printStackTrace();
 		}
 	}
-	// 댓글 리스트
+	// 정보 게시판 글 수정 기능
+	public int info_modify(final InfoDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=sqlSession.update(namespace+".info_modify",dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 정보 게시판 글 삭제 기능
+	public int info_delete(final int num) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=sqlSession.delete(namespace+".info_delete",num);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}	
+
+	/* 댓글 기능 */
+	// 댓글 리스트 가져오기 기능
 	public List<InfoCommentDTO> comment_list(final int num) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -163,23 +193,23 @@ public class InfoDAO {
 		}
 		return comment_list;
 	}
-	// 댓글 저장
+	// 댓글 저장 기능
 	public void comment_save(final InfoCommentDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.insert(namespace+".comment_save",dto);
-					System.out.println("댓글 저장 완료");
 					sqlSession.update(namespace+".replyShape",dto);
 					System.out.println("댓글 정렬 완료");
+					result=sqlSession.insert(namespace+".comment_save",dto);
+					System.out.println("댓글 저장 완료");
 				}
 			});
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	// 댓글 수정
+	// 댓글 수정 기능
 	public void comment_modify(final InfoCommentDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -193,7 +223,7 @@ public class InfoDAO {
 			e.printStackTrace();
 		}
 	}
-	// 댓글 삭제
+	// 댓글 삭제 기능
 	public void comment_delete(final InfoCommentDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -207,41 +237,13 @@ public class InfoDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	// 글 수정
-	public int info_modify(final InfoDTO dto) {
-		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.update(namespace+".info_modify",dto);
-				}
-			});
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	// 글 삭제
-	public int info_delete(final int num) {
-		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.delete(namespace+".info_delete",num);
-				}
-			});
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+	// 대댓글 저장 기능
 	public void comment_reply_save(final InfoCommentDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.delete(namespace+".comment_reply_save",dto);
+					result=sqlSession.insert(namespace+".comment_reply_save",dto);
 				}
 			});
 		}catch (Exception e) {

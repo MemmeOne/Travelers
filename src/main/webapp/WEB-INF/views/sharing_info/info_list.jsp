@@ -35,7 +35,8 @@
 								<th>${list.num }</th>
 								<td><a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a></th>
 								<th>${list.nick }</th>
-								<th>${list.savedate }</th>
+								<fmt:formatDate  var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd hh:mm"/>
+								<th>${savedate}</th>
 								<th>${list.hit }</th>
 							</tr>
 						</c:forEach>

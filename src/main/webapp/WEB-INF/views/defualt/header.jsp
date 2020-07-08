@@ -16,12 +16,25 @@
 	</style>
 </head>
 <body>
-<div id="menu">
-	<a href="login">Sign In</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="reg">Sign Up</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="login">Mate</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="info_list?page=1">Info Board</a>
-</div>
-<div id="travelers"><b><a href="/controller/">TRAVELERS</a></b></div>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	<fmt:requestEncoding value="utf-8"/>
+	<div id="menu">
+		<c:choose>
+			<c:when test="${user!=null }">
+				<a href="logout">Logout</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="mypage">MyPage</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="login">Mate</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="info_list?page=1">InfoBoard</a>
+			</c:when>
+			<c:otherwise>
+				<a href="login">Login</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="reg">SignUp</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="login">Mate</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="info_list?page=1">InfoBoard</a>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	<div id="travelers"><b><a href="/controller/">TRAVELERS</a></b></div>
 </body>
 </html>

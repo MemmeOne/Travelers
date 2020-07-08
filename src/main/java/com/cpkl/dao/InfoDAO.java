@@ -2,8 +2,12 @@ package com.cpkl.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -16,7 +20,9 @@ import com.cpkl.dto.InfoDTO;
 @Repository
 public class InfoDAO {
 	@Autowired
-	private SqlSession sqlSession;
+	@Qualifier("info_sqlSession")
+//	@Resource(name="info_sqlSession")
+	private SqlSession info_sqlSession;
 	public static final String namespace="com.cpkl.info_mybatis.myMapper";
 	private List<InfoDTO> list;
 	private List<InfoCommentDTO> comment_list;
@@ -25,6 +31,7 @@ public class InfoDAO {
 	private Map map;
 	/* 트랜잭션 */
 	@Autowired
+	@Resource(name="info_transactionTemplate")
 	private TransactionTemplate transactionTemplate;
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
@@ -44,7 +51,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					list=sqlSession.selectList(namespace+".listAll",map);
+					list=info_sqlSession.selectList(namespace+".listAll",map);
 				}
 			});
 		}catch (Exception e) {
@@ -58,7 +65,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.selectOne(namespace+".totPage");
+					result=info_sqlSession.selectOne(namespace+".totPage");
 				}
 			});
 		}catch (Exception e) {
@@ -82,7 +89,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					list=sqlSession.selectList(namespace+".search",map);
+					list=info_sqlSession.selectList(namespace+".search",map);
 				}
 			});
 		}catch (Exception e) {
@@ -99,7 +106,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.selectOne(namespace+".totPageSearch",map);
+					result=info_sqlSession.selectOne(namespace+".totPageSearch",map);
 				}
 			});
 		}catch (Exception e) {
@@ -113,7 +120,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.insert(namespace+".info_save",dto);
+					result=info_sqlSession.insert(namespace+".info_save",dto);
 				}
 			});
 		}catch (Exception e) {
@@ -127,7 +134,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					dto=sqlSession.selectOne(namespace+".info_post", num);
+					dto=info_sqlSession.selectOne(namespace+".info_post", num);
 				}
 			});
 		}catch (Exception e) {
@@ -141,7 +148,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					sqlSession.update(namespace+".info_uphit", num);
+					info_sqlSession.update(namespace+".info_uphit", num);
 				}
 			});
 		}catch (Exception e) {
@@ -154,7 +161,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.update(namespace+".info_modify",dto);
+					result=info_sqlSession.update(namespace+".info_modify",dto);
 				}
 			});
 		}catch (Exception e) {
@@ -168,7 +175,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.delete(namespace+".info_delete",num);
+					result=info_sqlSession.delete(namespace+".info_delete",num);
 				}
 			});
 		}catch (Exception e) {
@@ -184,7 +191,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					comment_list=sqlSession.selectList(namespace+".comment_list",num);
+					comment_list=info_sqlSession.selectList(namespace+".comment_list",num);
 					System.out.println("댓글 리스트 가져오기 성공");
 				}
 			});
@@ -199,10 +206,8 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					sqlSession.update(namespace+".replyShape",dto);
-					System.out.println("댓글 정렬 완료");
-					result=sqlSession.insert(namespace+".comment_save",dto);
-					System.out.println("댓글 저장 완료");
+					info_sqlSession.update(namespace+".replyShape",dto);
+					result=info_sqlSession.insert(namespace+".comment_save",dto);
 				}
 			});
 		}catch (Exception e) {
@@ -215,8 +220,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.insert(namespace+".comment_modify",dto);
-					System.out.println("댓글 수정 완료");
+					result=info_sqlSession.insert(namespace+".comment_modify",dto);
 				}
 			});
 		}catch (Exception e) {
@@ -229,8 +233,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.insert(namespace+".comment_delete",dto);
-					System.out.println("댓글 삭제 완료");
+					result=info_sqlSession.insert(namespace+".comment_delete",dto);
 				}
 			});
 		}catch (Exception e) {
@@ -243,7 +246,7 @@ public class InfoDAO {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					result=sqlSession.insert(namespace+".comment_reply_save",dto);
+					result=info_sqlSession.insert(namespace+".comment_reply_save",dto);
 				}
 			});
 		}catch (Exception e) {

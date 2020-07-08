@@ -1,6 +1,6 @@
 package com.cpkl.controller;
 import java.util.List;
-
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
 import com.cpkl.service.InfoService;
@@ -20,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class InfoController {
 	@Autowired
 	private InfoService service;
+	
 	/* 게시판 기본 기능 */
 	// 정보 게시판 전체 글 목록 가져오기 기능
 	@RequestMapping("info_list")

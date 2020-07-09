@@ -106,7 +106,7 @@
 	}
 	
 	function commentModify(i){
-		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' id='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
 		$("#cn"+i).html(html)
 	}
 	
@@ -227,7 +227,7 @@
 		<br>
 		<textarea style="border: none; position: relative; left: 30px;" id="comments" name="comments" rows="3" cols="60"></textarea>
 		<br>
-		<a style="position: relative; left: 450px;" onclick="commentReg()">등록</a>
+		<input type="button" value="등록" style="position: relative; left: 450px;" onclick="commentReg()">
 		</fieldset>
 		</td>
 		</tr>

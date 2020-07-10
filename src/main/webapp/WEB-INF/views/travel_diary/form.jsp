@@ -9,10 +9,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="">
-      나라 : <select name="nation">
-      		<option value=""></option>1
-		</select>
+	<form action="travelDiaryReg" method="post">
+	<input type="hidden" name="nick" value="aa">
+	나라 : <select name="nation">
+      		<c:forEach var="nation" items="${nationlist }">
+      		<option value="${nation }">${nation }</option>
+      		</c:forEach>
+		</select><br>
+	도시 : <input type="text" name="city"><br>
+	한줄평 : <input type="text" name="memo"><br>
+	<input type="submit" value="확인">
 	</form>
 </body>
 </html>

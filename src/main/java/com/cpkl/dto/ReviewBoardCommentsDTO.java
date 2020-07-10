@@ -77,7 +77,4 @@ public class ReviewBoardCommentsDTO {
 				+ ", comments=" + comments + "]";
 	}
 
-
-	
-	
 }

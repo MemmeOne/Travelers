@@ -35,7 +35,7 @@
 	
 	<!-- 게시글 등록 -->
 	<insert id="contentreg">
-		insert into board(id,name,title,content,hit,idgroup,indent) values(board_seq.nextval,#{name},#{title},#{content},0,board_seq.currval,0,0)
+		insert into board(id,name,title,content,hit,idgroup,step,indent) values(board_seq.nextval,#{name},#{title},#{content},0,board_seq.currval,0,0)
 	</insert>
 	
 	<!-- 댓글 불러오기 -->
@@ -88,7 +88,16 @@
 		select A.*from(select id, (count(*))count from comments group by id)A where id=#{id}
 	</select>
 
-	<select id="nation" >
+	<select id="nation" resultType="String">
 		select*from nation
 	</select>
+
+	<insert id="travelDiaryReg" parameterType="td">
+		insert into traveldiary values(#{nick}, #{nation}, #{city}, #{memo})
+	</insert>
+	
+	<select id="travelDiaryList" resultType="td">
+		select*from traveldiary where nick=#{nick}
+	</select>
+	
 </mapper>

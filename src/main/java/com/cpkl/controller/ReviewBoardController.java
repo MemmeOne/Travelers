@@ -49,7 +49,7 @@ public class ReviewBoardController {
 		}
 		UserDTO user = new UserDTO();
 		user.setId("aa"); user.setName("aa");
-		session.setAttribute("user", user);
+		session.setAttribute(user.getId(), "aa");
 		Date cdate = new Date();
 		session.setAttribute("cdate", cdate);
 		return "reviewboard";

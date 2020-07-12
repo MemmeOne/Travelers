@@ -12,6 +12,6 @@
 <P>  The time on the server is ${serverTime}. </P>
 <a href="reviewboard?page=1">reviewboard</a>
 <a href="form">diaryform</a>
-<a href="travelDiary?nick=aa">traveldiary</a>
+<a href="travelDiary">traveldiary</a>
 </body>
 </html>

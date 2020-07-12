@@ -9,42 +9,35 @@
 <title>Insert title here</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <script type="text/javascript">
-
+	var rn = 0;
+	function travelDiaryList(rn){
+		var nick = $("#nick").val();
+		var form={nick:nick}
+		$.ajax({
+			url:"travelDiaryList",
+			type:"POST",
+			data:form,
+			success:function(list){
+				let html = ""
+					html += "<tr><td>"+list[0].nation+"</td></tr>"
+					html += "<tr><td>"+list[0].startdate+"</td></tr>"
+					html += "<tr><td><img src='resources/national flag/"+list[0].nation+".png' width='88mm' height='auto'></td></tr>"
+					html += "<tr><td>"+list[0].memo+"</td></tr>"
+				$("#view").html(html);
+			},error:function(){
+				alert("여행 수첩 실패")
+			}
+		})
+	}
 </script>
 </head>
-<c:set var="i" value="0"/>
-<body>
+<body >
+	<input type="hidden" id="nick" value="aa">
 	<table border="1" style="width: 88mm; height: 125mm; border-collapse: collapse;">
-		<tr>
-			<td>${travelDiaryList[i].nation }</td>
-		</tr>
-		<tr>
-			<td><img src="resources/image/${travelDiaryList[i].nation }.jpg">
-			</td>
-		</tr>
-		<tr>
-			<td>${travelDiaryList[i].city }</td>
-		</tr>
-		<tr>
-			<td>${travelDiaryList[i].memo}</td>
-		</tr>
+		<tbody id="view">
+		<tr><td style="width: 88mm; height: 125mm;"><img src="resources/national flag/passport.png"></td></tr>
+		</tbody>
 	</table>
-	<c:choose>
-	<c:when test="${i eq 0 }">
-		<button disabled="disabled">이전</button>
-	</c:when>
-	<c:otherwise>
-		<button onclick="pre()">이전</button>
-	</c:otherwise>
-	</c:choose>
-	<c:choose>
-	<c:when test="${i eq travelDiaryList.size()-1 }">
-		<input type="button" onclick="next()" value="다음">
-	</c:when>
-	<c:otherwise>
-		<input type="button" onclick="" value="다음">
-	</c:otherwise>
-	</c:choose>
-	${i }
+	<input type="button" value="열기" onclick="travelDiaryList(rn)">
 </body>
 </html>

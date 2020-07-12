@@ -93,7 +93,7 @@
 	</select>
 
 	<insert id="travelDiaryReg" parameterType="td">
-		insert into traveldiary values(#{nick}, #{nation}, #{city}, #{memo})
+		insert into traveldiary values(#{nick}, #{nation}, #{city}, #{startdate}, #{enddate}, #{memo})
 	</insert>
 	
 	<select id="travelDiaryList" resultType="td">

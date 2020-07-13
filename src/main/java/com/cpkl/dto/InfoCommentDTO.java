@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class InfoCommentDTO {
 	private int cnum, numgroup, commentgroup, step;
 	private String nick, content;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	private Timestamp savedate;
 	public int getCnum() {
 		return cnum;

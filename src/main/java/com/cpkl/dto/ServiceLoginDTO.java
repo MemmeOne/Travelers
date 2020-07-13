@@ -1,8 +1,9 @@
 package com.cpkl.dto;
+import java.sql.Date;
 
 public class ServiceLoginDTO {
 	private String id, pwd, nick, email, gender;
-	private int age;
+	private Date birth;
 	public String getId() {
 		return id;
 	}
@@ -33,10 +34,10 @@ public class ServiceLoginDTO {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getAge() {
-		return age;
+	public Date getBirth() {
+		return birth;
 	}
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirth(Date birth) {
+		this.birth = birth;
 	}
 }

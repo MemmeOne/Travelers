@@ -7,9 +7,17 @@
 	<select id="login_chk" resultType="logindto">
 		select * from travelers where id=#{id}
 	</select>
+	<!-- 닉네임 중복 확인 -->
+	<select id="nick_chk" resultType="logindto">
+		select * from travelers where nick=#{nick}
+	</select>
+	<!-- 닉네임 중복 확인 -->
+	<select id="email_chk" resultType="logindto">
+		select * from travelers where email=#{email}
+	</select>
 	<!-- 회원 정보 저장. 회원가입 -->
 	<insert id="insert_user">
-		insert into travelers(id, pwd, nick, email, gender, age)
-		values(#{id}, #{pwd}, #{nick}, #{email}, #{gender}, #{age})
+		insert into travelers(id, pwd, nick, email, gender, birth)
+		values(#{id}, #{pwd}, #{nick}, #{email}, #{gender}, #{birth})
 	</insert>
 </mapper>

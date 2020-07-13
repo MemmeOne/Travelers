@@ -20,12 +20,4 @@ public class LoginService {
 		}
 		return result;
 	}
-	public String id_chk(String id) {
-		result=id_chk(id);
-		return result;
-	}
-	public String reg_chk(ServiceLoginDTO dto) {
-		dao.reg_chk(dto);
-		return null;
-	}
 }

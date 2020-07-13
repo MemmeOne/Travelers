@@ -41,8 +41,7 @@ public class TravelDiaryController {
 	@RequestMapping(value="travelDiaryList", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String travelDiary(@RequestParam String nick) throws JsonProcessingException {
-		System.out.println(nick);
-		List<TravelDiaryDTO> list = tds.travelDiaryList(nick);
+ 		List<TravelDiaryDTO> list = tds.travelDiaryList(nick);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(list);
 		return json;

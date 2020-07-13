@@ -11,7 +11,7 @@
 	
 <script>
 	
-	var commentNumber = 0;
+	var commentNumber = 10;
 	
 	function commentReg(){
 		var id = $("#id").val();
@@ -172,7 +172,7 @@
 	}
 	
 	function commentNumberM(){
-		commentNumber = 0;
+		commentNumber = 10;
 		commentlist();
 	}
 	

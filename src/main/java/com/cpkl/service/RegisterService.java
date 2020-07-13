@@ -1,10 +1,12 @@
 package com.cpkl.service;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cpkl.dao.ServiceLoginDAO;
 import com.cpkl.dto.EmailDTO;
-import com.cpkl.dto.ServiceLoginDTO;
+import com.cpkl.dto.TrevelersDTO;
 
 @Service
 public class RegisterService {
@@ -58,7 +60,7 @@ public class RegisterService {
 	}
 	// 아이디 중복 확인
 	public String email_chk(String email) {
-		ServiceLoginDTO dto=dao.email_chk(email);
+		TrevelersDTO dto=dao.email_chk(email);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -68,7 +70,7 @@ public class RegisterService {
 	}
 	// 아이디 중복 확인
 	public String id_chk(String id) {
-		ServiceLoginDTO dto=dao.id_chk(id);
+		TrevelersDTO dto=dao.id_chk(id);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -78,7 +80,7 @@ public class RegisterService {
 	}
 	// 닉네임 중복 확인
 	public String nick_chk(String usernick) {
-		ServiceLoginDTO dto=dao.nick_chk(usernick);
+		TrevelersDTO dto=dao.nick_chk(usernick);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -86,7 +88,11 @@ public class RegisterService {
 		}
 		return result;
 	}
-	public void insert_user(ServiceLoginDTO dto) {
+	public void insert_user(TrevelersDTO dto) {
 		dao.insert_user(dto);
+	}
+	public void delete_User(TrevelersDTO dto, HttpSession session) {
+		dao.delete_User(dto);
+		session.removeAttribute("loginUser");
 	}
 }

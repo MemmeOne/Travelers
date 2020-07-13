@@ -1,22 +1,27 @@
 package com.cpkl.service;
-import java.util.List;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import com.cpkl.dao.ServiceLoginDAO;
-import com.cpkl.dto.ServiceLoginDTO;
+import com.cpkl.dto.TrevelersDTO;
 
 @Service
 public class LoginService {
 	@Autowired
 	private ServiceLoginDAO dao;
 	private String result;
-	public String login_chk(ServiceLoginDTO dto, HttpSession session) {
-		result=dao.login_chk(dto.getId(),dto.getPwd());
-		if(result.equals(dto.getId())) {
-			session.setAttribute("user", result);
+	public String login_chk(TrevelersDTO dto, HttpSession session) {
+		TrevelersDTO dtoresult=dao.login_chk(dto.getId(),dto.getPwd());
+
+		if (dtoresult!=null) {
+			if(dtoresult.getPwd().equals(dto.getPwd())) {
+				result=dto.getId();
+				session.setAttribute("loginUser", dtoresult);
+			}else {
+				result="비밀번호가 틀렸습니다!";
+			}
+		}else {
+			result="없는 아이디 입니다!";
 		}
 		return result;
 	}

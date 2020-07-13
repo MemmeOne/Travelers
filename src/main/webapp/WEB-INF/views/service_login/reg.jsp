@@ -9,6 +9,7 @@
 	.form { margin-top: 350px;}
 	a { text-decoration: none; color: black; }
 	table { background: white; padding: 30px; }
+	table tr { height: 100px; }
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
@@ -39,7 +40,7 @@
 					if (result=="중복") {
 						console.log("이미 있는 이메일")
 						html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-						html += "<br><label>이미 있는 이메일입니다. 다른 이메일를 입력해주세요.</label><br>"
+						html += "<label>이미 있는 이메일입니다. 다른 이메일를 입력해주세요.</label><br>"
 						$("#input_code").html(html)
 						$('input[name=email]').focus
 					} else {
@@ -268,87 +269,119 @@
 </head>
 <body>
 <%@ include file="../defualt/header.jsp" %>
-	<form action="reg_chk" method="post" class="form">
-		아이디 :  5 ~ 20자의 영어 소문자와 숫자만 사용하세요.<br>
-		<input type="text" name="id">
-		<span id="input_id">
-			<input type="button" value="중복확인" onclick="id_chk()">
-		</span><br>
-		<br>
-		비밀번호 : 8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
-		<input type="password" name="pwd" id="pwd"> <input type="password" name="pwdok" id="pwdok"><br>
-		<span id="pwc"></span><br>
-		<span id="pwokc"></span>
-		<script type="text/javascript">
-			document.getElementById('pwd').onkeyup = function() {
-				var msg = '', val = this.value;
-				if (val.length >= 8 && val.length <= 16) {
-					msg = GetAjaxPW(val);
-				} else if (val.length > 16) {
-					msg = '비밀번호가 너무 깁니다.'
-				} else {
-					msg = '비밀번호가 너무 짧습니다.'
-				};
-				document.getElementById('pwc').textContent = msg;
-			};
-		
-			var GetAjaxPW = function(val) {
-				// ajax func....
-				return val + ' 사용 가능한 비밀번호입니다.'
+	<table class="form" border="1">
+		<tr>
+			<th>아이디</th>
+			<td>
+				5 ~ 20자의 영어 소문자와 숫자만 사용하세요.<br>
+				<input type="text" name="id">
+				<span id="input_id">
+					<input type="button" value="중복확인" onclick="id_chk()">
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<th>비밀번호</th>
+			<td>
+				8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
+				<input type="password" name="pwd" id="pwd"> <input type="password" name="pwdok" id="pwdok"><br>
+				<span id="pwc"></span><br>
+				<span id="pwokc"></span>
+			</td>
+		</tr>
+		<tr>
+			<th>닉네임</th>
+			<td>
+				닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.<br><input type="text" name="nick">
+				<span id="input_nick">
+					<input type="button" value="중복확인" onclick="nick_chk()">
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<th>e-mail</th>
+			<td>
+				e-mail : <input type="text" name="email"> @ 
+				<select name="address">
+					<option value="dreamwiz.com">dreamwiz.com</option>
+					<option value="empal.com">empal.com</option>
+					<option value="gmail.com">gmail.com</option>
+					<option value="hanmail.net">hanmail.net</option>
+					<option value="hanmir.com">hanmir.com</option>
+					<option value="hitel.net">hitel.net</option>
+					<option value="hotmail.com">hotmail.com</option>
+					<option value="kebi.com">kebi.com</option>
+					<option value="korea.com">korea.com</option>
+					<option value="nate.com">nate.com</option>
+					<option value="naver.com" selected="selected">naver.com</option>
+					<option value="orgio.net">orgio.net</option>
+					<option value="yahoo.co.kr">yahoo.co.kr</option>
+					<option value="yahoo.com">yahoo.com</option>
+				</select>
+				<span id="input_code">
+					<input type="button" value="인증번호 발송" onclick="sendEmail()">
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<th>성별</th>
+			<td>
+				여자<input type="radio" name="gender" value="여자" checked="checked"> 남자<input type="radio" name="gender" value="남자">
+			</td>
+		</tr>
+		<tr>
+			<th>생년월일</th>
+			<td>
+				<input type="date" name="birth" max="2001-12-31" min="1940-01-01">
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				<input type="button" value="회원가입" onclick="reg_chk()"> 
+				<input type="button" value="취소" onclick="location.href='controller/'">
+			</th>
+		</tr>
+	</table>
+	<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
+	<script type="text/javascript">
+		document.getElementById('pwd').onkeyup = function() {
+			var msg = '', val = this.value;
+			if (val.length >= 8 && val.length <= 16) {
+				msg = GetAjaxPW(val);
+			} else if (val.length > 16) {
+				msg = '비밀번호가 너무 깁니다.'
+			} else {
+				msg = '비밀번호가 너무 짧습니다.'
 			}
-			document.getElementById('pwdok').onkeyup = function() {
-				let html=""
-				var msg = '', val = this.value;
-				if ($('input[name=pwd]').val() == $('input[name=pwdok]').val()) {
-					msg = '비밀번호가 서로 일치합니다.'
-					html = "비밀번호가 서로 일치합니다."
-					html += "<input type='hidden' value='"+$('input[name=pwdok]').val()+"' name='userpwd'>"
-				} else {
-					html = GetAjaxPWok(val);
-				};
-				$("#pwokc").html(html)
-				//document.getElementById('pwokc').textContent = msg;
-			};
-		
-			var GetAjaxPWok = function(val) {
-				// ajax func....
-				return "비밀번호가 일치하지 않습니다."
+			;
+			document.getElementById('pwc').textContent = msg;
+		};
+
+		var GetAjaxPW = function(val) {
+			// ajax func....
+			return val + ' 사용 가능한 비밀번호입니다.'
+		}
+		document.getElementById('pwdok').onkeyup = function() {
+			let html = ""
+			var msg = '', val = this.value;
+			if ($('input[name=pwd]').val() == $('input[name=pwdok]').val()) {
+				msg = '비밀번호가 서로 일치합니다.'
+				html = "비밀번호가 서로 일치합니다."
+				html += "<input type='hidden' value='"
+						+ $('input[name=pwdok]').val() + "' name='userpwd'>"
+			} else {
+				html = GetAjaxPWok(val);
 			}
-		</script>
-		<br><br>
-		닉네임 : 닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.<br><input type="text" name="nick">
-		<span id="input_nick">
-			<input type="button" value="중복확인" onclick="nick_chk()">
-		</span>
-		<br><br><br>
-		e-mail : <input type="text" name="email"> @ 
-		<select name="address">
-			<option value="dreamwiz.com">dreamwiz.com</option>
-			<option value="empal.com">empal.com</option>
-			<option value="gmail.com">gmail.com</option>
-			<option value="hanmail.net">hanmail.net</option>
-			<option value="hanmir.com">hanmir.com</option>
-			<option value="hitel.net">hitel.net</option>
-			<option value="hotmail.com">hotmail.com</option>
-			<option value="kebi.com">kebi.com</option>
-			<option value="korea.com">korea.com</option>
-			<option value="nate.com">nate.com</option>
-			<option value="naver.com" selected="selected">naver.com</option>
-			<option value="orgio.net">orgio.net</option>
-			<option value="yahoo.co.kr">yahoo.co.kr</option>
-			<option value="yahoo.com">yahoo.com</option>
-		</select>
-		<span id="input_code">
-			<input type="button" value="인증번호 발송" onclick="sendEmail()"><br>
-		</span>
-		<br><br>
-		성별 : 여자<input type="radio" name="gender" value="여자" checked="checked"> 남자<input type="radio" name="gender" value="남자"><br><br>
-		생년월일 : <br>
-		<input type="date" name="birth" max="2001-12-31" min="1940-01-01"><br>
-		<br><br>
-		<input type="button" value="회원가입" onclick="reg_chk()">
-		<input type="button" value="취소" onclick="location.href='controller/'">
-	</form>
-<%@ include file="../defualt/footer.jsp" %>
+			;
+			$("#pwokc").html(html)
+			//document.getElementById('pwokc').textContent = msg;
+		};
+
+		var GetAjaxPWok = function(val) {
+			// ajax func....
+			return "비밀번호가 일치하지 않습니다."
+		}
+	</script>
+	<%@ include file="../defualt/footer.jsp" %>
 </body>
 </html>

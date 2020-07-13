@@ -20,4 +20,8 @@
 		insert into travelers(id, pwd, nick, email, gender, birth)
 		values(#{id}, #{pwd}, #{nick}, #{email}, #{gender}, #{birth})
 	</insert>
+	<!-- 회원 정보 삭제. 회원탈퇴 -->
+	<delete id="delete_User">
+		delete from travelers where id=#{id}
+	</delete>
 </mapper>

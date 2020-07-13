@@ -1,7 +1,7 @@
 package com.cpkl.dto;
 import java.sql.Date;
 
-public class ServiceLoginDTO {
+public class TrevelersDTO {
 	private String id, pwd, nick, email, gender;
 	private Date birth;
 	public String getId() {

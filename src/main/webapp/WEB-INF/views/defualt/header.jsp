@@ -21,7 +21,7 @@
 	<fmt:requestEncoding value="utf-8"/>
 	<div id="menu">
 		<c:choose>
-			<c:when test="${user!=null }">
+			<c:when test="${loginUser!=null }">
 				<a href="logout">Logout</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="mypage">MyPage</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="login">Mate</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

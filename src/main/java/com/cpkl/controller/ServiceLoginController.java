@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.cpkl.dto.ServiceLoginDTO;
+import com.cpkl.dto.TrevelersDTO;
 import com.cpkl.service.LoginService;
 import com.cpkl.service.RegisterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +29,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="login_chk",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String login_chk(ServiceLoginDTO dto, HttpSession session) throws JsonProcessingException {
+	public String login_chk(TrevelersDTO dto, HttpSession session) throws JsonProcessingException {
 		String result=logingservice.login_chk(dto, session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(result);
@@ -38,7 +38,7 @@ public class ServiceLoginController {
 	// 로그아웃
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute("loginUser");
 		return "service_login/login";
 	}
 	
@@ -109,10 +109,38 @@ public class ServiceLoginController {
 	@RequestMapping(value="insert_user",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String insert_user(ServiceLoginDTO dto) throws JsonProcessingException {
+	public String insert_user(TrevelersDTO dto) throws JsonProcessingException {
 		regservice.insert_user(dto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString("회원가입");
 		return strJson;
 	}
+	/* 마이페이지 기능 */
+	// 마이페이지 연결
+	@RequestMapping("mypage")
+	public String mypage() {
+		return "service_login/mypage";
+	}
+	// 회원정보 수정
+	@RequestMapping("chageUserInfo")
+	public String chageUserInfo() {
+		return "service_login/chageUserInfo";
+	}
+	// 회원탈퇴 페이지
+	@RequestMapping("withdrawal")
+	public String withdrawal() {
+		return "service_login/withdrawal";
+	}
+	// 회원탈퇴 기능
+	@RequestMapping(value="delete_User",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String delete_User(TrevelersDTO dto, HttpSession session) throws JsonProcessingException {
+		regservice.delete_User(dto,session);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString("회원가입");
+		return strJson;
+	}
+	
+	
 }

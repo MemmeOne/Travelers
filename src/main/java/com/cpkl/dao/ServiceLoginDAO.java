@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import com.cpkl.dto.ServiceLoginDTO;
+import com.cpkl.dto.TrevelersDTO;
 
 @Repository
 public class ServiceLoginDAO {
@@ -14,7 +14,7 @@ public class ServiceLoginDAO {
 	@Resource(name="servicelogin_sqlSession")
 	private SqlSession servicelogin_sqlSession;
 	public static final String namespace="com.cpkl.ServiceLogin_mybatis.myMapper";
-	private ServiceLoginDTO dto;
+	private TrevelersDTO dto;
 	private String result;
 	/* 트랜잭션 */
 	@Autowired
@@ -24,7 +24,7 @@ public class ServiceLoginDAO {
 		this.transactionTemplate = transactionTemplate;
 	}
 	// 로그인 정보 가져오기
-	public String login_chk(final String id, String pwd) {
+	public TrevelersDTO login_chk(final String id, String pwd) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -35,19 +35,10 @@ public class ServiceLoginDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (dto!=null) {
-			if(dto.getPwd().equals(pwd)) {
-				result=id;
-			}else {
-				result="비밀번호가 틀렸습니다!";
-			}
-		}else {
-			result="없는 아이디 입니다!";
-		}
-		return result;
+		return dto;
 	}
 	// 이메일 중복 확인
-	public ServiceLoginDTO email_chk(final String email) {
+	public TrevelersDTO email_chk(final String email) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -61,7 +52,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 아이디 중복 확인
-	public ServiceLoginDTO id_chk(final String id) {
+	public TrevelersDTO id_chk(final String id) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -75,7 +66,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 닉네임 중복 확인
-	public ServiceLoginDTO nick_chk(final String usernick) {
+	public TrevelersDTO nick_chk(final String usernick) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -88,7 +79,7 @@ public class ServiceLoginDAO {
 		}
 		return dto;
 	}
-	public String insert_user(final ServiceLoginDTO dto) {
+	public String insert_user(final TrevelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -100,5 +91,17 @@ public class ServiceLoginDAO {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	public void delete_User(final TrevelersDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					servicelogin_sqlSession.selectOne(namespace+".delete_User", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -15,7 +15,6 @@ public class LoginService {
 	private EmailSender emailSender;
 	public String login_chk(TrevelersDTO dto, HttpSession session) {
 		TrevelersDTO dtoresult=dao.login_chk(dto.getId(),dto.getPwd());
-
 		if (dtoresult!=null) {
 			if(dtoresult.getPwd().equals(dto.getPwd())) {
 				result=dto.getId();
@@ -34,7 +33,6 @@ public class LoginService {
 		return result;
 	}
 	// 아이디 찾기. 이메일로 아이디 가져오기
-	// 이메일 인증코드 보내기
 	public String send_pwd(TrevelersDTO dto) {
 		result=dao.get_pwd(dto);
 		if (result.equals("아이디없음")) {
@@ -75,5 +73,17 @@ public class LoginService {
 			}
 			return code;
 		}
+	}
+	// 회원 정보 수정
+	public void update_user(TrevelersDTO dto, HttpSession session) {
+		dao.update_user(dto);
+		TrevelersDTO dtoresult=dao.change_session_value(dto.getId());
+		session.setAttribute("loginUser", dtoresult);
+	}
+	// 비밀번호 변경 및 로그아웃
+	public String change_pwd_save(TrevelersDTO dto, HttpSession session) {
+		dao.change_pwd_save(dto);
+		session.removeAttribute("loginUser");
+		return null;
 	}
 }

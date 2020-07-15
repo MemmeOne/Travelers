@@ -177,8 +177,8 @@
 			    html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
 				html += "<br><label>사용할 수 없는 닉네임입니다. 다른 닉네임를 입력해주세요.</label>"
 				$("#input_nick").html(html)
-			    $('input[name=id]').val("")
-			    $('input[name=id]').focus();
+			    $('input[name=nick]').val("")
+			    $('input[name=nick]').focus();
 			}else {
 				var form = { usernick : usernick }
 				$.ajax({
@@ -219,7 +219,7 @@
 		var userpwd = $('input[name=userpwd]').val()
 		var usernick = $('input[name=usernick]').val()
 		var useremail = $('input[name=useremail]').val()
-		var usergender = $('input[name=gender]').val()
+		var usergender = $('input[name=gender]:checked').val()
 		var userbirth = $('input[name=birth]').val()
 		if(userid==null) {
 			alert("아이디를 확인해주세요.")
@@ -253,7 +253,7 @@
 						alert("회원가입 성공!");
 						location.href="login"
 					}else {
-						console.log("ㅅㅂ")
+						console.log("회원가입 실패")
 					}
 				},
 				error : function(request, status, error) {
@@ -338,19 +338,30 @@
 		<tr>
 			<th colspan="2">
 				<input type="button" value="회원가입" onclick="reg_chk()"> 
-				<input type="button" value="취소" onclick="location.href='controller/'">
+				<input type="button" value="취소" onclick="location.href='login'">
 			</th>
 		</tr>
 	</table>
 	<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
 	<script type="text/javascript">
+		var pwdchk=false
+		var pwdokchk=false
 		document.getElementById('pwd').onkeyup = function() {
 			var msg = '', val = this.value;
 			if (val.length >= 8 && val.length <= 16) {
-				msg = GetAjaxPW(val);
+				var idRegExp = /^[a-z0-9]{8,16}$/; // 비밀번호 유효성 검사
+			    if (!idRegExp.test($('input[name=pwd]').val())) {
+					msg = '유효하지 않는 형식의 비밀번호 입니다.'
+					pwdchk=false
+				}else {
+					pwdchk=true
+					msg = GetAjaxPW(val);
+				}
 			} else if (val.length > 16) {
+				pwdchk=false
 				msg = '비밀번호가 너무 깁니다.'
 			} else {
+				pwdchk=false
 				msg = '비밀번호가 너무 짧습니다.'
 			}
 			;
@@ -364,17 +375,16 @@
 		document.getElementById('pwdok').onkeyup = function() {
 			let html = ""
 			var msg = '', val = this.value;
-			if ($('input[name=pwd]').val() == $('input[name=pwdok]').val()) {
-				msg = '비밀번호가 서로 일치합니다.'
-				html = "비밀번호가 서로 일치합니다."
-				html += "<input type='hidden' value='"
-						+ $('input[name=pwdok]').val() + "' name='userpwd'>"
+			if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
+				if(pwdchk) {
+					html = "비밀번호가 서로 일치합니다."
+					html += "<input type='hidden' value='"
+							+ $('input[name=pwdok]').val() + "' name='userpwd'>"
+				}
 			} else {
 				html = GetAjaxPWok(val);
-			}
-			;
+			};
 			$("#pwokc").html(html)
-			//document.getElementById('pwokc').textContent = msg;
 		};
 
 		var GetAjaxPWok = function(val) {

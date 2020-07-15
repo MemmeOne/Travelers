@@ -149,10 +149,25 @@ public class ServiceLoginController {
 	public String mypage() {
 		return "service_login/mypage";
 	}
+	// 마이페이지 기능 사용전 본인확인을 위한 비밀번호 체크 페이지
+	@RequestMapping("chk_pwd")
+	public String chk_pwd() {
+		return "service_login/chk_pwd";
+	}
+	// 회원정보 수정 페이지
+	@RequestMapping("change_userinfo")
+	public String change_userinfo() {
+		return "service_login/change_userinfo";
+	}
 	// 회원정보 수정
-	@RequestMapping("chageUserInfo")
-	public String chageUserInfo() {
-		return "service_login/chageUserInfo";
+	@RequestMapping(value="update_user",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String update_user(TrevelersDTO dto, HttpSession session) throws Exception {
+		logingservice.update_user(dto,session);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString("");
+		return strJson;
 	}
 	// 회원탈퇴 페이지
 	@RequestMapping("withdrawal")
@@ -169,6 +184,18 @@ public class ServiceLoginController {
 		String strJson=mapper.writeValueAsString("회원가입");
 		return strJson;
 	}
-	
-	
+	// 비밀번호 수정 페이지
+	@RequestMapping("change_pwd")
+	public String change_pwd() {
+		return "service_login/change_pwd";
+	}
+	@RequestMapping(value="change_pwd_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String change_pwd_save(TrevelersDTO dto, HttpSession session) throws Exception {
+		String result = logingservice.change_pwd_save(dto,session);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(result);
+		return strJson;
+	}
 }

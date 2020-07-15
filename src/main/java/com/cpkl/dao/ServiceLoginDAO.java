@@ -157,4 +157,44 @@ public class ServiceLoginDAO {
 			e.printStackTrace();
 		}
 	}
+	// 정보 수정
+	public void update_user(final TrevelersDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					servicelogin_sqlSession.selectOne(namespace+".update_user", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 정보 수정 후 loginUser 값 다시 담기
+	public TrevelersDTO change_session_value(final String id) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					dto=servicelogin_sqlSession.selectOne(namespace+".login_chk", id);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	// 비밀번호 변경
+	public void change_pwd_save(final TrevelersDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					servicelogin_sqlSession.selectOne(namespace+".change_pwd_save", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

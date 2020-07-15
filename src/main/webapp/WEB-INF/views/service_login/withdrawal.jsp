@@ -45,9 +45,6 @@
 </head>
 <body>
 	<%@ include file="../defualt/header.jsp" %>
-	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-	<fmt:requestEncoding value="utf-8"/>
 	<form action="" class="form">
 		<h1>회원 탈퇴</h1>
 			회원 탈퇴 시 Trevelers 사이트 내에 저장된 모든 정보가 삭제되며, 이후 복구가 불가합니다.<br>

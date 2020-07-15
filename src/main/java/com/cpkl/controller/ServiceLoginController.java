@@ -35,6 +35,34 @@ public class ServiceLoginController {
 		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
+	// 아이디 찾기 페이지
+	@RequestMapping("find_id")
+	public String find_id() {
+		return "service_login/find_id";
+	}
+	@RequestMapping(value="get_id",method=RequestMethod.POST,
+		produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String get_id(@RequestParam(value="email") String useremail) throws Exception {
+		String result = logingservice.get_id(useremail);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(result);
+		return strJson;
+	}
+	// 비밀번호 찾기 페이지
+	@RequestMapping("find_pwd")
+	public String find_pwd() {
+		return "service_login/find_pwd";
+	}
+	@RequestMapping(value="send_pwd",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String send_pwd(TrevelersDTO dto) throws Exception {
+		String result = logingservice.send_pwd(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(result);
+		return strJson;
+	}
 	// 로그아웃
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {

@@ -37,7 +37,58 @@ public class ServiceLoginDAO {
 		}
 		return dto;
 	}
-	// 이메일 중복 확인
+	// 아이디 찾기. 이메일로 아이디 가져오기
+	public String get_id(final String useremail) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					dto=servicelogin_sqlSession.selectOne(namespace+".get_id", useremail);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (dto==null) {
+			result="아이디없음";
+		}else {
+			result=dto.getId();
+		}
+		return result;
+	}
+	// 아이디 찾기. 아이디와 이메일로 아이디 가져오기
+	public String get_pwd(final TrevelersDTO dto2) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					dto=servicelogin_sqlSession.selectOne(namespace+".get_pwd", dto2);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (dto==null) {
+			result="아이디없음";
+		}else {
+			result=dto.getId();
+		}
+		return result;
+	}
+	// 비밀번호 임시 비밀번호로 설정
+	public void update_pwd(final TrevelersDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					servicelogin_sqlSession.selectOne(namespace+".update_pwd", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 이메일 중복 체크
 	public TrevelersDTO email_chk(final String email) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -79,6 +130,7 @@ public class ServiceLoginDAO {
 		}
 		return dto;
 	}
+	// 회원가입 기능
 	public String insert_user(final TrevelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -92,6 +144,7 @@ public class ServiceLoginDAO {
 		}
 		return result;
 	}
+	// 회원탈퇴 기능
 	public void delete_User(final TrevelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {

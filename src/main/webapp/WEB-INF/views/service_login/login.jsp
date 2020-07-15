@@ -69,7 +69,7 @@
 		<!-- <input type="submit" value="로그인"> -->
 		<input type="button" value="로그인" onclick="validation()">
 		<input type="button" value="회원가입" onclick="location.href='reg'"><br>
-		<label id="warning"></label>
+		<a href="find_id">아이디 찾기</a> / <a href="find_pwd">비밀번호 찾기</a>
 	</form>
 <%@ include file="../defualt/footer.jsp" %>
 </body>

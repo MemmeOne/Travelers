@@ -274,7 +274,7 @@
 			<th>아이디</th>
 			<td>
 				5 ~ 20자의 영어 소문자와 숫자만 사용하세요.<br>
-				<input type="text" name="id">
+				<input type="text" name="id" placeholder="아이디">
 				<span id="input_id">
 					<input type="button" value="중복확인" onclick="id_chk()">
 				</span>
@@ -284,7 +284,7 @@
 			<th>비밀번호</th>
 			<td>
 				8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
-				<input type="password" name="pwd" id="pwd"> <input type="password" name="pwdok" id="pwdok"><br>
+				<input type="password" name="pwd" id="pwd" placeholder="비밀번호"> <input type="password" name="pwdok" id="pwdok" placeholder="비밀번호 확인"><br>
 				<span id="pwc"></span><br>
 				<span id="pwokc"></span>
 			</td>
@@ -292,7 +292,7 @@
 		<tr>
 			<th>닉네임</th>
 			<td>
-				닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.<br><input type="text" name="nick">
+				닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.<br><input type="text" name="nick" placeholder="닉네임">
 				<span id="input_nick">
 					<input type="button" value="중복확인" onclick="nick_chk()">
 				</span>
@@ -301,7 +301,7 @@
 		<tr>
 			<th>e-mail</th>
 			<td>
-				e-mail : <input type="text" name="email"> @ 
+				e-mail : <input type="text" name="email" placeholder="이메일"> @ 
 				<select name="address">
 					<option value="dreamwiz.com">dreamwiz.com</option>
 					<option value="empal.com">empal.com</option>

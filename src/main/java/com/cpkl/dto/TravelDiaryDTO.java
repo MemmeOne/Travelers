@@ -2,11 +2,15 @@ package com.cpkl.dto;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TravelDiaryDTO {
 	String nick;
 	String nation;
 	String city;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	Date startdate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	Date enddate;
 	String memo;
 	

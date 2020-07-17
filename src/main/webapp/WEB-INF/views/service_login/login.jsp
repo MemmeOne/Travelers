@@ -36,7 +36,7 @@
 					}
 				}else {
 					console.log("성공")
-					location.href="http://localhost:8895/controller/"
+					location.href="/Travelers/"
 				}
 			},
 			error : function(request, status, error) {

@@ -278,8 +278,8 @@
 		</tr>
 		<tr>
 			<th colspan="2">
-				<input type="button" value="회원가입" onclick="reg_chk()"> 
-				<input type="button" value="취소" onclick="location.href='http://localhost:8895/controller/'">
+				<input type="button" value="수정" onclick="reg_chk()"> 
+				<input type="button" value="취소" onclick="location.href='/Travelers/'">
 			</th>
 		</tr>
 	</table>

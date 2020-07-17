@@ -20,7 +20,7 @@
 				break;
 			default:
 				alert("잘못된 겅로입니다.\n메인페이지로 돌아갑니다.")
-				location.href = "http://localhost:8895/controller/"
+				location.href = "/Travelers/"
 				break;
 			}
 		} else {

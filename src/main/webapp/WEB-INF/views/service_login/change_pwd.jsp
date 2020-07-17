@@ -15,34 +15,36 @@
 	var pwdchk=false
 	var pwdokchk=false
 	function change_pwd_save() {
-		console.log(pwdchk)
-		console.log(pwdokchk)
-		if( !( pwdchk && pwdokchk ) ) {
-		    alert("유효하지 않은 비밀번호입니다.\n비밀번호를 확인해주세요.");
-		    $('input[name=pwd]').val("")
-		    $('input[name=pwdok]').val("")
-		    $('input[name=pwd]').focus();
-		}else {
-			var form = { id : '${loginUser.id}', pwd : $('input[name=pwd]').val() }
-			let html=""
-			$.ajax({
-				url : "change_pwd_save",
-				type : "POST",
-				data : form,
-				success : function(result) {
-					alert("비밀번호 변경에 성공하였습니다.\n다시 로그인해주시길 바랍니다.")
-					location.href="http://localhost:8895/controller/"
-				},
-				error : function(request, status, error) {
-					console.log("실패")
-					alert("code:" + request.status + "\n" + "message:"
-							+ request.responseText + "\n" + "error:" + error);
-					alert("비밀번호 변경에 실페하였습니다.\n다시 시도해주세요.")
-					$('input[name=pwd]').val("")
-				    $('input[name=pwdok]').val("")
-				    $('input[name=pwd]').focus();
-				}
-			})
+		if( $('input[name=pwd]').val()=='${loginUser.pwd}') {
+			alert("기존 비밀번호 입니다.\n다른 비밀번호를 입력하세요.");
+		} else {
+			if( !( pwdchk && pwdokchk ) ) {
+			    alert("유효하지 않은 비밀번호입니다.\n비밀번호를 확인해주세요.");
+			    $('input[name=pwd]').val("")
+			    $('input[name=pwdok]').val("")
+			    $('input[name=pwd]').focus();
+			}else {
+				var form = { id : '${loginUser.id}', pwd : $('input[name=pwd]').val() }
+				let html=""
+				$.ajax({
+					url : "change_pwd_save",
+					type : "POST",
+					data : form,
+					success : function(result) {
+						alert("비밀번호 변경에 성공하였습니다.\n다시 로그인해주시길 바랍니다.")
+						location.href="/Travelers/"
+					},
+					error : function(request, status, error) {
+						console.log("실패")
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("비밀번호 변경에 실페하였습니다.\n다시 시도해주세요.")
+						$('input[name=pwd]').val("")
+					    $('input[name=pwdok]').val("")
+					    $('input[name=pwd]').focus();
+					}
+				})
+			}
 		}
 	}
 </script>

@@ -25,16 +25,20 @@
 				<a href="logout">로그아웃</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="mypage">마이페이지</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="login">메이트 찾기</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="info_list?page=1">정보게시판</a>
+				<a href="info_list?page=1">정보게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="free_board_list?page=1">자유게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="reviewboard?page=1">리뷰게시판</a>
 			</c:when>
 			<c:otherwise>
 				<a href="login">로그인</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="reg_tos">회원가입</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="login">메이트 찾기</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="info_list?page=1">정보게시판</a>
+				<a href="info_list?page=1">정보게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="free_board_list?page=1">자유게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="reviewboard?page=1">리뷰게시판</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<div id="travelers"><b><a href="/controller/">TRAVELERS</a></b></div>
+	<div id="travelers"><b><a href="/Travelers/">TRAVELERS</a></b></div>
 </body>
 </html>

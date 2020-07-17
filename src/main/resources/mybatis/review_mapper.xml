@@ -2,11 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<<<<<<< HEAD
-<mapper namespace="com.care.mybatis.myMapper">
-
-</mapper>
-=======
 <mapper namespace="Mapper">
 	<!-- 게시글 불러오기 -->
 	<select id="reviewboard" resultType="dto">
@@ -92,7 +87,7 @@
 	<select id="totalcomment" resultType="cn">
 		select A.*from(select id, (count(*))count from comments group by id)A where id=#{id}
 	</select>
-
+	
 	<select id="nation" resultType="String">
 		select*from nation
 	</select>
@@ -104,6 +99,4 @@
 	<select id="travelDiaryList" resultType="td">
 		select*from traveldiary where nick=#{nick}
 	</select>
-	
 </mapper>
->>>>>>> origin/js

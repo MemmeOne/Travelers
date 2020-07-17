@@ -1,8 +1,11 @@
 package com.cpkl.dto;
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TrevelersDTO {
 	private String id, pwd, nick, email, gender;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	private Date birth;
 	public String getId() {
 		return id;

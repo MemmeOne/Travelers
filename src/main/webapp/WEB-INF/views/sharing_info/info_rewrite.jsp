@@ -5,16 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>정보 공유 글 작성 중</title>
-	<!-- script -->
-	<!-- 직접 경로에 넣었을때 <script src = "webapp/resources/ckeditor/ckeditor.js"></script> -->
-	<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script> <!-- ckeditor -->
-<!--<script src="//cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>
- 	<script src="//cdn.ckeditor.com/4.14.1/basic/ckeditor.js"></script>
- -->
+<script src="resources/jquery-3.5.1.min.js"></script>
+<script src="resources/smarteditor2/photo-uploader/attach_photo.js" ></script>
+<script type="text/javascript" src="resources/smarteditor/js/HuskyEZCreator.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="utf-8">
+		sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
+</script>
 <style type="text/css">
 	#body { margin-top: 350px; display: flex; justify-content: center; align-items: center; }
 	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; }
+	table { background: white; padding: 30px; width: 800px; }
 </style>
 </head>
 <body>
@@ -25,7 +25,7 @@
 	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<fmt:requestEncoding value="utf-8"/>
 	<div id="body">
-		<form action="info_modify">
+		<form action="info_modify" id="frm">
 			<input type="hidden" value="${info_post.num }" name="num">
 			<table border="1">
 				<tr>
@@ -58,11 +58,45 @@
 					<th>내용</th>
 					<td>
 						<textarea id = "content" name = "content" >${info_post.content }</textarea>
-						<script>CKEDITOR.replace('content');</script>
+						<script type="text/javascript">
+							$(function() {
+								//전역변수선언
+							    var editor_object = [];
+							    var ctx = getContextPath();
+				
+							    nhn.husky.EZCreator.createInIFrame({
+							        oAppRef: editor_object,
+							        elPlaceHolder: "content",
+							        sSkinURI: ctx + "/resources/smarteditor/SmartEditor2Skin.html",
+							        htParams : {
+							            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+							            bUseToolbar : true,             
+							            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+							            bUseVerticalResizer : true,     
+							            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+							            bUseModeChanger : true,
+							            fOnBeforeUnload : function(){
+							                
+							            }
+							        }
+							    });
+							    
+							  //전송버튼 클릭이벤트
+							    $("#contentRegBtn").click(function(){
+							        //id가 smarteditor인 textarea에 에디터에서 대입
+							        editor_object.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+							        $("#frm").submit();
+							    });
+							    
+							    function getContextPath() {
+							    	return sessionStorage.getItem("contextpath");
+							    }
+							});
+							</script>
 					</td>
 				</tr>
 				<tr>
-					<th colspan="2"><input type="submit" value="수정완료"></th>
+					<th colspan="2"><input type="button" value="글 작성" id="contentRegBtn"></th>
 				</tr>
 			</table>
 			<hr>

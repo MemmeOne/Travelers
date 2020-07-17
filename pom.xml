@@ -172,23 +172,12 @@
 		    <version>2.2</version>
 		</dependency>
 		
-<<<<<<< HEAD
- 		<dependency>
-=======
-		<!-- json -->
-		<dependency>
->>>>>>> origin/mh
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.5</version>
-		</dependency>
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
-<<<<<<< HEAD
 		<!-- 이미지 업로드 -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -200,8 +189,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-=======
-		
 		<!-- Java Mail API -->
 		 <dependency>
 		    <groupId>org.springframework</groupId>
@@ -215,7 +202,6 @@
 		    <version>1.4.7</version>
 		</dependency>
 
->>>>>>> origin/mh
 	</dependencies>
     <build>
         <plugins>

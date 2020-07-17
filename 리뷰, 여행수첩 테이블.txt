@@ -1,0 +1,40 @@
+create table board(
+id number(4) primary key,
+name varchar2(20),
+title varchar2(100),
+content varchar2(300),
+savedate date default sysdate,
+hit number(4) default 0,
+idgroup number(4),
+step number(4),
+indent number(4)
+);
+
+create sequence board_seq;
+
+create table comments(
+id number(4),
+num number(4),
+numgroup number(4),
+indent number(4),
+cname varchar2(20),
+comments varchar2(100),
+savedate date default sysdate,
+constraint cid foreign key(id) references board(id) on delete cascade
+);
+
+
+create sequence comments_seq;
+
+create table nation(
+nation varchar2(30)
+);
+
+create table traveldiary(
+nick varchar2(30),
+nation varchar2(30),
+city varchar2(30),
+startdate date,
+enddate date,
+memo varchar2(30)
+);

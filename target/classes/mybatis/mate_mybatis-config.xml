@@ -5,7 +5,8 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="logindto" type="com.cpkl.dto.TrevelersDTO"/>
+		<typeAlias alias="infodto" type="com.cpkl.dto.InfoDTO"/>
+		<typeAlias alias="commentdto" type="com.cpkl.dto.InfoCommentDTO"/>
 		<typeAlias alias="map" type="java.util.Map"/>
 	</typeAliases>
 </configuration>

@@ -26,7 +26,7 @@
 				success : function(result) {
 					console.log("성공")
 					alert("회원 탈퇴를 했습니다.")
-					location.href="http://localhost:8895/controller"
+					location.href="/Travelers/"
 				},
 				error : function(request, status, error) {
 					console.log("실패")

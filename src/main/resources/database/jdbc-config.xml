@@ -3,26 +3,29 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean name="review_dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	   <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />  <!-- 자기DB아이피 -->
-	   <property name="username" value="spring" />
+	   <!-- 
+	   <property name="url" value="jdbc:oracle:thin:@192.168.58.5:1521:xe" />
+	    -->
+	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+	   <property name="username" value="java" />
 	   <property name="password" value="1234" />
 	</bean>
 	
-	<bean id="sqlSessionFactory"
+	<bean id="review_sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="review_dataSource" />
 		<property name="configLocation"
 			value="classpath:mybatis/mybatis-config.xml" /> <!-- 자기가 만든파일 이름으로 -->
 		<property name="mapperLocations"
 			value="classpath:mybatis/mapper.xml" /> <!-- 자기가 만든파일 이름으로 -->
 	</bean>
-	<bean id="sqlSession"
+	<bean id="review_sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
 		destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory"
-			ref="sqlSessionFactory"></constructor-arg>
+			ref="review_sqlSessionFactory"></constructor-arg>
 	</bean>  
-
+		
 </beans>

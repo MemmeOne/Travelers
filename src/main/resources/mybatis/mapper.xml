@@ -2,6 +2,108 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<<<<<<< HEAD
 <mapper namespace="com.care.mybatis.myMapper">
 
 </mapper>
+=======
+<mapper namespace="Mapper">
+	<!-- 게시글 불러오기 -->
+	<select id="reviewboard" resultType="dto">
+		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+	</select>
+	
+	<!-- 게시글수 카운트 -->
+	<select id="totalcontent" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<!-- 선택 게시글 정보 불러오기 -->
+	<select id="contentview" resultType="dto">
+		select*from board where id=#{id}
+	</select>
+	
+	<!-- 선택 게시글 조회수 올리기 -->
+	<update id="uphit">
+		update board set hit=hit+1 where id=#{id}
+	</update>
+	
+	<!-- 선택 게시글 삭제 -->
+	<delete id="delete">
+		delete from board where id=#{id}
+	</delete>
+	
+	<!-- 선택 게시글 수정 -->
+	<update id="modify">
+		update board set title=#{title}, content=#{content} where id=#{id}
+	</update>
+	
+	<!-- 게시글 등록 -->
+	<insert id="contentreg">
+		insert into board(id,name,title,content,hit,idgroup,step,indent) values(board_seq.nextval,#{name},#{title},#{content},0,board_seq.currval,0,0)
+	</insert>
+	
+	<!-- 댓글 불러오기 -->
+	<select id="comments" resultType="cdto">
+		select B.*from(select rownum rn, A.*from(select*from comments where id=#{id} order by numgroup asc, indent asc, num asc)A)B where rn between 1 and #{count}
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="comment">
+		insert into comments(id,num,numgroup,indent,cname,comments) values(#{id},comments_seq.nextval,comments_seq.currval,0,#{cname},#{comments})
+	</insert>
+	
+	<!-- 게시글 검색 -->
+	<select id="search" resultType="dto">
+		select C.*from(select rownum rn, B.*from(select A.*from(select*from board where ${searchtype} like '%${search}%')A  order by idgroup desc, step asc)B)C where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+	</select>
+	
+	<!-- 검색 게시글 수 -->
+	<select id="totalsearch" resultType="int">
+		select count(*) from board where ${searchtype} like '%${search}%'
+	</select>
+	
+	<!-- 댓글수 id별 -->
+	<select id="commentcount" resultType="cn">
+		select id, (count(*))count from comments group by id
+	</select>
+	
+	<!-- 대댓글 등록 -->
+	<insert id="reply">
+		insert into comments(id,num,numgroup,indent,cname,comments) values(#{id},comments_seq.nextval,#{numgroup},1,#{cname},#{comments})
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="commentmodify">
+		update comments set comments=#{comments} where num=#{num}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="commentdelete">
+		delete from comments where numgroup=#{num}
+	</delete>
+	
+	<!-- 대댓글 삭제 -->
+	<delete id="commentindentdelete">
+		delete from comments where num=#{num}
+	</delete>
+	
+	<!-- id의 댓글수  -->
+	<select id="totalcomment" resultType="cn">
+		select A.*from(select id, (count(*))count from comments group by id)A where id=#{id}
+	</select>
+
+	<select id="nation" resultType="String">
+		select*from nation
+	</select>
+
+	<insert id="travelDiaryReg" parameterType="td">
+		insert into traveldiary values(#{nick}, #{nation}, #{city}, #{startdate}, #{enddate}, #{memo})
+	</insert>
+	
+	<select id="travelDiaryList" resultType="td">
+		select*from traveldiary where nick=#{nick}
+	</select>
+	
+</mapper>
+>>>>>>> origin/js

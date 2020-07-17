@@ -5,6 +5,13 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
+<<<<<<< HEAD
 		<!--  <typeAlias alias="dto" type="com.care.dto.TestDTO"/>-->
+=======
+		<typeAlias alias="dto" type="com.cpkl.dto.ReviewBoardDTO"/>
+		<typeAlias alias="cdto" type="com.cpkl.dto.ReviewBoardCommentsDTO"/>
+		<typeAlias alias="cn" type="com.cpkl.dto.CommentNumber"/>
+		<typeAlias alias="td" type="com.cpkl.dto.TravelDiaryDTO"/>
+>>>>>>> origin/js
 	</typeAliases>
 </configuration>

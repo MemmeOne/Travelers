@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="//cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>
 <title>free_modify_view</title>
 </head>
 <body>
@@ -27,7 +26,6 @@
         <td>내용</td>
         <td>
         <textarea name="content" id = "content" rows="10" cols="50">${lists.content }</textarea>
-        <script>CKEDITOR.replace('content')</script>
         </td>
         </tr>
         <tr>

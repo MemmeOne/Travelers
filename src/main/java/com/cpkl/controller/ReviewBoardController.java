@@ -50,12 +50,12 @@ public class ReviewBoardController {
 		session.setAttribute("user", user);
 		Date cdate = new Date();
 		session.setAttribute("cdate", cdate);
-		return "reviewboard";
+		return "review_board/reviewboard";
 	}
 	
 	@RequestMapping("contentwrite")
 	public String contentWrite() {
-		return "contentwrite";
+		return "review_board/contentwrite";
 	}
 	
 	@RequestMapping("contentreg")
@@ -67,7 +67,7 @@ public class ReviewBoardController {
 	@RequestMapping("contentview")
 	public String contentView(@RequestParam int id, Model model) {
 		rbs.contentView(id, model);
-		return "contentview";
+		return "review_board/contentview";
 	}
 	
 	@RequestMapping("delete")
@@ -79,7 +79,7 @@ public class ReviewBoardController {
 	@RequestMapping("contentmodify")
 	public String contentModify(@RequestParam int id, Model model) {
 		rbs.contentView(id, model);
-		return "contentmodify";
+		return "review_board/contentmodify";
 	}
 	
 	@RequestMapping("modify")

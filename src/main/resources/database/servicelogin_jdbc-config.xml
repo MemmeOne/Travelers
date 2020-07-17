@@ -15,9 +15,9 @@
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="servicelogin_dataSource" />
 		<property name="configLocation"
-			value="classpath:servicelogin_mybatis/mybatis-config.xml" />
+			value="classpath:mybatis/servicelogin_mybatis-config.xml" />
 		<property name="mapperLocations"
-			value="classpath:servicelogin_mybatis/mapper.xml" />
+			value="classpath:mybatis/servicelogin_mapper.xml" />
 	</bean>
 	<bean id="servicelogin_sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"

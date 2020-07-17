@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean name="free_dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
    <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
    <property name="username" value="spring" />
@@ -12,11 +12,11 @@
 
 <bean id="free_sqlSessionFactory"
 	class="org.mybatis.spring.SqlSessionFactoryBean">
-	<property name="dataSource" ref="free_dataSource" />
+	<property name="dataSource" ref="dataSource" />
 	<property name="configLocation"
-		value="classpath:free_mybatis/free_mybatis-config.xml" />
+		value="classpath:mybatis/free_mybatis-config.xml" />
 	<property name="mapperLocations"
-		value="classpath:free_mybatis/free_mapper.xml" />
+		value="classpath:mybatis/free_mapper.xml" />
 </bean>
 <bean id="free_sqlSession"
 	class="org.mybatis.spring.SqlSessionTemplate"

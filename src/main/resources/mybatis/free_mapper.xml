@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cpkl.mybatis.myMapper">
+	<select id="listAll" resultType="dto">
+		select * from free_board
+	</select>
+	<select id="list" resultType="dto">
+	    select * from free_board where num=#{num}
+	</select>
+	<select id="freeboard" resultType="dto">
+		select B.* from(select rownum rn, A.* from(select * from free_board order by num desc)A)B
+		where rn between #{str} and #{end} and step=0
+    </select>
+    <select id="totPage" resultType="int">
+    select count(*) from free_board where step=0
+    </select>
+    <select id="search" resultType="dto" parameterType="map">
+      <!--   select B.* from(select rownum rn, A.* from(select * from free_board where step=0 and ${tag} like '%${word}%')A)B
+		where rn between #{str} and #{end} order by num desc-->
+		select C.* from(select rownum rn, B.* from(select A.* from (select*from free_board where step=0 and ${tag} like '%${word}%')A) B)C
+		where rn between #{str} and #{end} order by num desc
+    </select>
+    <select id="totPageSearch" resultType="int" parameterType="map">
+    select count(*) from free_board where ${tag} like '%${word}%' and step=0
+    </select>
+	<insert id="savedata"> 
+		insert into free_board (num, nick, title, content, numgroup, step,indent) 
+		values(free_board_SEQ.NEXTVAL, #{nick}, #{title}, #{content},
+		    free_board_SEQ.currval, 0, 0)
+	</insert>
+	<update id="updatedata" parameterType="dto">
+	   update free_board set title=#{title}, content=#{content} where num=#{num}
+	</update>
+	<update id="uphit">
+	   update free_board set hit=hit+1 where num=#{num}
+	</update>
+	<delete id="delete">
+		delete from free_board where num=#{num}
+	</delete>
+	<!-- 댓글 전체 목록 가져오기 -->
+	<select id="comment_list" resultType="Commentdto">
+		select * from free_board_comment where numgroup=#{numgroup}
+		order by commentgroup asc, cnum asc
+	</select>
+	<!-- 댓글 저장 기능 -->
+	<insert id="comment_save" parameterType="Commentdto">
+		insert into free_board_comment(cnum,numgroup,commentgroup,nick,content,step)
+		values(free_board_comment_seq.nextval, #{numgroup}, free_board_comment_seq.currval, #{nick}, #{content}, #{step})
+	</insert>
+	<!-- 대댓글 저장 기능 -->
+	<insert id="comment_reply_save" parameterType="Commentdto">
+		insert into free_board_comment(cnum,numgroup,commentgroup,nick,content,step)
+		values(free_board_comment_seq.nextval,#{numgroup},#{commentgroup},#{nick},#{content},#{step})
+	</insert>
+	<!-- 원글 - 댓글 정렬하는 기능 -->
+	<update id="replyShape">
+		update free_board_comment set step=step+1 where numgroup=#{numgroup} and step > #{step}
+	</update>
+	<!-- 댓글 수정 기능 -->
+	<update id="comment_modify" parameterType="Commentdto">
+		update free_board_comment set content=#{content} where cnum=#{cnum}
+	</update>
+	<!-- 댓글 삭제 기능 -->
+	<delete id="comment_delete" parameterType="Commentdto">
+		delete from free_board_comment where cnum=#{cnum}
+	</delete>
+</mapper>

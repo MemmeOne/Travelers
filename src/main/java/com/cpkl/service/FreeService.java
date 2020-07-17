@@ -33,6 +33,7 @@ public class FreeService {
 	public void free_content_view(Model model,int num) {
 		dao.uphit(num);
 	   model.addAttribute("lists",dao.free_content_view(num));
+	   model.addAttribute("comment_list",dao.comment_list(num));
 	}
 	public void free_board_delete(Model model,int num) {
 	   dao.free_board_delete(num);

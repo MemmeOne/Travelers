@@ -22,7 +22,10 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.cpkl.*" />
-	
-	
-	
+	<!-- <resources location="/WEB-INF/views/ckeditor/" 
+    mapping="/ckeditor/**"></resources>-->
+   
+   <!-- ck에디터 파일 업로드 경로 -->
+   <resources mapping="/ckUpload/**" location="/resources/ckUpload/" /> 
+   
 </beans:beans>

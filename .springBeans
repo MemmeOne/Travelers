@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
-		<config>src/main/resources/free_database/jdbc-config.xml</config>
+		<config>src/main/resources/free_database/free_jdbc-config.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/database/jdbc-config.xml</config>

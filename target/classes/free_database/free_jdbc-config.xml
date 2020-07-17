@@ -14,9 +14,9 @@
 	class="org.mybatis.spring.SqlSessionFactoryBean">
 	<property name="dataSource" ref="free_dataSource" />
 	<property name="configLocation"
-		value="classpath:free_mybatis/mybatis-config.xml" />
+		value="classpath:free_mybatis/free_mybatis-config.xml" />
 	<property name="mapperLocations"
-		value="classpath:free_mybatis/mapper.xml" />
+		value="classpath:free_mybatis/free_mapper.xml" />
 </bean>
 <bean id="free_sqlSession"
 	class="org.mybatis.spring.SqlSessionTemplate"

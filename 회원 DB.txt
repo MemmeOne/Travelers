@@ -1,0 +1,9 @@
+create table Travelers (
+id varchar2(30) primary key,
+pwd varchar2(30) not null,
+nick varchar2(30) not null,
+email varchar2(50) not null,
+gender varchar2(30) not null,
+birth number not null
+);
+insert into Travelers(id,pwd,nick,email,gender,age) values('admin','admin','관리자','travelerscpkl@gmail.com','관리자','1990/7/10');

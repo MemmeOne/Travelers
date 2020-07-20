@@ -12,34 +12,57 @@
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
+	function chk_pwd() {
+		var id = '${loginUser.id}'
+		var pwd = $('input[name=pwd]').val()
+		var form = {
+			id : id,
+			pwd : pwd
+		}
+		$.ajax({
+			url : "chk_dbpwd",
+			type : "POST",
+			data : form,
+			success : function(result) {
+				if (result == "비밀번호가 틀렸습니다!") {
+					alert("비밀번호가 틀립니다.\n다시 입력해주세요.")
+					$('input[name=pwd]').val("")
+					$('input[name=pwd]').focus
+				} else {
+					console.log("성공")
+					delete_User()
+				}
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		})
+	}
 	function delete_User() {
 		var id = '${loginUser.id}'
 		var pwd = '${loginUser.pwd}'
 		var pwdok = $('input[name=pwdok]').val()
 		let html = ""
-		if(pwd==pwdok) {
-			var form = { id : id }
-			$.ajax({
-				url : "delete_User",
-				type : "POST",
-				data : form,
-				success : function(result) {
-					console.log("성공")
-					alert("회원 탈퇴를 했습니다.")
-					location.href="/Travelers/"
-				},
-				error : function(request, status, error) {
-					console.log("실패")
-					alert("code:" + request.status + "\n" + "message:"
-							+ request.responseText + "\n" + "error:"
-							+ error);
-				}
-			})
-		}else {
-			alert("비밀번호가 틀립니다.")
-			$('input[name=pwdok]').val("")
-			$('input[name=pwdok]').focus
+		var form = {
+			id : id
 		}
+		$.ajax({
+			url : "delete_User",
+			type : "POST",
+			data : form,
+			success : function(result) {
+				console.log("성공")
+				alert("회원 탈퇴를 했습니다.")
+				location.href = "/Travelers/"
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		})
 	}
 </script>
 </head>

@@ -24,7 +24,7 @@ public class ServiceLoginDAO {
 		this.transactionTemplate = transactionTemplate;
 	}
 	// 로그인 정보 가져오기
-	public TrevelersDTO login_chk(final String id, String pwd) {
+	public TrevelersDTO login_chk(final String id) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override

@@ -14,6 +14,7 @@
 			classpath:database/info_jdbc-config.xml
 			classpath:database/servicelogin_jdbc-config.xml
 			classpath:email-config.xml
+			classpath:spring-security.xml
 		</param-value>
 	</context-param>
 	

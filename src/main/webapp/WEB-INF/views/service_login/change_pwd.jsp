@@ -15,24 +15,46 @@
 	var pwdchk=false
 	var pwdokchk=false
 	function change_pwd_save() {
-		if( $('input[name=pwd]').val()=='${loginUser.pwd}') {
-			alert("기존 비밀번호 입니다.\n다른 비밀번호를 입력하세요.");
+		var id = '${loginUser.id}';
+		var pwd = $('input[name=pwd]').val()
+		var pwdok = $('input[name=pwdok]').val()
+		var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
+		var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		if (false === reg.test(pwd)) {
+			console.log(pwd)
+			alert('비밀번호는 8자 이상 20자 이하여야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.');
+		} else if (/(\w)\1\1\1/.test(pwd)) {
+			alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+			return false;
+		} else if (pwd.search(id) > -1) {
+			alert("비밀번호에 아이디가 포함되었습니다.");
+			return false;
+		} else if (pwd.search(/\s/) != -1) {
+			alert("비밀번호는 공백 없이 입력해주세요.");
+			return false;
+		} else if (hangulcheck.test(pwd)) {
+			alert("비밀번호에 한글을 사용 할 수 없습니다.");
 		} else {
-			if( !( pwdchk && pwdokchk ) ) {
-			    alert("유효하지 않은 비밀번호입니다.\n비밀번호를 확인해주세요.");
+			console.log("통과");
+			if( !( pwdokchk ) ) {
+			    alert("비밀번호가 서로 다릅니다.\n비밀번호를 확인해주세요.");
 			    $('input[name=pwd]').val("")
 			    $('input[name=pwdok]').val("")
 			    $('input[name=pwd]').focus();
 			}else {
-				var form = { id : '${loginUser.id}', pwd : $('input[name=pwd]').val() }
+				var form = { id : id, pwd : pwd }
 				let html=""
 				$.ajax({
 					url : "change_pwd_save",
 					type : "POST",
 					data : form,
 					success : function(result) {
-						alert("비밀번호 변경에 성공하였습니다.\n다시 로그인해주시길 바랍니다.")
-						location.href="/Travelers/"
+						if (result=='비밀번호를 변경했습니다.') {
+							alert("비밀번호 변경에 성공하였습니다.\n다시 로그인해주시길 바랍니다.")
+							location.href="/Travelers/"
+						}else {
+							alert(result)
+						}
 					},
 					error : function(request, status, error) {
 						console.log("실패")
@@ -61,42 +83,15 @@
 	</form>
 	<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
 	<script type="text/javascript">
-		document.getElementById('pwd').onkeyup = function() {
-			var msg = '', val = this.value;
-			if (val.length >= 8 && val.length <= 16) {
-				var idRegExp = /^[a-z0-9]{8,16}$/; // 비밀번호 유효성 검사
-			    if (!idRegExp.test($('input[name=pwd]').val())) {
-					msg = '유효하지 않는 형식의 비밀번호 입니다.'
-					pwdchk=false
-				}else {
-					pwdchk=true
-					msg = GetAjaxPW(val);
-				}
-			} else if (val.length > 16) {
-				pwdchk=false
-				msg = '비밀번호가 너무 깁니다.'
-			} else {
-				pwdchk=false
-				msg = '비밀번호가 너무 짧습니다.'
-			}
-			;
-			document.getElementById('pwc').textContent = msg;
-		};
-
-		var GetAjaxPW = function(val) {
-			// ajax func....
-			return val + ' 사용 가능한 비밀번호입니다.'
-		}
 		document.getElementById('pwdok').onkeyup = function() {
 			let html = ""
 			var msg = '', val = this.value;
 			if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
-				if(pwdchk) {
-					pwdokchk=true
-					html = "비밀번호가 서로 일치합니다."
-					html += "<input type='hidden' value='"
-							+ $('input[name=pwdok]').val() + "' name='userpwd'>"
-				}
+				pwdokchk = true
+				html = "비밀번호가 서로 일치합니다."
+				html += "<input type='hidden' value='"
+						+ $('input[name=pwdok]').val()
+						+ "' name='userpwd'>"
 			} else {
 				html = GetAjaxPWok(val);
 			};

@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-<<<<<<< HEAD
-	<pluginVersion><![CDATA[3.9.13.202005241057-CI-B2488]]></pluginVersion>
-=======
 	<pluginVersion><![CDATA[3.9.13.202006180736-RELEASE]]></pluginVersion>
->>>>>>> origin/mh
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
-	<enableImports><![CDATA[true]]></enableImports>
+	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-<<<<<<< HEAD
-		<config>src/main/resources/database/free_jdbc-config.xml</config>
+		<config>src/main/resources/spring-security.xml</config>
 	</configs>
 	<autoconfigs>
-		<config>src/main/resources/database/jdbc-config.xml</config>
-		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
-		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
-=======
-		<config>src/main/resources/email-config.xml</config>
+		<config>src/main/resources/database/servicelogin_jdbc-config.xml</config>
 		<config>src/main/resources/database/info_jdbc-config.xml</config>
-	</configs>
-	<autoconfigs>
->>>>>>> origin/mh
+		<config>src/main/resources/database/free_jdbc-config.xml</config>
+		<config>src/main/resources/database/review_jdbc-config.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/resources/email-config.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

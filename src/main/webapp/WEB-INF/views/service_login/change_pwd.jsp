@@ -73,36 +73,49 @@
 </head>
 <body>
 	<%@ include file="../defualt/header.jsp" %>
-	<form action="" class="form">
-		<h1>새로운 비밀번호를 입력하세요.</h1>
-		8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
-		<input type="password" name="pwd" id="pwd" placeholder="비밀번호"> <input type="password" name="pwdok" id="pwdok" placeholder="비밀번호 확인"><br>
-		<span id="pwc"></span><br>
-		<span id="pwokc"></span><br>
-		<input type="button" value="확인" onclick="change_pwd_save()">
-	</form>
-	<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
-	<script type="text/javascript">
-		document.getElementById('pwdok').onkeyup = function() {
-			let html = ""
-			var msg = '', val = this.value;
-			if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
-				pwdokchk = true
-				html = "비밀번호가 서로 일치합니다."
-				html += "<input type='hidden' value='"
-						+ $('input[name=pwdok]').val()
-						+ "' name='userpwd'>"
-			} else {
-				html = GetAjaxPWok(val);
-			};
-			$("#pwokc").html(html)
-		};
-
-		var GetAjaxPWok = function(val) {
-			// ajax func....
-			return "비밀번호가 일치하지 않습니다."
-		}
-	</script>
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Main -->
+	<article id="main">
+		<section class="wrapper style5">
+			<div class="inner">
+				<h3>새로운 비밀번호를 입력하세요.</h3>
+				<form action="" class="form">
+					8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
+					<input type="password" name="pwd" id="pwd" placeholder="비밀번호"> <input type="password" name="pwdok" id="pwdok" placeholder="비밀번호 확인"><br>
+					<span id="pwc"></span><br>
+					<span id="pwokc"></span><br>
+					<input type="button" value="확인" onclick="change_pwd_save()">
+				</form>
+				<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
+				<script type="text/javascript">
+					document.getElementById('pwdok').onkeyup = function() {
+						let html = ""
+						var msg = '', val = this.value;
+						if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
+							pwdokchk = true
+							html = "비밀번호가 서로 일치합니다."
+							html += "<input type='hidden' value='"
+									+ $('input[name=pwdok]').val()
+									+ "' name='userpwd'>"
+						} else {
+							html = GetAjaxPWok(val);
+						};
+						$("#pwokc").html(html)
+					};
+			
+					var GetAjaxPWok = function(val) {
+						// ajax func....
+						return "비밀번호가 일치하지 않습니다."
+					}
+				</script>
+	         <hr />
+	         <p>내용</p>
+	         <hr />
+	         <h4>대충 부제</a></h4>
+	         <p></p>
+	      </div>
+	   </section>
+	</article>
 	<%@ include file="../defualt/footer.jsp" %>
 </body>
 </html>

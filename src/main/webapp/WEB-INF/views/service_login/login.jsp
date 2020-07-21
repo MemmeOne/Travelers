@@ -5,11 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
-<style type="text/css">
-	.form { margin-top: 350px;}
-	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; }
-</style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	function login_chk() {
@@ -62,15 +57,31 @@
 
 </head>
 <body>
-<%@ include file="../defualt/header.jsp" %>
-	<form action="loginup_chk" method="post" class="form">
-		<input type="text" placeholder="아이디를 입력하세요" name="id"><br>
-		<input type="password" placeholder="비밀번호를 입력하세요" name="pwd"><br>
-		<!-- <input type="submit" value="로그인"> -->
-		<input type="button" value="로그인" onclick="validation()">
-		<input type="button" value="회원가입" onclick="location.href='reg'"><br>
-		<a href="find_id">아이디 찾기</a> / <a href="find_pwd">비밀번호 찾기</a>
-	</form>
-<%@ include file="../defualt/footer.jsp" %>
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Main -->
+	<article id="main">
+		<section class="wrapper style5">
+			<div class="inner" style="height: 600px;">
+				<div>
+				<h3>로그인</h3>
+				<hr />
+				<p>
+				<form action="loginup_chk" method="post" class="form">
+					<input type="text" placeholder="아이디를 입력하세요" name="id"><br>
+					<input type="password" placeholder="비밀번호를 입력하세요" name="pwd"><br>
+					<input type="button" value="로그인" onclick="validation()"> <input
+						type="button" value="회원가입" onclick="location.href='reg'"><br><br>
+				</form>
+				</p>
+				</div>
+				<hr />
+				<h4>
+					<a href="find_id">아이디 찾기</a> / <a href="find_pwd">비밀번호 찾기</a>
+				</h4>
+				<p></p>
+			</div>
+		</section>
+	</article>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

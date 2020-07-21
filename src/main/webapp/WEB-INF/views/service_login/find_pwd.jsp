@@ -48,29 +48,53 @@
 </script>
 </head>
 <body>
-	<h1>비밀번호 찾기</h1>
-	<div id="find_pwd">
-		아이디와 이메일을 입력하세요.<br>
-		<input type="text" name="id" placeholder="아이디"><br>
-		<input type="text" name="email" placeholder="이메일"> @
-		<select name="address">
-			<option value="dreamwiz.com">dreamwiz.com</option>
-			<option value="empal.com">empal.com</option>
-			<option value="gmail.com">gmail.com</option>
-			<option value="hanmail.net">hanmail.net</option>
-			<option value="hanmir.com">hanmir.com</option>
-			<option value="hitel.net">hitel.net</option>
-			<option value="hotmail.com">hotmail.com</option>
-			<option value="kebi.com">kebi.com</option>
-			<option value="korea.com">korea.com</option>
-			<option value="nate.com">nate.com</option>
-			<option value="naver.com" selected="selected">naver.com</option>
-			<option value="orgio.net">orgio.net</option>
-			<option value="yahoo.co.kr">yahoo.co.kr</option>
-			<option value="yahoo.com">yahoo.com</option>
-		</select> <input type="button" onclick="your_pwd()" value="비밀번호 찾기"><br>
-		<span id="none_id"></span><br>
-	</div>
-	<br>
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Main -->
+	<article id="main">
+		<section class="wrapper style5">
+			<div class="inner" style="height: 600px;">
+				<div id="find_pwd">
+					<h3>비밀번호 찾기</h3>
+					<hr />
+					<section>
+						<form method="post" action="#">
+							<div class="row gtr-uniform">
+								<div class="col-12">
+									<input type="text" name="id" placeholder="아이디를 입력하세요">
+								</div><Br>
+								<div class="col-6 col-12-xsmall">
+									<input type="text" name="email" placeholder="이메일을 입력하세요">
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<select name="address">
+										<option value="dreamwiz.com">@dreamwiz.com</option>
+										<option value="empal.com">@empal.com</option>
+										<option value="gmail.com">@gmail.com</option>
+										<option value="hanmail.net">@hanmail.net</option>
+										<option value="hanmir.com">@hanmir.com</option>
+										<option value="hitel.net">@hitel.net</option>
+										<option value="hotmail.com">@hotmail.com</option>
+										<option value="kebi.com">@kebi.com</option>
+										<option value="korea.com">@korea.com</option>
+										<option value="nate.com">@nate.com</option>
+										<option value="naver.com" selected="selected">@naver.com</option>
+										<option value="orgio.net">@orgio.net</option>
+										<option value="yahoo.co.kr">@yahoo.co.kr</option>
+										<option value="yahoo.com">@yahoo.com</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</section><br>
+					<input type="button" onclick="your_pwd()" value="비밀번호 찾기"><br> 
+					<span id="none_id"></span><br>
+				</div>
+				<hr />
+					<h4><a href="login">로그인</a> / <a href="reg_tos">회원가입</a></h4>
+					<p></p>
+			</div>
+		</section>
+	</article>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

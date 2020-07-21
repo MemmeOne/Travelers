@@ -67,7 +67,7 @@ public class ServiceLoginController {
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loginUser");
-		return "service_login/login";
+		return "home";
 	}
 	
 	/* 회원가입 기능 */

@@ -1,44 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<style type="text/css">
-		#travelers {color:black; text-align: center; font-size: 55pt; position:relative; top: 160px; }
-		#travelers a {text-decoration:none; color:black;}
-/*		body { background-image: url('resources/main_image/01.png'); background-color: black;
-			background-repeat : no-repeat; background-size : cover;} */
-		#menu { position: absolute; right: 30px; margin: 30px;}
-		#menu a {text-decoration:none ;color:black;}
-		body {margin: 0 auto;}
-	</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="resources/html5up-spectral/assets/css/main.css" />
+<noscript><link rel="stylesheet" href="resources/html5up-spectral/assets/css/noscript.css" /></noscript>
 </head>
 <body>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-	<fmt:requestEncoding value="utf-8"/>
-	<div id="menu">
-		<c:choose>
-			<c:when test="${loginUser!=null }">
-				<a href="logout">로그아웃</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="mypage">마이페이지</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="login">메이트 찾기</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="info_list?page=1">정보게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="free_board_list?page=1">자유게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="reviewboard?page=1">리뷰게시판</a>
-			</c:when>
-			<c:otherwise>
-				<a href="login">로그인</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="reg_tos">회원가입</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="login">메이트 찾기</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="info_list?page=1">정보게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="free_board_list?page=1">자유게시판</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="reviewboard?page=1">리뷰게시판</a>
-			</c:otherwise>
-		</c:choose>
-	</div>
-	<div id="travelers"><b><a href="/Travelers/">TRAVELERS</a></b></div>
+	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+	<fmt:requestEncoding value="utf-8" />
+	<!-- Header -->
+	<header id="header">
+		<h1>
+			<a href="/Travelers">Travelers</a>
+		</h1>
+		<nav id="nav">
+			<ul>
+				<li class="special"><a href="#menu" class="menuToggle"><span>Menu</span></a>
+					<div id="menu">
+						<ul>
+							<c:choose>
+								<c:when test="${loginUser!=null }">
+									<li><a href="/Travelers/">Home</a></li>
+									<li><a href="logout">로그아웃</a></li>
+									<li><a href="mypage">마이페이지</a></li>
+									<li><a href="login">여행 메이트 찾기</a></li>
+									<li><a href="info_list?page=1">정보 공유 게시판</a></li>
+									<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
+									<li><a href="free_board_list?page=1">자유 게시판</a></li>
+									<li><a href="list">게시판 형식</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="/Travelers/">Home</a></li>
+									<li><a href="login">로그인</a></li>
+									<li><a href="reg_tos">회원가입</a></li>
+									<li><a href="login">여행 메이트 찾기</a></li>
+									<li><a href="info_list?page=1">정보 공유 게시판</a></li>
+									<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
+									<li><a href="free_board_list?page=1">자유 게시판</a></li>
+									<li><a href="list">게시판 형식</a></li>
+								</c:otherwise>
+							</c:choose>
+						</ul>
+					</div></li>
+			</ul>
+		</nav>
+	</header>
 </body>
 </html>

@@ -49,15 +49,56 @@
 	}
 </script>
 </head>
-<body >
-	<input type="hidden" id="nick" value="aa">
-	<table border="1" style="width: 88mm; height: 125mm; border-collapse: collapse;">
-		<tbody id="view">
-		<tr><td style="width: 88mm; height: 125mm;"><img src="resources/national flag/passport.png"></td></tr>
-		</tbody>
-	</table>
-	<input type="button" value="열기" onclick="travelDiaryList(rn)">
-	<input type="button" value="이전" onclick="pre()">
-	<input type="button" value="다음" onclick="next()">
+<body class="is-preload">
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+					<section>
+						<h2>My Page</h2>
+						<div class="row">
+							<div class="col-6 col-12-medium" style="width:200px;">
+								<ul class="alt">
+									<li><a href="mypage">내정보</a></li>
+									<li><a href="travelDiary">여행수첩</a></li>
+									<li><a href="mypage">메이트 신청 현황</a></li>
+									<li><a href="mypage">작성한 글 관리</a></li>
+									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+									<li><a href="withdrawal">회원탈퇴</a></li>
+								</ul>
+							</div>
+							<div class="col-6 col-12-medium" style="margin-left: 50px;">
+								<h2>여행 수첩</h2>
+								<input type="hidden" id="nick" value="aa">
+								<div id="view" style="width: 88mm; height: 125mm;">
+									<img src="resources/main_image/passport.jpg" style="width: 88mm; height: 125mm;; margin: 0 auto;">
+								</div>
+								<div id="view" style="outline:1;width: 88mm; height: 125mm;background: url('resources/main_image/inside.jpg') no-repeat;background-size: cover;">
+									<div style="vertical-align: middle;text-align: center;"><br>
+										국가명<br>
+										<img src="resources/national flag/Korea.png" style="width: 60px; margin: 0 auto;"><br>
+										<img src="resources/main_image/stamp.png" style="width: 70%; margin: 0 auto;"><br>
+										도시명<br>
+										2020-07-20 ~ 2020-07-30<br>
+										apahahahhhhh재미써닫다다다ㅏㄷ
+									</div>
+								</div>
+								<br><br>
+								<input type="button" value="열기" onclick="travelDiaryList(rn)">
+								<input type="button" value="이전" onclick="pre()">
+								<input type="button" value="다음" onclick="next()"><br>
+								<input type="button" value="추가" onclick="window.open('form','','width=355,height=280')">
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+		</article>
+	</div>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

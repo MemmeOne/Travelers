@@ -8,7 +8,6 @@
 <style type="text/css">
 	#body { margin-top: 350px; display: flex; justify-content: center; align-items: center; }
 	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; }
 </style>
 </head>
 <body>

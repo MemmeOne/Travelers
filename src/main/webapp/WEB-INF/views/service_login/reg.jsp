@@ -283,7 +283,7 @@
 		<tr>
 			<th>비밀번호</th>
 			<td>
-				8~16자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
+				8~20자의 영문 대소문자, 숫자, 특수기호를 사용하세요.<br>
 				<input type="password" name="pwd" id="pwd" placeholder="비밀번호"> <input type="password" name="pwdok" id="pwdok" placeholder="비밀번호 확인"><br>
 				<span id="pwc"></span><br>
 				<span id="pwokc"></span>
@@ -301,7 +301,7 @@
 		<tr>
 			<th>e-mail</th>
 			<td>
-				e-mail : <input type="text" name="email" placeholder="이메일"> @ 
+				<input type="text" name="email" placeholder="이메일"> @ 
 				<select name="address">
 					<option value="dreamwiz.com">dreamwiz.com</option>
 					<option value="empal.com">empal.com</option>
@@ -348,29 +348,29 @@
 		var pwdokchk=false
 		document.getElementById('pwd').onkeyup = function() {
 			var msg = '', val = this.value;
-			if (val.length >= 8 && val.length <= 16) {
-				var idRegExp = /^[a-z0-9]{8,16}$/; // 비밀번호 유효성 검사
-			    if (!idRegExp.test($('input[name=pwd]').val())) {
-					msg = '유효하지 않는 형식의 비밀번호 입니다.'
-					pwdchk=false
-				}else {
+			var id = '${loginUser.id}';
+			var pwd = $('input[name=pwd]').val()
+			var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
+			var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+			if (false === reg.test(pwd)) {
+				msg = '비밀번호는 8자 이상 20자 이하여야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.'
+			} else if (/(\w)\1\1\1/.test(pwd)) {
+				msg = '같은 문자를 4번 이상 사용하실 수 없습니다.'
+			} else if ( (pwd.search(id) > -1 ) && id!="") {
+				msg = '비밀번호에 아이디가 포함되었습니다.'
+			} else if (pwd.search(/\s/) != -1) {
+				msg = '비밀번호는 공백 없이 입력해주세요.'
+			} else if (hangulcheck.test(pwd)) {
+				msg = '비밀번호에 한글을 사용 할 수 없습니다.'
+			} else {
 					pwdchk=true
 					msg = GetAjaxPW(val);
-				}
-			} else if (val.length > 16) {
-				pwdchk=false
-				msg = '비밀번호가 너무 깁니다.'
-			} else {
-				pwdchk=false
-				msg = '비밀번호가 너무 짧습니다.'
 			}
-			;
 			document.getElementById('pwc').textContent = msg;
 		};
-
 		var GetAjaxPW = function(val) {
 			// ajax func....
-			return val + ' 사용 가능한 비밀번호입니다.'
+			return '사용 가능한 비밀번호입니다.'
 		}
 		document.getElementById('pwdok').onkeyup = function() {
 			let html = ""

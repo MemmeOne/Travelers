@@ -1,9 +1,9 @@
 package com.cpkl.service;
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.cpkl.dao.ServiceLoginDAO;
 import com.cpkl.dto.EmailDTO;
 import com.cpkl.dto.TrevelersDTO;
@@ -88,11 +88,21 @@ public class RegisterService {
 		}
 		return result;
 	}
+	// 회원 추가
+	@Inject
+	PasswordEncoder passwordEncoder;
 	public void insert_user(TrevelersDTO dto) {
-		dao.insert_user(dto);
+		try {
+			dto.setPwd(security(dto.getPwd()));
+			dao.insert_user(dto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	public void delete_User(TrevelersDTO dto, HttpSession session) {
-		dao.delete_User(dto);
-		session.removeAttribute("loginUser");
+	// 비밀번호 암호화
+	public String security(String pwd) throws Exception {
+		String encPassword = passwordEncoder.encode(pwd);
+		return encPassword;
 	}
 }

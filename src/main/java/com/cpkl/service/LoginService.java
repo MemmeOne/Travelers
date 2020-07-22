@@ -1,6 +1,8 @@
 package com.cpkl.service;
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.cpkl.dao.ServiceLoginDAO;
 import com.cpkl.dto.EmailDTO;
@@ -13,18 +15,21 @@ public class LoginService {
 	private String result;
 	@Autowired
 	private EmailSender emailSender;
+	@Inject
+	PasswordEncoder passwordEncoder;
+	// 로그인
 	public String login_chk(TrevelersDTO dto, HttpSession session) {
-		TrevelersDTO dtoresult=dao.login_chk(dto.getId(),dto.getPwd());
+		TrevelersDTO dtoresult=dao.login_chk(dto.getId());
 		if (dtoresult!=null) {
-			if(dtoresult.getPwd().equals(dto.getPwd())) {
-				result=dto.getId();
+			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) { //암호화 안된게 앞
+				System.out.println("비밀번호 일치");
 				session.setAttribute("loginUser", dtoresult);
-			}else {
-				result="비밀번호가 틀렸습니다!";
-			}
-		}else {
+				result=dto.getId();
+	        }else {
+	        	result="비밀번호가 틀렸습니다!";
+	        }
+		} else
 			result="없는 아이디 입니다!";
-		}
 		return result;
 	}
 	// 아이디 찾기. 이메일로 아이디 가져오기
@@ -32,7 +37,7 @@ public class LoginService {
 		result=dao.get_id(useremail);
 		return result;
 	}
-	// 아이디 찾기. 이메일로 아이디 가져오기
+	// 비밀번호 찾기. 이메일로 임시비밀번호 발급
 	public String send_pwd(TrevelersDTO dto) {
 		result=dao.get_pwd(dto);
 		if (result.equals("아이디없음")) {
@@ -65,7 +70,7 @@ public class LoginService {
 			email.setContent(content);
 			try {
 				emailSender.SendEmail(email);
-				dto.setPwd(code);
+				dto.setPwd(security(code));
 				dao.update_pwd(dto);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -80,10 +85,42 @@ public class LoginService {
 		TrevelersDTO dtoresult=dao.change_session_value(dto.getId());
 		session.setAttribute("loginUser", dtoresult);
 	}
+	// 회원 탈퇴
+	public void delete_User(TrevelersDTO dto, HttpSession session) {
+		dao.delete_User(dto);
+		session.removeAttribute("loginUser");
+	}
 	// 비밀번호 변경 및 로그아웃
 	public String change_pwd_save(TrevelersDTO dto, HttpSession session) {
-		dao.change_pwd_save(dto);
-		session.removeAttribute("loginUser");
-		return null;
+		try {
+			TrevelersDTO dtoresult=dao.login_chk(dto.getId());
+			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) { //암호화 안된게 앞
+				result="기존 비밀번호입니다.\n다른 비밀번호를 입력해주세요.";
+	        }else {
+				dto.setPwd(security(dto.getPwd()));
+	        	result="비밀번호를 변경했습니다.";
+	        	dao.change_pwd_save(dto);
+				session.removeAttribute("loginUser");
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 비밀번호 암호화
+	public String security(String pwd) throws Exception {
+		String encPassword = passwordEncoder.encode(pwd);
+		return encPassword;
+	}
+	// 본인확인을 위한 비밀번호 체크 페이지
+	public String chk_dbpwd(TrevelersDTO dto) {
+		TrevelersDTO dtoresult=dao.login_chk(dto.getId());
+		if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) { //암호화 안된게 앞
+			System.out.println("비밀번호 일치");
+			result=dto.getId();
+        }else {
+        	result="비밀번호가 틀렸습니다!";
+        }
+		return result;
 	}
 }

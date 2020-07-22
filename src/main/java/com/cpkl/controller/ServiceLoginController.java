@@ -67,7 +67,7 @@ public class ServiceLoginController {
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loginUser");
-		return "service_login/login";
+		return "home";
 	}
 	
 	/* 회원가입 기능 */
@@ -154,6 +154,16 @@ public class ServiceLoginController {
 	public String chk_pwd() {
 		return "service_login/chk_pwd";
 	}
+	// 마이페이지 기능 사용전 본인확인을 위한 비밀번호 체크 기능
+	@RequestMapping(value="chk_dbpwd",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String chk_dbpwd(TrevelersDTO dto) throws Exception {
+		String result=logingservice.chk_dbpwd(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(result);
+		return strJson;
+	}
 	// 회원정보 수정 페이지
 	@RequestMapping("change_userinfo")
 	public String change_userinfo() {
@@ -179,7 +189,7 @@ public class ServiceLoginController {
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String delete_User(TrevelersDTO dto, HttpSession session) throws JsonProcessingException {
-		regservice.delete_User(dto,session);
+		logingservice.delete_User(dto,session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString("회원가입");
 		return strJson;

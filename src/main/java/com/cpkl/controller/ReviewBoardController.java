@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
-import com.cpkl.dto.UserDTO;
 import com.cpkl.service.ReviewBoardService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,9 +44,6 @@ public class ReviewBoardController {
 			map.put("search", search);
 			rbs.reviewBoard(map, model);
 		}
-		UserDTO user = new UserDTO();
-		user.setId("aa"); user.setName("aa");
-		session.setAttribute("user", user);
 		Date cdate = new Date();
 		session.setAttribute("cdate", cdate);
 		return "review_board/reviewboard";

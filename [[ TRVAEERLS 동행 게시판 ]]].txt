@@ -1,0 +1,77 @@
+--mate board table 수정
+create table mate_board(
+num number(4) primary key,
+title varchar2(100),
+content varchar2(2000),
+savedate date default sysdate,
+hit number(4) default 0,
+wnick varchar2(20),
+wgender varchar2(20),
+wage number(4),
+mtravel_date varchar2(20),
+mtravel_date_s date,
+mtravel_date_e date,
+mthema varchar2(100),
+mroom varchar2(30),
+mgender varchar2(30),
+mage varchar2(100),
+mcnt number(4),
+mexpenses varchar2(20),
+price1 number(10),
+price2 number(10),
+deadline varchar2(10)
+);
+drop table mate_board;
+create sequence mate_board_seq;
+select*from mate_board;
+select*from mate_board where mthema like '%관광%' or  mthema like '%-%';
+
+commit;
+
+create table mate_board_reply(
+bnum number(4),
+rnum number(4),
+nick varchar2(20),
+reply varchar2(300),
+savetime date default sysdate,
+rgroup number(4),
+step number(4)
+);
+create sequence mate_board_reply_seq;
+select*from mate_board_reply;
+delete mate_board_reply;
+drop table mate_board_reply;
+drop table mate_board_reply_seq;
+insert into mate_board_reply values(0,0,'nickname','replyyy',sysdate);
+commit;
+select count(*) from mate_board;
+
+
+--정보 게시판
+create table info_board(
+num number(4) primary key,
+nick varchar2(20),
+title varchar2(100),
+content varchar2(1000),
+savedate date default sysdate,
+hit number(4) default 0,
+numgroup number(4),
+tag varchar2(20)
+);
+create sequence info_board_seq;
+drop table info_board;
+select*from info_board;
+
+create table info_board_comment(
+cnum number(4) PRIMARY key,
+numgroup number(4) not null,
+commentgroup number(4) not null,
+nick varchar2(20) not null,
+content varchar2(1000) not null,
+savedate date default sysdate not null,
+step number(4) not null
+);
+select*from info_board_comment;
+create sequence info_board_comment_seq;
+drop table info_board_comment;
+commit;

@@ -301,6 +301,7 @@ input[type=checkbox] {
 }
 </style>
 					<div class="checks etrans" style="margin: 0 auto;">
+					
 						<h4>< 여행 정보 ></h4>
 						<div id="hidden">
 							<input type="date" name="mtravel_date_s" value="0001-01-01">

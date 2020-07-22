@@ -2,6 +2,7 @@ package com.cpkl.dto;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -18,14 +19,40 @@ public class MateDTO {
 	int wage;
 
 	// 여행 동행 조건
-	private String mtravel_date, mthema, mroom, mgender, mexpenses;
-	private int mage,mcnt, price1, price2;
+	private String mtravel_date, mthema, mroom, mgender, mexpenses,mage;
+	private int  mcnt, price1, price2;
 	private Date mtravel_date_s;
-	int deadline;
-	public int getDeadline() {
+	private String deadline;
+ 
+	// 검색용
+	private String word, tag;
+	
+	//private ArrayList<String>  mthema_arr,  mroom_arr,  mgender_arr, mage_arr;
+	
+	private int write_save_ok;
+	
+	public int getWrite_save_ok() {
+		return write_save_ok;
+	}
+	public void setWrite_save_ok(int write_save_ok) {
+		this.write_save_ok = write_save_ok;
+	}
+	public String getWord() {
+		return word;
+	}
+	public void setWord(String word) {
+		this.word = word;
+	}
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	public String getDeadline() {
 		return deadline;
 	}
-	public void setDeadline(int deadline) {
+	public void setDeadline(String deadline) {
 		this.deadline = deadline;
 	}
 	public String getMexpenses() {
@@ -145,10 +172,10 @@ public class MateDTO {
 	public void setMgender(String mgender) {
 		this.mgender = mgender;
 	}
-	public int getMage() {
+	public String getMage() {
 		return mage;
 	}
-	public void setMage(int mage) {
+	public void setMage(String mage) {
 		this.mage = mage;
 	}
 //	public Date getMtravel_date_e() {

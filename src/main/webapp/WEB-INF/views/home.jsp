@@ -22,9 +22,20 @@ ul li{ padding:0 50px; display:inline;  }
 				/*#header .menu > li a{display:block;}*/
 #header nav .menu > li:hover .submenu{display:inline;}
 
-#header nav section ul li.menu:hover ul.submenu {
-	display:bolock;
-	}
+#header nav section ul li.menu:hover ul.submenu {display:bolock;}
+div.b {
+  white-space: nowrap; 
+  width: 100px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  border: 1px solid #000000;
+}
+ .la {
+  white-space: nowrap; 
+  width: 100px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
 </style>
 </head>
 <body>
@@ -33,8 +44,8 @@ ul li{ padding:0 50px; display:inline;  }
 </h1>
 <a href="mate_board_list?page=1">이동</a>
 <P>  The time on the server is ${serverTime}. </P>
-
-
+<label class="la">Heffforsdfgsfdgld!</label>ddd
+<div class="b">Heffforsdfgsfdgld!</div>
 
    <div id="menu1">
       <ul class="main">

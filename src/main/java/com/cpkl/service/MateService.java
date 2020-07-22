@@ -15,7 +15,8 @@ import com.cpkl.dto.MateReplyDTO;
 public class MateService   {
 	@Autowired
 	private MateDAO matedao;
-	// 글 목록
+	
+	// 글 전체 목록
 	public void mate_board_list(Model model, int page) { // 글 목록 list 출력
 		MateDTO dto=new MateDTO();
 		System.out.println("board ser 시간 : "+dto.getSavedate());
@@ -25,11 +26,32 @@ public class MateService   {
 		model.addAttribute("totPage", matedao.getTotalPage());
 	
 	}
-	
-	public void mate_list_search(Model model,int page,String word,String tag) {
-		System.out.println("s search word : "+word);
-		model.addAttribute("mate_list_search", matedao.mate_list_search(page,word,tag ));
+	// 글 전체 목록에서 검색 이거!
+//	public void mate_list_search(Model model,int page,String word,String tag) {
+		public void mate_list_search(MateDTO matedto,Model model,int page ) {
+		//System.out.println("안아작스 ");
+		//System.out.println("s search word : "+word);
+//		model.addAttribute("mate_list_search", matedao.mate_list_search(page,word,tag ));
+		model.addAttribute("mate_list_search", matedao.mate_list_search( matedto,page ));
+		model.addAttribute("totPage", matedao.mate_totPageSearch(matedto));
+		model.addAttribute("word", matedto.getWord());
+		model.addAttribute("tag", matedto.getTag());
+		model.addAttribute("mtravel_date_s", matedto.getMtravel_date_s());
+		model.addAttribute("mtravel_date_e", matedto.getMtravel_date_e());
+		model.addAttribute("mthema",matedto.getMthema());
+		model.addAttribute("mroom",matedto.getMroom());
+		model.addAttribute("price1",matedto.getPrice1());
+		model.addAttribute("price2",matedto.getPrice2());
+		model.addAttribute("mgender",matedto.getMgender());
+		model.addAttribute("mage",matedto.getMage());
+		
+//		return matedao.mate_listall(page);
 	}
+	
+//	public void mate_search(Model model,MateDTO matedto, int page) {
+//	System.out.println("아작스 s search word : "+matedto.getWord());
+//		model.addAttribute("mate_search", matedao.mate_search( matedto, page ));
+//	}
 	
 //	public void mate_write_save(String title, String content, String nick,Timestamp savedate) {
 //	matedao.mate_write_save(title, content, nick, savedate);
@@ -40,7 +62,7 @@ public class MateService   {
 		matedao.mate_write_save(matedto);
 	}
 	
-	// 글 내용 보기
+	// 글 내용 조회
 	public void mate_content_viewser(Model model, int num ) {
 		//Map<String, Object> map=model.asMap();
 		//int num=(Integer)map.get("paramnum");

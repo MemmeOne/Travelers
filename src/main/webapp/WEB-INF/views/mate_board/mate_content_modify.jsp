@@ -83,12 +83,11 @@ console.log(date)
 									</label>
 									</td></tr>
 				<tr> <td colspan="2"> 나이 
-									<input type="checkbox" name="mage" value="7" <c:if test="${fn:contains(ccc.mage,'7') }"> checked </c:if> >상관없음
-									<input type="checkbox" name="mage" value="2"<c:if test="${fn:contains(ccc.mage,'2') }"> checked </c:if>>20대
-									<input type="checkbox" name="mage" value="3"<c:if test="${fn:contains(ccc.mage,'3') }"> checked </c:if>>30대
-									<input type="checkbox" name="mage" value="4"<c:if test="${fn:contains(ccc.mage,'4') }"> checked </c:if>>40대
-									<input type="checkbox" name="mage" value="5"<c:if test="${fn:contains(ccc.mage,'5') }"> checked </c:if>>50대
-									<input type="checkbox" name="mage" value="6"<c:if test="${fn:contains(ccc.mage,'6') }"> checked </c:if>>60대이상
+									<input type="checkbox" name="mage" value="20대"<c:if test="${fn:contains(ccc.mage,'2') }"> checked </c:if>>20대
+									<input type="checkbox" name="mage" value="30대"<c:if test="${fn:contains(ccc.mage,'3') }"> checked </c:if>>30대
+									<input type="checkbox" name="mage" value="40대"<c:if test="${fn:contains(ccc.mage,'4') }"> checked </c:if>>40대
+									<input type="checkbox" name="mage" value="50대"<c:if test="${fn:contains(ccc.mage,'5') }"> checked </c:if>>50대
+									<input type="checkbox" name="mage" value="60대"<c:if test="${fn:contains(ccc.mage,'6') }"> checked </c:if>>60대이상
 									<label id="hidden">
 										<input type="checkbox" name="mage" value="-1" checked="checked">
 									</label>

@@ -23,27 +23,135 @@
 </mapper> -->
 
 <mapper namespace="com.cpkl.mybatis.mateMapper">
-	<!-- 글 목록 list 출력 -->
-	<select id="mate_listAll" resultType="mate_dto">
-		select B.*from (select rownum rn, A.* from (select*from mate_board order by num desc)A)B 
-		where rn between #{start} and #{end} 
-	</select>  
-	
-	<!-- 글 검색 -->
-	<select id="mate_list_search" resultType="mate_dto">
-		select B.*from (select rownum rn, A.* from (select*from mate_board where ${tag} like '%${word}%')A)B 
-		where rn between #{start} and #{end} order by num desc								 
-	</select>
+
+	<!-- 글 조회수 증가 -->
+	<update id="mate_board_uphit">
+		update mate_board set hit=hit+1 where num=#{num}
+	</update>
 	
 	<!-- 글의 총 개수 -->
 	<select id="mate_list_totalPage" resultType="int">
 		select count(*) from mate_board
 	</select>
 	
-	<!-- 글 조회수 증가 -->
-	<update id="mate_board_uphit">
-		update mate_board set hit=hit+1 where num=#{num}
-	</update>
+	<!-- 글 목록 list 출력 -->
+	<select id="mate_listAll" resultType="mate_dto">
+		select B.*from (select rownum rn, A.* from (select*from mate_board order by num desc)A)B 
+		where rn between #{start} and #{end} 
+	</select>  
+	
+	<!-- 글 검색 
+	<select id="mate_list_search" resultType="mate_dto">
+		select B.*from (select rownum rn, A.* from (select*from mate_board where ${tag} like '%${word}%')A)B 
+		where rn between #{start} and #{end} order by num desc								 
+	</select>-->
+	
+		<!-- 글 검색 이거!-->
+		<!-- 
+		// 날짜
+		 (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  and
+	 	 (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) 
+	 	 
+		// 태그 (제목, 닉네임)
+		#{tag} like '%${word}%'   
+		
+		// 가격
+		 (price1  between #{price1} and #{price2})  and
+	 	 (price2  between #{price1} and #{price2}) 
+	 	 or (price1=0 and price2=0)
+	 	 
+	 	 
+	 	 
+	 	 
+	 	 mroom like '%${mroom}%'
+		mthema like '%${mthema}%'
+		mthema like '%관광%' or mthema like '%휴양%
+		mroom like '%${mthema[]}%' // 이거 어레이로 하면 안됨!
+			mroom like '%${mroom}%' // 이거 어레이로 하면 안됨!
+		or (#{mtravel_date_s}<=mtravel_date_s and mtravel_date_e
+		or mthema like '%${mthema}%' or mroom like '%${mroom}%' or mgender like '%${mgender}%' or mage like '%${mage}%' 
+		
+		 -->
+	<select id="mate_search" resultType="mate_dto">
+		select B.*from (select rownum rn, A.* from (select*from mate_board where 
+		<!-- 태그 (제목, 닉네임)-->
+		(#{tag} like '%${word}%')
+		and
+		<!-- 날짜 -->
+		    (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
+	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) 
+	 	and
+		<!-- 테마 -->
+		(   mthema like '%${mthema0}%'
+		or mthema like '%${mthema1}%'
+		or mthema like '%${mthema2}%'
+		or mthema like '%${mthema3}%')
+		and
+		<!-- 숙소 -->
+		(  mroom like '%${mroom0}%'
+		or mroom like '%${mroom1}%'
+		or mroom='상관없음')
+		and
+		<!-- 1일 경비 -->
+		    (price1  between #{price1} and #{price2}) 
+	 	and (price2  between #{price1} and #{price2}) 
+	 	or  (price1=0 and price2=0)
+	 	and
+		<!-- 동행자 성별 -->
+		(  mgender like '%${mgender0}%'
+		or mgender like '%${mgender1}%' 
+		or mgender='상관없음')
+		and
+		<!-- 동행자 나이 -->
+		(   mage like '%$mage0}%'
+		or mage like '%${mage1}%'
+		or mage like '%${mage2}%'
+		or mage like '%${mage3}%'
+		or mage like '%${mage4}%')
+		)A)B 
+		
+		where rn between #{start} and #{end} order by num desc								 
+	</select> 
+	
+	<!-- 검색 글 전체 수 -->
+	<select id="totPageSearch" resultType="int" parameterType="map">
+		select count(*) from mate_board where
+		<!-- 태그 (제목, 닉네임)-->
+		(#{tag} like '%${word}%')
+		and
+		<!-- 날짜 -->
+		    (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
+	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) 
+	 	and
+		<!-- 테마 -->
+		(   mthema like '%${mthema0}%'
+		or mthema like '%${mthema1}%'
+		or mthema like '%${mthema2}%'
+		or mthema like '%${mthema3}%')
+		and
+		<!-- 숙소 -->
+		(  mroom like '%${mroom0}%'
+		or mroom like '%${mroom1}%'
+		or mroom='상관없음')
+		and
+		<!-- 1일 경비 -->
+		    (price1  between #{price1} and #{price2}) 
+	 	and (price2  between #{price1} and #{price2}) 
+	 	or  (price1=0 and price2=0)
+	 	and
+		<!-- 동행자 성별 -->
+		(  mgender like '%${mgender0}%'
+		or mgender like '%${mgender1}%' 
+		or mgender='상관없음')
+		and
+		<!-- 동행자 나이 -->
+		(   mage like '%$mage0}%'
+		or mage like '%${mage1}%'
+		or mage like '%${mage2}%'
+		or mage like '%${mage3}%'
+		or mage like '%${mage4}%')
+		
+	</select>
 	
 	<!-- 글 저장 -->
 	<insert id="mate_write_save" parameterType="mate_dao">
@@ -55,6 +163,8 @@
 		#{deadline})
 	</insert>
 	
+
+	
 	<!-- 글 내용 조회 -->
 	<select id="mate_content_view" resultType="mate_dto">
 		select*from mate_board where num=#{num}  
@@ -65,7 +175,13 @@
 	</update>
 	<!-- 글 수정 -->
 	<update id="mate_content_modify">
-		update mate_board set title=#{title}, content=#{content} where num=#{num}
+		update mate_board set  title=#{title}, content=#{content}
+		<!--  ,
+		wgender=#{wgender},wage=#{wage},
+		mtravel_date=#{mtravel_date},mtravel_date_s=#{mtravel_date_s},mtravel_date_e=#{mtravel_date_e},
+		mthema=#{mthema},mroom=#{mroom},mgender=#{mgender},
+		mage=#{mage}, mcnt=#{mcnt}, mexpense=#{mexpenses},price1=#{price1},price2=#{price2} )-->
+		where num=#{num}
 	</update>
 	
 	<!-- 글 삭제  -->

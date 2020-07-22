@@ -26,24 +26,14 @@ public class MateDAO {
 	}
 
 	public static final String namespace = "com.cpkl.mybatis.mateMapper";
-
-//	public List<MateReplyDTO> mate_reply_list (MateReplyDTO mateReplydto, int num) {
-//	}
 	
-	
-	
-	// 댓글 리스트
-	public List<MateReplyDTO> mate_reply_list_1(int bnum) {
-		List<MateReplyDTO> dto=new ArrayList<MateReplyDTO>();
-		dto=mate_sqlsession.selectList(namespace+".mate_reply_select" );
-		for(MateReplyDTO e:dto) {
-			System.out.println("dao 시간 : "+e.getSavetime());
-			System.out.println("dao  닉  : "+e.getNick());
-		}
-		return mate_sqlsession.selectList(namespace+".mate_reply_select" );
+	// 게시글 개수
+	public int getTotalPage() {
+		int tot= mate_sqlsession.selectOne(namespace+".mate_list_totalPage");
+		return tot;
 	}
 	
-	// 게시글 리스트 호출
+	// 글 전체 목록
 	public List<MateDTO> mate_listall(int page) {
 		MateDTO dto=new MateDTO();
 		System.out.println("board dao 시간 : "+dto.getSavedate());
@@ -58,42 +48,191 @@ public class MateDAO {
 		}
 		return mate_sqlsession.selectList(namespace + ".mate_listAll",map);
 	}
-	
-	public List<MateDTO> mate_list_search(int page,String word,String tag) {
+	// 글 전체 목록에서 검색 이거!
+//	public List<MateDTO> mate_list_search(int page,String word,String tag) {
+		public List<MateDTO> mate_list_search(MateDTO matedto,int page ) {
 		HashMap<String, Object> map=new HashMap<String, Object>();
 			map.put("start",  page*3-2);
 			map.put("end", page*3);
-			map.put("word", word);
-			map.put("tag", tag);
+			map.put("word", matedto.getWord());
+			map.put("tag", matedto.getTag());
+			//map.put("word2", "목");
+			
+			// 여행 기간
+			map.put("mtravel_date_s", matedto.getMtravel_date_s());
+			map.put("mtravel_date_e", matedto.getMtravel_date_e());
+			
+			// 테마
+			String[] mthema_box =matedto.getMthema().split(",");
+			for(int i=0;i<mthema_box.length;i++) {
+				map.put("mthema"+i,mthema_box[i]);
+			}
+			if(mthema_box.length!=4) {
+				for(int i=mthema_box.length;i<4;i++) {
+					map.put("mthema"+i,"-");
+				}
+			}
+			// 숙소
+			String[] mroom_box =matedto.getMroom().split(",");
+				for(int i=0;i<mroom_box.length;i++) {
+					map.put("mroom"+i,mroom_box[i]);
+				}
+				if(mroom_box.length!=4) {
+					for(int i=mroom_box.length;i<4;i++) {
+						map.put("mroom"+i,"-");
+					}
+				}
+			// 1일 경비
+			map.put("price1",matedto.getPrice1());
+			map.put("price2",matedto.getPrice2());
+			
+			// 동행자 성별
+			String[] mgender_box =matedto.getMgender().split(",");
+				for(int i=0;i<mgender_box.length;i++) {
+					map.put("mgender"+i,mgender_box[i]);
+				}
+				if(mgender_box.length!=4) {
+					for(int i=mgender_box.length;i<4;i++) {
+						map.put("mgender"+i,"-");
+					}
+				}
+			// 동행자 나이
+			String[] mage_box =matedto.getMage().split(",");
+			for(int i=0;i<mage_box.length;i++) {
+				map.put("mage"+i,mage_box[i]);
+			}
+			if(mage_box.length!=5) {
+				for(int i=mage_box.length;i<4;i++) {
+					map.put("mage"+i,"-");
+				}
+			}
 			//-------------------------
-			System.out.println("dao search ");
 			Iterator<String> keys=map.keySet().iterator();
 			while(keys.hasNext()) {
 				String key=keys.next();
 				System.out.println("key : "+key+"\t value : "+map.get(key));
 			}
 			//-----------------------------
-		return mate_sqlsession.selectList(namespace+".mate_list_search",map );
+		return mate_sqlsession.selectList(namespace+".mate_search",map );
 	}
+	
+	public int mate_totPageSearch(MateDTO matedto) {
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		map.put("word", matedto.getWord());
+		map.put("tag", matedto.getTag());
+		//map.put("word2", "목");
+		
+		// 여행 기간
+		map.put("mtravel_date_s", matedto.getMtravel_date_s());
+		map.put("mtravel_date_e", matedto.getMtravel_date_e());
+		
+		// 테마
+		String[] mthema_box =matedto.getMthema().split(",");
+		for(int i=0;i<mthema_box.length;i++) {
+			map.put("mthema"+i,mthema_box[i]);
+		}
+		if(mthema_box.length!=4) {
+			for(int i=mthema_box.length;i<4;i++) {
+				map.put("mthema"+i,"-");
+			}
+		}
+		// 숙소
+		String[] mroom_box =matedto.getMroom().split(",");
+			for(int i=0;i<mroom_box.length;i++) {
+				map.put("mroom"+i,mroom_box[i]);
+			}
+			if(mroom_box.length!=4) {
+				for(int i=mroom_box.length;i<4;i++) {
+					map.put("mroom"+i,"-");
+				}
+			}
+		// 1일 경비
+		map.put("price1",matedto.getPrice1());
+		map.put("price2",matedto.getPrice2());
+		
+		// 동행자 성별
+		String[] mgender_box =matedto.getMgender().split(",");
+			for(int i=0;i<mgender_box.length;i++) {
+				map.put("mgender"+i,mgender_box[i]);
+			}
+			if(mgender_box.length!=4) {
+				for(int i=mgender_box.length;i<4;i++) {
+					map.put("mgender"+i,"-");
+				}
+			}
+		// 동행자 나이
+		String[] mage_box =matedto.getMage().split(",");
+		for(int i=0;i<mage_box.length;i++) {
+			map.put("mage"+i,mage_box[i]);
+		}
+		if(mage_box.length!=5) {
+			for(int i=mage_box.length;i<4;i++) {
+				map.put("mage"+i,"-");
+			}
+		}
+		
 
-	// 게시글 개수
-	public int getTotalPage() {
-		int tot= mate_sqlsession.selectOne(namespace+".mate_list_totalPage");
-		return tot;
+		//-------------------------
+		System.out.println("안아작스 dao search ");
+		Iterator<String> keys=map.keySet().iterator();
+		while(keys.hasNext()) {
+			String key=keys.next();
+			System.out.println("key : "+key+"\t value : "+map.get(key));
+		}
+		//-----------------------------
+	return mate_sqlsession.selectOne(namespace+".totPageSearch", map);
+		
 	}
+		
+		
+
+		
+		
+	//
+//	public List<MateDTO> mate_search(MateDTO matedto, int page) {
+//		HashMap<String, Object> map=new HashMap<String, Object>();
+//			map.put("start",  page*3-2);
+//			map.put("end", page*3);
+//			map.put("word", matedto.getWord());
+//			map.put("word2", "목");
+//			map.put("tag", matedto.getTag());
+//			//map.put("mtravel_date", matedto.getMtravel_date());
+//			//-------------------------
+//			System.out.println("아작스 dao mate_search  ");
+//			Iterator<String> keys=map.keySet().iterator();
+//			while(keys.hasNext()) {
+//				String key=keys.next();
+//				System.out.println("key : "+key+"\t value : "+map.get(key));
+//			}
+//			//-----------------------------
+//		return mate_sqlsession.selectList(namespace+".mate_search",map );
+//	}
+	// 글 내용 보기
+//	public List<MateDTO> mate_content_viewdao(int num) {
+//	public List<MateDTO> mate_content_view(String num) {
+	public MateDTO mate_content_viewdao(int num) {
+	System.out.println("mate_content_viewdao dao ");
+	mate_sqlsession.update(namespace+".mate_board_uphit", num);
+	return mate_sqlsession.selectOne(namespace + ".mate_content_view", num);
+}
+
+
 //	public void mate_write_save(String title, String content, String nick,Timestamp savedate) {
 	public void mate_write_save(MateDTO matedto) {
 //	public void mate_write_save(String title, String content, String nick) {
 		mate_sqlsession.insert(namespace + ".mate_write_save", matedto);
 	}
-
-//	public List<MateDTO> mate_content_viewdao(int num) {
-//		public List<MateDTO> mate_content_view(String num) {
-		public MateDTO mate_content_viewdao(int num) {
-		System.out.println("mate_content_viewdao dao ");
-		mate_sqlsession.update(namespace+".mate_board_uphit", num);
-		return mate_sqlsession.selectOne(namespace + ".mate_content_view", num);
+	// 댓글 리스트
+	public List<MateReplyDTO> mate_reply_list_1(int bnum) {
+		List<MateReplyDTO> dto=new ArrayList<MateReplyDTO>();
+		dto=mate_sqlsession.selectList(namespace+".mate_reply_select" );
+		for(MateReplyDTO e:dto) {
+			System.out.println("dao 시간 : "+e.getSavetime());
+			System.out.println("dao  닉  : "+e.getNick());
+		}
+		return mate_sqlsession.selectList(namespace+".mate_reply_select" );
 	}
+
 	// 동행 모집 마감으로 전환
 		public void deadline_finish(MateDTO matedto) {
 			mate_sqlsession.update(namespace+".deadline_finish",matedto);
@@ -105,10 +244,10 @@ public class MateDAO {
 			 mate_sqlsession.insert(namespace+".mate_reply", mreplydto);
 		}
 		//--------
-		public void mate_reply_regi01(MateReplyDTO dto) {
-			System.out.println("dao mate_reply_regi");
-			mate_sqlsession.insert(namespace+".mate_reply",  dto);
-		}
+//		public void mate_reply_regi01(MateReplyDTO dto) {
+//			System.out.println("dao mate_reply_regi");
+//			mate_sqlsession.insert(namespace+".mate_reply",  dto);
+//		}
 		// 이거! 댓글 저장!
 		public void mate_reply_regi02(MateReplyDTO mateReplydto) {
 			System.out.println("dao mate_reply_regi02");

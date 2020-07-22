@@ -1,7 +1,10 @@
 package com.cpkl.controller;
 
 import java.sql.Date;
+
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.taglibs.standard.tag.el.sql.DateParamTag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.MateReplyDTO;
@@ -38,26 +43,7 @@ public class MateController {
 	@Autowired
 	private MateReplyService mateReplySer;
 	
-	
-//	@RequestMapping(value="mate_reply", produces="application/json;charset-utf-8")
-//	@ResponseBody
-//	public String mate_reply_list(MateReplyDTO mateReplydto) throws JsonProcessingException {
-//		List<MateReplyDTO> list=mateReplySer.mate_reply_list_1(mateReplydto,0);
-//		ObjectMapper mapper=new ObjectMapper();
-//		String strJson=mapper.writeValueAsString(mateReplydto);
-//		return strJson;
-//	}
-	///--------------------------------
-//	@RequestMapping("comment")
-//	public String comment(Model model, MateReplyDTO mateReplydto ) {
-//		//MateReplyDTO dto=new MateReplyDTO();
-//		//System.out.println("con 시간 : "+mateReplydto.getSavedate());
-//		System.out.println("con  닉  : "+mateReplydto.getNick());
-//		mateReplySer.mate_reply_list_1(  model, 0);
-//		return "mate_board/comment";
-//	}
-	///--------------------------------
-	
+
 	// 글 전체 목록 보기
 	@RequestMapping("mate_board_list")
 	public String mate_board_listAll(Model model, @RequestParam int page,HttpServletRequest request) {
@@ -75,15 +61,94 @@ public class MateController {
 		return "mate_board/mate_board_list";
 	}
 	
-	// 글 전체 목록에서 검색
+	// 글 전체 목록에서 검색 이거!
 	@RequestMapping("mate_list_search")
-	public String mate_list_search(Model model, @RequestParam int page,@RequestParam String word, @RequestParam String tag) {
-		System.out.println("c search word : "+word);
-		mateSer.mate_list_search(model,page,word,tag);
+	public String mate_list_search(Model model, @RequestParam int page,
+			@RequestParam String word, @RequestParam String tag,  
+			@RequestParam String mthema,  @RequestParam String mroom, 
+			// @RequestParam ArrayList<String> mroom_arr,
+			@RequestParam String mgender,  @RequestParam String mage,
+//			@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date mtravel_date_s,@RequestParam  @DateTimeFormat(pattern="yyyy-MM-dd") Date mtravel_date_e) {
+		@RequestParam  String mtravel_date_s, @RequestParam  String mtravel_date_e,
+		@RequestParam int price1, @RequestParam int price2
+		
+			) throws ParseException {
+//		public String mate_list_search(MateDTO matedto,Model model, @RequestParam int page,@RequestParam String word, @RequestParam String tag ) {
+//		public String mate_list_search(@RequestParam MateDTO data,Model model, @RequestParam int page  ) {
+//		public String mate_list_search(    ) {
+//		public String mate_list_search(Model model) {
+		System.out.println("안아작스 c");
+		//for(String x:mroom_arr) {
+		//	System.out.println(x);
+		//}
+//		System.out.println("c word :"+data.getWord());
+//		System.out.println("c tag :"+data.getTag());
+		//System.out.println("c search word : "+word);
+		//System.out.println(mtrave_date);
+		//System.out.println("c search travel date :"+matedto.getMtravel_date());
+		MateDTO matedto=new MateDTO();
+		matedto.setTag(tag);
+		matedto.setWord(word);
+		//mthema=mthema.replaceAll(",", "%");
+		matedto.setMthema(mthema);
+		matedto.setMroom(mroom);
+		matedto.setMgender(mgender);
+		matedto.setMage(mage);
+		matedto.setPrice1(price1);
+		matedto.setPrice2(price2);
+		//System.out.println("mroom_box :"+mroom_box);
+		
+		// 날짜=========
+		System.out.println("mtravel_date_s :"+mtravel_date_s);
+		System.out.println("mtravel_date_e :"+mtravel_date_e);
+		SimpleDateFormat trans=new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date date_s=trans.parse(mtravel_date_s);
+		java.util.Date date_e=trans.parse(mtravel_date_e);
+		Date sql_date_s = new Date(date_s.getTime());
+		Date sql_date_e = new Date(date_e.getTime());
+		System.out.println("mtravel_date_s 변환후:"+sql_date_s);
+		matedto.setMtravel_date_s(sql_date_s);
+		matedto.setMtravel_date_e(sql_date_e);
+		// 날짜=========
+		
+		mateSer.mate_list_search(matedto,model,page );
+		//mateSer.mate_list_search( data,model,page );
+		//mateSer.mate_search(model,  matedto, page);
 		return "mate_board/mate_list_search";
 	}
+	
+//	@RequestMapping("mate_list_search")
+//	public String mate_list_search_page(Model model,MateDTO matedto,  @RequestParam int page,@RequestParam String word, @RequestParam String tag) {
+//		return "mate_board/mate_list_search";
+//	}
+	
+	//  글 전체 목록에서 검색 이거! 아작스 받아오는 것
+	@RequestMapping(value="mate_search",  produces="application/json;charset=utf-8")
+	@ResponseBody
+	//public String mate_search(Model model,MateDTO matedto, @RequestParam String word, @RequestParam String tag) throws JsonProcessingException {
+		public String mate_search(Model model,MateDTO matedto ) throws JsonProcessingException {
+		int page=1;
+		String word=matedto.getWord();
+		String tag=matedto.getTag();
+		//List<MateDTO> list=mateSer.mate_list_search( matedto, model, page);
+		System.out.println("아작스 c mate search");
+		System.out.println("page :"+page);
+		System.out.println("word :"+word);
+		System.out.println("tag :"+tag);
+		System.out.println("m_travel date_s :"+matedto.getMtravel_date_s());
+		
+		//for(String x:matedto.getMgender_arr() ) {
+		//	System.out.println(x);
+		//}
+//		System.out.println("model :"+model);
+		ObjectMapper mapper=new ObjectMapper();
+		String s="";
+		String strJson=mapper.writeValueAsString(s);
+		return strJson;
+		
+	}
 
-	// 글 쓰기 창
+	// 글 쓰기 창 띄워주기
 	@RequestMapping("mate_write_view")
 	public String mate_write_view(HttpSession session) {
 		String n=(String)session.getAttribute("loginNick");
@@ -97,7 +162,16 @@ public class MateController {
 		return "mate_board/mate_write_view";
 	}
 	
-	// 글 쓴 것 저장
+	
+//	@RequestMapping(value="mate_write_chk",  produces="application/json;charset=utf-8")
+//	@ResponseBody
+//	public String mate_write_chk(MateDTO matedto,HttpSession session,@RequestParam ArrayList<String> mthema) throws JsonProcessingException {
+//		ObjectMapper mapper=new ObjectMapper();
+//		String strJson=mapper.writeValueAsString(matedto);
+//		return strJson;
+//	}
+	
+	// 글 쓰기 저장
 	@RequestMapping(value="mate_write_save",  produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String mate_write_save(MateDTO matedto,HttpSession session,@RequestParam ArrayList<String> mthema) throws JsonProcessingException {
@@ -146,31 +220,32 @@ public class MateController {
 //		System.out.println("step : "+dto.getStep());
 //		System.out.println("indent : "+dto.getIndent());
 	
-		
 		matedto.setWnick((String)session.getAttribute("loginNick"));
 		matedto.setWgender((String)session.getAttribute("loginGender"));
 		matedto.setWage((Integer)session.getAttribute("loginAge"));
-		mateSer.mate_write_save(matedto );
-//		mateSer.mate_write_save(title, content, nick );
-		//return "mate_board_list?page=1";
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(matedto);
+		if(matedto.getWrite_save_ok()==1) {
+		mateSer.mate_write_save(matedto );
+		}  
 		return strJson;
+//		mateSer.mate_write_save(title, content, nick );
+		//return "mate_board_list?page=1";
 	}
 	
-	// 글 쓴 것 저장 (non-ajax, 조건 검사 안됨)
-	@RequestMapping(value="mate_write_save00" )
-	public String mate_write_save00(MateDTO matedto,HttpSession session ) {
-		 
-		matedto.setWnick((String)session.getAttribute("loginNick"));
-		matedto.setWgender((String)session.getAttribute("loginGender"));
-		matedto.setWage((Integer)session.getAttribute("loginAge"));
-		mateSer.mate_write_save(matedto );
-		return "redirect:mate_board_list?page=1";
-	}
+//	// 글 쓴 것 저장 (non-ajax, 조건 검사 안됨)
+//	@RequestMapping(value="mate_write_save00" )
+//	public String mate_write_save00(MateDTO matedto,HttpSession session ) {
+//		 
+//		matedto.setWnick((String)session.getAttribute("loginNick"));
+//		matedto.setWgender((String)session.getAttribute("loginGender"));
+//		matedto.setWage((Integer)session.getAttribute("loginAge"));
+//		mateSer.mate_write_save(matedto );
+//		return "redirect:mate_board_list?page=1";
+//	}
 
 
-	// 글 내용 보기 (상세보기?)
+	// 글 내용 조회 (상세보기?)
 	@RequestMapping("mate_content_view")
 //	public String mate_content_viewc(Model model,@RequestParam int num, MateReplyDTO mreplydto ) {
 	public String mate_content_viewc(Model model,@RequestParam int num, HttpServletRequest request) {
@@ -192,7 +267,7 @@ public class MateController {
 	@RequestMapping(value="deadline_finish",method=RequestMethod.POST, produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String deadline_finish(MateDTO matedto) throws JsonProcessingException {
-		Integer d=matedto.getDeadline();
+		String d= matedto.getDeadline();
 		mateSer.deadline_finish(matedto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(d);
@@ -200,13 +275,51 @@ public class MateController {
 		
 	}
 	@RequestMapping("deadline")
-	public String mate_content_view(HttpSession session) {
+	public String mate_content_view(HttpSession session, RedirectAttributes redirect) {
 		MateDTO matedto=new MateDTO();
 		matedto.setNum((Integer)session.getAttribute("bnum"));
-		matedto.setDeadline(1);
+		matedto.setDeadline("완료");
 		mateSer.deadline_finish(matedto);
+		redirect.addAttribute("num", matedto.getNum());
 		return "redirect:mate_content_view";
 	}
+	
+	
+	@RequestMapping("mate_content_modify")
+	public String mate_content_modify(Model model,HttpSession session ) {
+		MateDTO dto=new MateDTO();
+		int num=((Integer)session.getAttribute("bnum"));
+		mateSer.mate_content_viewser( model, num  );
+		return "mate_board/mate_content_modify";
+	}
+	
+	
+//	@RequestMapping("mate_content_modify_update")
+//	public String mate_content_modify_update(MateDTO dto,HttpSession session)    {
+	//return "redirect:mate_content_view?num="+dto.getNum() ;
+		@RequestMapping(value="mate_content_modify_update",  produces="application/json;charset=utf-8")
+		@ResponseBody
+		public String mate_content_modify_update(MateDTO dto,HttpSession session) throws JsonProcessingException {
+		dto.setNum((Integer)session.getAttribute("bnum"));
+		mateSer.mate_content_modify_update(dto,dto.getNum() ); 
+		System.out.println("c mate content modify update num getNum : "+dto.getNum());
+		System.out.println("mtravel_date_s "+dto.getMtravel_date_s());
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(dto);
+		return strJson;
+		
+	}
+	
+	// 글 삭제
+	@RequestMapping("mate_content_delete")
+	public String mate_content_delete(Model model,@RequestParam int num) {
+		//int num=Integer.parseInt(num);
+		
+		System.out.println("c mate_content_delete requestparam rnum : "+num);
+		mateSer.mate_content_delete( num);
+		return "redirect:mate_board_list?page=1";
+	}
+	
 	
 	
 	// 댓글 저장
@@ -237,6 +350,7 @@ public class MateController {
 //		MateReplyDTO mateReplydto=new MateReplyDTO();
 //		mateReplydto.setNick(nick);
 //		mateReplydto.setReply(reply);
+		System.out.println("댓글 저장 c");
 		mateReplydto.setBnum((Integer)session.getAttribute("bnum"));
 		mateReplydto.setNick((String)session.getAttribute("loginNick"));
 		//System.out.println("컨트롤러 댓글 저장 rgroup : "+mateReplydto.getRgroup());
@@ -343,32 +457,7 @@ public class MateController {
 //	
 	/// -----------------
 	
-	@RequestMapping("mate_content_modify")
-	public String mate_content_modify(Model model,@RequestParam int num  ) {
-		MateDTO dto=new MateDTO();
-		mateSer.mate_content_viewser( model, num  );
-		return "mate_board/mate_content_modify";
-	}
-	
-	
-	@RequestMapping("mate_content_modify_update")
-	public String mate_content_modify_update(MateDTO dto,HttpSession session)    {
-		dto.setNum((Integer)session.getAttribute("bnum"));
-		mateSer.mate_content_modify_update(dto,dto.getNum() ); 
-		System.out.println("c mate content modify update num getNum : "+dto.getNum());
-		return "redirect:mate_content_view?num="+dto.getNum() ;
-		
-	}
-	
-	// 글 삭제
-	@RequestMapping("mate_content_delete")
-	public String mate_content_delete(Model model,@RequestParam int num) {
-		//int num=Integer.parseInt(num);
-		
-		System.out.println("c mate_content_delete requestparam rnum : "+num);
-		mateSer.mate_content_delete( num);
-		return "redirect:mate_board_list?page=1";
-	}
+
 	
 	
 	//
@@ -376,4 +465,25 @@ public class MateController {
 	public String mate_reply() {
 		return "mate_board/mate_reply";
 	}
+	
+	
+//	@RequestMapping(value="mate_reply", produces="application/json;charset-utf-8")
+//	@ResponseBody
+//	public String mate_reply_list(MateReplyDTO mateReplydto) throws JsonProcessingException {
+//		List<MateReplyDTO> list=mateReplySer.mate_reply_list_1(mateReplydto,0);
+//		ObjectMapper mapper=new ObjectMapper();
+//		String strJson=mapper.writeValueAsString(mateReplydto);
+//		return strJson;
+//	}
+	///--------------------------------
+//	@RequestMapping("comment")
+//	public String comment(Model model, MateReplyDTO mateReplydto ) {
+//		//MateReplyDTO dto=new MateReplyDTO();
+//		//System.out.println("con 시간 : "+mateReplydto.getSavedate());
+//		System.out.println("con  닉  : "+mateReplydto.getNick());
+//		mateReplySer.mate_reply_list_1(  model, 0);
+//		return "mate_board/comment";
+//	}
+	///--------------------------------
+	
 }

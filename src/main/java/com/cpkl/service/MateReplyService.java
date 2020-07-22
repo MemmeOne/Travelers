@@ -23,6 +23,7 @@ public class MateReplyService {
 //	}
 	// 이거 댓글 저장
 	public List<MateReplyDTO> mate_reply_regi02(MateReplyDTO mateReplydto){
+		System.out.println("댓글 저장 s");
 		matedao.mate_reply_regi02(mateReplydto);
 		return matedao.mate_reply_list(mateReplydto.getBnum());
 	}

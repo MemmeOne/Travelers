@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="resources/html5up-spectral/assets/css/main.css" />
 <noscript><link rel="stylesheet" href="resources/html5up-spectral/assets/css/noscript.css" /></noscript>
@@ -29,7 +28,7 @@
 									<li><a href="/Travelers/">Home</a></li>
 									<li><a href="logout">로그아웃</a></li>
 									<li><a href="mypage">마이페이지</a></li>
-									<li><a href="login">여행 메이트 찾기</a></li>
+									<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
 									<li><a href="info_list?page=1">정보 공유 게시판</a></li>
 									<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
 									<li><a href="free_board_list?page=1">자유 게시판</a></li>
@@ -39,7 +38,7 @@
 									<li><a href="/Travelers/">Home</a></li>
 									<li><a href="login">로그인</a></li>
 									<li><a href="reg_tos">회원가입</a></li>
-									<li><a href="login">여행 메이트 찾기</a></li>
+									<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
 									<li><a href="info_list?page=1">정보 공유 게시판</a></li>
 									<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
 									<li><a href="free_board_list?page=1">자유 게시판</a></li>
@@ -47,7 +46,8 @@
 								</c:otherwise>
 							</c:choose>
 						</ul>
-					</div></li>
+					</div>
+				</li>
 			</ul>
 		</nav>
 	</header>

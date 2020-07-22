@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:src/main/resources/mybatis/servicelogin_mybatis-config.xml
->>>>>>> origin/jw
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE configuration
-    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
-	<typeAliases>
-<<<<<<< HEAD
-		<typeAlias alias="infodto" type="com.cpkl.dto.InfoDTO"/>
-		<typeAlias alias="commentdto" type="com.cpkl.dto.InfoCommentDTO"/>
-		<typeAlias alias="map" type="java.util.Map"/>
-	</typeAliases>
-</configuration>
-=======
-		<typeAlias alias="logindto" type="com.cpkl.dto.TrevelersDTO"/>
-		<typeAlias alias="map" type="java.util.Map"/>
-	</typeAliases>
-</configuration>
-=======
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE configuration
@@ -33,5 +10,3 @@
 		<typeAlias alias="mate_reply_dto" type="com.cpkl.dto.MateReplyDTO"/>
 	</typeAliases>
 </configuration>
->>>>>>> origin/jw:target/classes/mybatis/mate_mybatis-config.xml
->>>>>>> origin/jw

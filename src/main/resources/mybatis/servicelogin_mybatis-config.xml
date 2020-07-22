@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/main/resources/mybatis/servicelogin_mybatis-config.xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE configuration
@@ -10,17 +9,3 @@
 		<typeAlias alias="map" type="java.util.Map"/>
 	</typeAliases>
 </configuration>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE configuration
-    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
-	<typeAliases>
-		<typeAlias alias="mate_dto" type="com.cpkl.dto.MateDTO"/>
-		<typeAlias alias="mate_dao" type="com.cpkl.dao.MateDAO"/>
-		<typeAlias alias="mate_reply_dto" type="com.cpkl.dto.MateReplyDTO"/>
-	</typeAliases>
-</configuration>
->>>>>>> origin/jw:target/classes/mybatis/mate_mybatis-config.xml

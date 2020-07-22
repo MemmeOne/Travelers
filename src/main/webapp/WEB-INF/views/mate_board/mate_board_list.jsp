@@ -195,11 +195,74 @@ var frm=document.getElementById("s")
  	}
 </script>
 </head>
-<body>mate_board_list.jsp<br>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<body class="is-preload">
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy1" name="demo-copy1" onclick="tt()">
+						<label for="demo-copy">Email me a copy</label>
+						<script type="text/javascript">
+							if($("input:checkbox[id='demo-copy1']").is(":checked")){
+								$("input:checkbox[id='demo-copy1']").prop("checked", true);
+							}else{
+								$("input:checkbox[id='demo-copy1']").prop("checked", false);
+							}
+						</script>
+						안ㄴ
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy 2" name="demo-copy">
+						<label for="demo-copy">Email me a copy</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy" name="demo-copy">
+						<label for="demo-copy">Email me a copy</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy" name="demo-copy">
+						<label for="demo-copy">Email me a copy</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy" name="demo-copy">
+						<label for="demo-copy">Email me a copy</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-copy" name="demo-copy">
+						<label for="demo-copy">Email me a copy</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human" name="demo-human" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+					<div class="col-6 col-12-small">
+						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
+						<label for="demo-human">Not a robot</label>
+					</div>
+
+
 <input type="hidden" name="page" value="1">
 <!-- <h1>동행찾기게시판</h1> -->
-
 <!--<form action="mate_list_search" >-->
 	<input type="hidden" name="page" value="1">
  <form id="s"> 
@@ -333,9 +396,13 @@ var frm=document.getElementById("s")
 		</td>
 	</tr>
 </table>
-
 <a href="mate_write_view">글작성</a>
 
-
+			
+				</div>
+			</section>
+		</article>
+	</div>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

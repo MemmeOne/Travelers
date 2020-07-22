@@ -19,7 +19,7 @@
 		font-variant: normal;
 		text-rendering: auto;
 		line-height: 1;
-		text-transform: none !important;
+		text-transform: none ;
 
 		@if ($category == brands) {
 			font-family: 'Font Awesome 5 Brands';
@@ -41,11 +41,11 @@
 /// @param {mixed} $tb Top/bottom padding.
 /// @param {mixed} $lr Left/right padding.
 /// @param {list} $pad Optional extra padding (in the following order top, right, bottom, left)
-/// @param {bool} $important If true, adds !important.
+/// @param {bool} $important If true, adds .
 @mixin padding($tb, $lr, $pad: (0,0,0,0), $important: null) {
 
 	@if $important {
-		$important: '!important';
+		$important: '';
 	}
 
 	$x: 0.1em;

@@ -202,66 +202,285 @@ var frm=document.getElementById("s")
 		<!-- Main -->
 		<article id="main">
 			<section class="wrapper style5">
-				<div class="inner">
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy1" name="demo-copy1" onclick="tt()">
-						<label for="demo-copy">Email me a copy</label>
-						<script type="text/javascript">
-							if($("input:checkbox[id='demo-copy1']").is(":checked")){
-								$("input:checkbox[id='demo-copy1']").prop("checked", true);
-							}else{
-								$("input:checkbox[id='demo-copy1']").prop("checked", false);
-							}
-						</script>
-						안ㄴ
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy 2" name="demo-copy">
-						<label for="demo-copy">Email me a copy</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy" name="demo-copy">
-						<label for="demo-copy">Email me a copy</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy" name="demo-copy">
-						<label for="demo-copy">Email me a copy</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy" name="demo-copy">
-						<label for="demo-copy">Email me a copy</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-copy" name="demo-copy">
-						<label for="demo-copy">Email me a copy</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human" name="demo-human" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
-					<div class="col-6 col-12-small">
-						<input type="checkbox" id="demo-human2" name="demo-human2" checked>
-						<label for="demo-human">Not a robot</label>
-					</div>
+				<div class="inner" style="width: 1000px;">
+<style>
+.checks {position: relative;}
 
+.checks input[type="checkbox"] {  /* 실제 체크박스는 화면에서 숨김 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0
+}
+.checks input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.checks input[type="checkbox"] + label:before {  /* 가짜 체크박스 */
+  content: ' ';
+  display: inline-block;
+  width: 21px;  /* 체크박스의 너비를 지정 */
+  height: 21px;  /* 체크박스의 높이를 지정 */
+  line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+  margin: -2px 8px 0 0;
+  text-align: center; 
+  vertical-align: middle;
+  background: #fafafa;
+  border: 1px solid #cacece;
+  border-radius : 3px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+}
+.checks input[type="checkbox"] + label:active:before,
+.checks input[type="checkbox"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
 
-<input type="hidden" name="page" value="1">
+.checks input[type="checkbox"]:checked + label:before {  /* 체크박스를 체크했을때 */ 
+  content: '\2714';  /* 체크표시 유니코드 사용 */
+  color: #99a1a7;
+  text-shadow: 1px 1px #fff;
+  border-color: #adb8c0;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+}
+.checks.etrans input[type="checkbox"] + label {
+  padding-left: 30px;
+}
+.checks.etrans input[type="checkbox"] + label:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 0;
+  opacity: .6;
+  box-shadow: none;
+  border-color: #6cc0e5;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+.checks.etrans input[type="checkbox"]:checked + label:before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity:1; 
+  background: transparent;
+  border-color:transparent #6cc0e5 #6cc0e5 transparent;
+  border-top-color:transparent;
+  border-left-color:transparent;
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
+}
+
+.no-csstransforms .checks.etrans input[type="checkbox"]:checked + label:before {
+  /*content:"\2713";*/
+  content: "\2714";
+  top: 0;
+  left: 0;
+  width: 21px;
+  line-height: 21px;
+  color: #6cc0e5;
+  text-align: center;
+  border: 1px solid #6cc0e5;
+}
+input[type=checkbox]:checked + label  {
+	background-color: white;
+}
+input[type=checkbox] {
+	display:none;
+}
+</style>
+					<div class="checks etrans" style="margin: 0 auto;">
+						<h4>< 여행 정보 ></h4>
+						<div id="hidden">
+							<input type="date" name="mtravel_date_s" value="0001-01-01">
+							~ <input type="date" name="mtravel_date_e" value="0001-01-01">
+						</div>
+						기간 : <input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black;">
+						 ~ 
+						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black;">
+							<br>입력하는 날짜 범위 안에 들어가는 경우에만 출력됨<br>
+						<br>
+						테마 : 
+						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
+						<div id="hidden">
+							<input type="checkbox" class="mthema_chk" name="mthema" value="" checked>
+						</div><br>
+						숙소 : <input type="checkbox" name="mroom" value="개인실" id="mroom1"> <label for="mroom1">개인실 </label>
+						<input type="checkbox" name="mroom" value="다인실" id="mroom2"> <label for="mroom2">다인실</label>
+						<div id="hidden">
+							<input type="checkbox" name="mroom" value="" checked>
+						</div>
+						<form>
+						1일경비 : 금액입력 <input type="number" id="price1" name="price1" min="0" style="text-align: right;;color:black;"> 
+							~ <input type="number" id="price2" name="price2" style="text-align: right;color:black;">
+						</form>
+						<h4>< 여행 동행 조건 ></h4>
+						성별 : <input type="checkbox" name="mgender" value="여자" id="mgender1"> <label for="mgender1">여자</label>
+						<input type="checkbox" name="mgender" value="남자" id="mgender2"> <label for="mgender2">남자</label>
+						<div id="hidden">
+							<input type="checkbox" name="mgender" value="" checked>
+						</div>
+						<br>
+						나이 : <input type="checkbox" name="mage" value="20대" id="mage1"> <label for="mage1">20대 </label>
+						<input type="checkbox" name="mage" value="30대" id="mage2"> <label for="mage2">30대  </label>
+						<input type="checkbox" name="mage" value="40대" id="mage3"> <label for="mage3">40대  </label>
+						<input type="checkbox" name="mage" value="50대" id="mage4"> <label for="mage4">50대  </label>
+						<input type="checkbox" name="mage" value="60대이상" id="mage5"> <label for="mage5">60대이상 </label>
+						<div id="hidden">
+							<input type="checkbox" name="mage" value="" checked>
+						</div>
+						<br><br>
+						<h2>여행 메이트 찾기</h2>
+							<table id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대<br>
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+								<tr style="margin : 5px;padding: 5px;">
+									<th>
+										[휴양, 기타] 해외 여행갈 사람 구합니닷<br>
+										여행기간 : 2020-08-01 ~ 2020-08-30<br>
+										동행조건 : 여자, 20대, 30대
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+										모집 인원 : 7명<br>작성자닉네임<br>작성일 : 2020-07-22
+									</th>
+								</tr>
+							</table>
+							<br>
+							<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
+								<tr style="width: 60px;" >
+									<td colspan="6" style="font-size:2em;">
+										<a href="" style="vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
+										</a>
+										<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
+										</a>
+										1
+										2
+										3
+										4
+										5
+										<a href="" style="vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
+										</a>
+										<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
+										</a>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
+					</div>
+					
+					<br>
+					<br>
+					<br>
+					
+					<input type="hidden" name="page" value="1">
 <!-- <h1>동행찾기게시판</h1> -->
 <!--<form action="mate_list_search" >-->
 	<input type="hidden" name="page" value="1">

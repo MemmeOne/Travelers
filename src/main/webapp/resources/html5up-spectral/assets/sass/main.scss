@@ -116,8 +116,8 @@
 		// Stops initial animations until page loads.
 			&.is-preload {
 				*, *:before, *:after {
-					@include vendor('animation', 'none !important');
-					@include vendor('transition', 'none !important');
+					@include vendor('animation', 'none ');
+					@include vendor('transition', 'none ');
 				}
 			}
 
@@ -438,7 +438,7 @@
 	textarea {
 		padding: 0.75em 1em;
 	}
-
+	
 	input[type="checkbox"],
 	input[type="radio"], {
 		@include vendor('appearance', 'none');
@@ -508,22 +508,22 @@
 	}
 
 	::-webkit-input-placeholder {
-		color: _palette(fg-light) !important;
+		color: _palette(fg-light) ;
 		opacity: 1.0;
 	}
 
 	:-moz-placeholder {
-		color: _palette(fg-light) !important;
+		color: _palette(fg-light) ;
 		opacity: 1.0;
 	}
 
 	::-moz-placeholder {
-		color: _palette(fg-light) !important;
+		color: _palette(fg-light) ;
 		opacity: 1.0;
 	}
 
 	:-ms-input-placeholder {
-		color: _palette(fg-light) !important;
+		color: _palette(fg-light) ;
 		opacity: 1.0;
 	}
 
@@ -757,7 +757,7 @@
 			&:not(.fixed) {
 				@include vendor('flex-direction', 'column');
 				margin-left: 0;
-				width: 100% !important;
+				width: 100% ;
 
 				li {
 					@include vendor('flex-grow', '1');
@@ -804,7 +804,7 @@
 			padding: 0 1em 0 0;
 
 			&:last-child {
-				padding-right: 0 !important;
+				padding-right: 0 ;
 			}
 		}
 
@@ -815,7 +815,7 @@
 				padding-right: 3.5em;
 
 				@include breakpoint('<=small') {
-					padding: 0 1em !important;
+					padding: 0 1em ;
 				}
 			}
 		}
@@ -955,15 +955,15 @@
 
 		&.primary {
 			background-color: _palette(accent6, bg);
-			box-shadow: none !important;
-			color: _palette(accent6, fg-bold) !important;
+			box-shadow: none ;
+			color: _palette(accent6, fg-bold) ;
 
 			&:hover {
-				background-color: lighten(_palette(accent6, bg), 5) !important;
+				background-color: lighten(_palette(accent6, bg), 5) ;
 			}
 
 			&:active {
-				background-color: darken(_palette(accent6, bg), 5) !important;
+				background-color: darken(_palette(accent6, bg), 5) ;
 			}
 		}
 
@@ -1043,7 +1043,7 @@
 
 			@include breakpoint('<=small') {
 				@include padding(3em, 0);
-				background-color: transparent !important;
+				background-color: transparent ;
 				border-top: solid 2px _palette(border);
 				width: 100%;
 
@@ -1214,23 +1214,23 @@
 			}
 
 			::-webkit-input-placeholder {
-				color: _palette($p, fg-light) !important;
+				color: _palette($p, fg-light) ;
 			}
 
 			:-moz-placeholder {
-				color: _palette($p, fg-light) !important;
+				color: _palette($p, fg-light) ;
 			}
 
 			::-moz-placeholder {
-				color: _palette($p, fg-light) !important;
+				color: _palette($p, fg-light) ;
 			}
 
 			:-ms-input-placeholder {
-				color: _palette($p, fg-light) !important;
+				color: _palette($p, fg-light) ;
 			}
 
 			.formerize-placeholder {
-				color: _palette($p, fg-light) !important;
+				color: _palette($p, fg-light) ;
 			}
 
 		// Icon
@@ -1414,9 +1414,9 @@
 				padding: 0.5em 0 0 0;
 
 				&:first-child {
-					border-top: 0 !important;
-					margin-top: 0 !important;
-					padding-top: 0 !important;
+					border-top: 0 ;
+					margin-top: 0 ;
+					padding-top: 0 ;
 				}
 
 				> a {

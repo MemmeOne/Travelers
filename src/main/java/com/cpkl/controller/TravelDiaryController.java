@@ -30,7 +30,7 @@ public class TravelDiaryController {
 	@RequestMapping("travelDiaryReg")
 	public String travelDiaryReg(TravelDiaryDTO dto) {
 		tds.travelDiaryReg(dto);
-		return "forward:travelDiary";
+		return "travel_diary/close";
 	}
 	
 	@RequestMapping("travelDiary")

@@ -17,17 +17,21 @@
 </script>
 </head>
 <body>
-	<form action="travelDiaryReg" method="post">
+	<div style="margin: 0 auto;padding: 10px;">
+	<form action="travelDiaryReg" method="post" style="">
+	<h3 style="text-align: center;">여행지 등록</h3>
 	<input type="hidden" name="nick" value="aa">
-	나라 : <select id="nation" name="nation">
+	나라 : <select id="nation" name="nation" style="width: 260px;">
       		<c:forEach var="nation" items="${nationlist }">
       		<option value="${nation }">${nation }</option>
       		</c:forEach>
 		</select><br>
-	도시 : <input type="text" name="city"><br>
-	여행 기간 : <input type="date" name="startdate"> ~ <input type="date" name="enddate"><br>
-	메모 : <input type="text" name="memo"><br>
-	<input type="submit" value="확인">
+	도시 : <input type="text" name="city" style="width: 252px;"><br>
+	여행 기간 : <br>
+	<input type="date" name="startdate"> ~ <input type="date" name="enddate"><br>
+	메모 : <input type="text" name="memo" style="width: 252px;"><br><br>
+	<input type="submit" value="확인" style="margin-left: 250px;">
 	</form>
+	</div>
 </body>
 </html>

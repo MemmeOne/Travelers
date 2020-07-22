@@ -20,7 +20,7 @@
 							<div class="col-6 col-12-medium" style="width:200px;">
 								<ul class="alt">
 									<li><a href="mypage">내정보</a></li>
-									<li><a href="form">여행수첩</a></li>
+									<li><a href="travelDiary">여행수첩</a></li>
 									<li><a href="mypage">메이트 신청 현황</a></li>
 									<li><a href="mypage">작성한 글 관리</a></li>
 									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>

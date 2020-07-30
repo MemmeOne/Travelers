@@ -114,5 +114,18 @@
 		</article>
 	</div>
 	<%@ include file="../defualt/footer.jsp"%>
+<style>
+table  {
+    width: 100%;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
+    border-collapse: collapse;
+  }
+th, td {
+	background-color: white;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
+  }
+</style>
 </body>
 </html>

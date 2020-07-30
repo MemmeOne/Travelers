@@ -89,9 +89,23 @@
 							    
 							  //전송버튼 클릭이벤트
 							    $("#contentRegBtn").click(function(){
-							        //id가 smarteditor인 textarea에 에디터에서 대입
-							        editor_object.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-							        $("#frm").submit();
+								    editor_object.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+							        var content =  document.getElementById("content").value
+							        content = content.replace(/<p>/gi,"");
+							        content = content.replace(/<\/p>/gi,"");
+							        content = content.replace(/<br>/gi,"");
+							        content = content.replace(/&nbsp;/gi,"");
+							        content = content.replace(/ /gi,"");
+							    	if($('input[name=title]').val()=="") {
+							    		alert("제목을 입력하세요.")
+							    		$('input[name=title]').focus()
+							    	}else if(content=="") {
+							    		alert("내용을 입력하세요.")
+							    		$('input[name=content]').focus()
+							    	}else {
+								        //id가 smarteditor인 textarea에 에디터에서 대입
+								        $("#frm").submit();
+							    	}
 							    });
 							    
 							    function getContextPath() {

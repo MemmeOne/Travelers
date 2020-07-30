@@ -408,7 +408,7 @@ div img:hover + p.arrow_box {
 								</td>
 								<td colspan="2" style="text-align: right;">
 									<c:choose>
-									<c:when test="${info_post.content == loginUser.nick}">
+									<c:when test="${info_post.nick == loginUser.nick}">
 										<input type="button" value="수정" onclick="location.href='info_rewrite?num=${info_post.num }'">
 										<input type="button" value="삭제" onclick="location.href='info_delete?num=${info_post.num }'">
 									</c:when>

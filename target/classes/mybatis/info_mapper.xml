@@ -5,16 +5,16 @@
 <mapper namespace="com.cpkl.info_mybatis.myMapper">
 	
 	<!-- 전체 글 목록 가져오기 기능 -->
-	<select id="listAll" resultType="infodto" parameterType="map">
+	<!-- <select id="listAll" resultType="infodto" parameterType="map">
 		select b.num, b.tag, b.nick, b.title, b.content, b.savedate, b.hit, COUNT(c.id) "RECOMMEND"
 		from info_recommend c full outer join info_board b on b.num=c.num
 		GROUP BY b.num, b.tag, b.title, b.nick, b.content, b.savedate, b.hit
 		ORDER BY num desc
-	</select>
-	<!-- <select id="listAll" resultType="infodto" parameterType="map">
+	</select> -->
+	<select id="listAll" resultType="infodto" parameterType="map">
 		select B.* from(select rownum rn, A.* from(select * from info_board order by num desc)A)B
 		where rn between #{str} and #{end}
-	</select> -->
+	</select>
 	
 	<!-- 글 전체 수 -->
 	<select id="totPage" resultType="int" >

@@ -110,6 +110,7 @@
 		</c:otherwise>
 	</c:choose>
 			${param.page } / ${totalpage }
+		</th>
 	</tr>
 	<tr>
 	<th colspan="5">

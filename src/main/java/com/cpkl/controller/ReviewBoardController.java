@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 import com.cpkl.service.ReviewBoardService;
@@ -29,14 +30,16 @@ public class ReviewBoardController {
 	private ReviewBoardService rbs;
 	@Autowired
 	private HttpSession session;
-		
+	
 	@RequestMapping("reviewboard")
 	public String reviewBoard(HttpServletRequest request, Model model) {
 		String page = request.getParameter("page");
+		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
 		String searchtype = (String) request.getParameter("searchtype");
 		String search = (String) request.getParameter("search");
 		if(search == null) {
 			rbs.reviewBoard(page, model);
+			rbs.favoriteList(boardnum, model);
 		}else {
 			Map<String,	Object> map = new HashMap<String, Object>();
 			map.put("page", page);
@@ -44,8 +47,6 @@ public class ReviewBoardController {
 			map.put("search", search);
 			rbs.reviewBoard(map, model);
 		}
-		Date cdate = new Date();
-		session.setAttribute("cdate", cdate);
 		return "review_board/reviewboard";
 	}
 	
@@ -57,31 +58,31 @@ public class ReviewBoardController {
 	@RequestMapping("contentreg")
 	public String contentWrite(ReviewBoardDTO dto) {
 		rbs.contentReg(dto);
-		return "redirect:reviewboard?page=1";
+		return "redirect:reviewboard?boardnum=1&page=1";
 	}
 	
 	@RequestMapping("contentview")
-	public String contentView(@RequestParam int id, Model model) {
-		rbs.contentView(id, model);
+	public String contentView(@RequestParam int num, Model model) {
+		rbs.contentView(num, model);
 		return "review_board/contentview";
 	}
 	
 	@RequestMapping("delete")
-	public String delete(@RequestParam int id) {
-		rbs.delete(id);
-		return "redirect:reviewboard?page=1";
+	public String delete(@RequestParam int num) {
+		rbs.delete(num);
+		return "redirect:reviewboard?boardnum=1&page=1";
 	}
 	
 	@RequestMapping("contentmodify")
-	public String contentModify(@RequestParam int id, Model model) {
-		rbs.contentView(id, model);
+	public String contentModify(@RequestParam int num, Model model) {
+		rbs.contentView(num, model);
 		return "review_board/contentmodify";
 	}
 	
 	@RequestMapping("modify")
 	public String modify(ReviewBoardDTO dto) {
 		rbs.modify(dto);
-		return "redirect:reviewboard?page=1";
+		return "redirect:reviewboard?boardnum=1&page=1";
 	}
 	
 
@@ -124,10 +125,27 @@ public class ReviewBoardController {
 	
 	@RequestMapping(value="totalcomment", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String totalComment(@RequestParam int id) throws JsonProcessingException{
-		CommentNumber cn = rbs.totalComment(id);
+	public String totalComment(@RequestParam int num) throws JsonProcessingException{
+		CommentNumber cn = rbs.totalComment(num);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(cn);
 		return json;
 	}
+	
+	@RequestMapping(value="favoriteUp", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favoriteUp(FavoriteDTO dto) {
+		rbs.favoriteUp(dto);
+		return null;
+	}
+	
+	@RequestMapping(value="favorite", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favorite(FavoriteDTO dto) throws JsonProcessingException {
+		CommentNumber cn = rbs.favorite(dto);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(cn);
+		return json;
+	}
+	
 }

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import com.cpkl.dao.ReviewBoardDAO;
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 
@@ -32,13 +33,13 @@ public class ReviewBoardService {
 		dao.contentReg(dto);
 	}
 	
-	public void contentView(int id,Model model) {
-		dao.upHit(id);
-		model.addAttribute("content", dao.contentView(id));
+	public void contentView(int num,Model model) {
+		dao.upHit(num);
+		model.addAttribute("content", dao.contentView(num));
 	}
 	
-	public void delete(int id) {
-		dao.delete(id);
+	public void delete(int num) {
+		dao.delete(num);
 	}
 	
 	public void modify(ReviewBoardDTO dto) {
@@ -79,8 +80,19 @@ public class ReviewBoardService {
 		}
 	}
 	
-	public CommentNumber totalComment(int id) {
-		return dao.totalComment(id);
+	public CommentNumber totalComment(int num) {
+		return dao.totalComment(num);
 	}
 	
+	public void favoriteUp(FavoriteDTO dto) {
+		dao.favoriteUp(dto);
+	}
+	
+	public void favoriteList(int boardnum, Model model) {
+		model.addAttribute("favoriteList", dao.favoriteList(boardnum));
+	}
+	
+	public CommentNumber favorite(FavoriteDTO dto) {
+		return dao.favorite(dto);
+	}
 }

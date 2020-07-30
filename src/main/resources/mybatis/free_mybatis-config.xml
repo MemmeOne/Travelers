@@ -7,5 +7,6 @@
    <typeAliases>
       <typeAlias alias="dto" type="com.cpkl.dto.FreeDTO"/>
       <typeAlias alias="Commentdto" type="com.cpkl.dto.FreeCommentDTO"/>
+      <typeAlias alias="cn" type="com.cpkl.dto.FreeCommentNumber"/>
    </typeAliases>
 </configuration>

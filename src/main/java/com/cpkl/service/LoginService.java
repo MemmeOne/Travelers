@@ -1,4 +1,7 @@
 package com.cpkl.service;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +20,46 @@ public class LoginService {
 	private EmailSender emailSender;
 	@Inject
 	PasswordEncoder passwordEncoder;
+	
+	private Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
+
 	// 로그인
 	public String login_chk(TrevelersDTO dto, HttpSession session) {
 		TrevelersDTO dtoresult=dao.login_chk(dto.getId());
 		if (dtoresult!=null) {
-			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) { //암호화 안된게 앞
-				System.out.println("비밀번호 일치");
-				session.setAttribute("loginUser", dtoresult);
-				result=dto.getId();
-	        }else {
-	        	result="비밀번호가 틀렸습니다!";
-	        }
-		} else
+			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) {
+				if(sessions.get(dto.getId()) == null) {
+					result=dto.getId();
+					session.setAttribute("loginUser", dtoresult);
+					sessions.put(dto.getId(), session);
+				}else {
+					sessions.get(dto.getId()).invalidate();
+					sessions.remove(dto.getId());
+					result=dto.getId();
+					session.setAttribute("loginUser", dtoresult);
+				}
+			}else {
+				result="비밀번호가 틀렸습니다!";
+			}
+		}else {
 			result="없는 아이디 입니다!";
+		}
 		return result;
 	}
+//	public String login_chk(TrevelersDTO dto, HttpSession session) {
+//		TrevelersDTO dtoresult=dao.login_chk(dto.getId());
+//		if (dtoresult!=null) {
+//			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) { //암호화 안된게 앞
+//				System.out.println("비밀번호 일치");
+//				session.setAttribute("loginUser", dtoresult);
+//				result=dto.getId();
+//	        }else {
+//	        	result="비밀번호가 틀렸습니다!";
+//	        }
+//		} else
+//			result="없는 아이디 입니다!";
+//		return result;
+//	}
 	// 아이디 찾기. 이메일로 아이디 가져오기
 	public String get_id(String useremail) {
 		result=dao.get_id(useremail);

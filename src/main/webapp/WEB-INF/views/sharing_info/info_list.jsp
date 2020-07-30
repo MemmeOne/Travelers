@@ -20,27 +20,47 @@
 						<hr>
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 							<tr style="vertical-align: middle;" >
-								<th style="width:80px;text-align: center;">번호</th>
-								<th style="width:460px;text-align: center;">제목</th>
-								<th style="width:200px;text-align: center;">닉네임</th>
-								<th style="width:170px;text-align: center;">작성일</th>
-								<th style="width:80px;text-align: center;">조회</th>
-								<th style="width:80px;text-align: center;">추천</th>
+								<td style="width:80px;text-align: center;">번호</td>
+								<td style="width:460px;text-align: center;">제목</td>
+								<td style="width:200px;text-align: center;">닉네임</td>
+								<td style="width:170px;text-align: center;">작성일</td>
+								<td style="width:80px;text-align: center;">조회</td>
+								<td style="width:80px;text-align: center;">추천</td>
 							</tr>
 							<c:choose >
 								<c:when test="${info_list==null }">
 									<tr>
-										<th colspan="6">등록된 게시글이 없습니다.</th>
+										<td colspan="6">등록된 게시글이 없습니다.</td>
 									</tr>
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="list" items="${info_list }">
 										<tr>
+											<jsp:useBean id="now" class="java.util.Date" />
+											<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+											<fmt:formatDate var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd"/>
 											<td>${list.num }</td>
-											<td style="text-align: left;"><a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a></th>
-											<td>${list.nick }</td>
-											<fmt:formatDate var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd hh:mm"/>
-											<td>${savedate}</td>
+											<c:choose>
+												<c:when test="${savedate==today}">
+													<td style="text-align: left;">
+														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+														<img src="resources/main_image/new.png" style="width:25px;">
+													</td>
+													<td>${list.nick }</td>
+													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="hh:mm"/>
+													<td>
+														${savedate}
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td style="text-align: left;">
+														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+													</td>
+													<td>${list.nick }</td>
+													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd"/>
+													<td>${savedate}</td>
+												</c:otherwise>
+											</c:choose>
 											<td>${list.hit }</td>
 											<td>${list.recommend }</td>
 										</tr>
@@ -89,7 +109,7 @@
 									<br>
 								</td>
 							</tr>
-							<tr>
+							<tr style="border-bottom: 0px;">
 								<td style="width: 85px;"></td>
 								<td style="width: 200px;">
 									<select name="tag" style="width: 200px;">

@@ -1,22 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<style type="text/css"> 
+<style type="text/css">
+</style>
+<style type="text/css">
 #input{display:none;}
 #h{display:none;} 
 #comment_table{border-collapse:collapse; }
 #showreply{border-collapse:collapse; }
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-
-
-
+ <script type="text/javascript">
 	function hide() {
 		$("#input").hide();
 		$("#h").hide();
@@ -43,7 +41,8 @@
 		//let rep="";
 		//$("#test").text("dd");
 		console.log("showReplyList");
-	
+		var userNick =$("#loginUser").val();
+		console.log("userNick="+userNick)
 		var cnt=1;
 		let rep="<table id='showreply' border='1'>";
 		//rep+="<tr><td>nick</td><td>reply</td></tr>";
@@ -75,12 +74,13 @@
 			//rep+="<td>"+item.rgroup+"</td>";
 			//rep+="<td>"+item.step+"</td>";
 			//rep+="<td><button onclick='reply_delete()'><button type='submit'><input type='hidden' name='rnumrnum' value='"+item.rnum+"'></button>삭제</button></td>";
-			
+			if(userNick == item.nick) {
 			rep+="<td><button id='double_chk' onclick='reply_modify_form("+cnt+")'>수정</button></td>";
-			
-			
 			//rep+="<td><button onclick='reply_delete("+cnt+")'><input type='hidden' name='numtest' value='"+item.rnum+"'>삭제</button></td>";
 			rep+="<td><button onclick='reply_delete("+cnt+")'> 삭제</button></td>";
+			} else if(userNick == "관리자") {
+			rep+="<td><button onclick='reply_delete("+cnt+")'> 삭제</button></td>";
+			}
 			if(item.step==0) {
 				rep+="<th><input type='button' value='대댓글' onclick='reply_reply("+cnt+")'></th>"
 				rep+="<tr id='reply_reply_area"+cnt+"'></tr>"
@@ -95,6 +95,7 @@
 	}
 	// 댓글 저장
 	function reply_reg() {
+		console.log("댓글저장버튼누름")
 		var re=$("#reply").val();
 		var savetime=$("#savetime").val();
 		var step=$("#step").val();
@@ -253,33 +254,40 @@
 
 </script>
 </head>
-<body>mate_reply.jsp<Br>
-	<hr>
- 		<!-- <button onclick="show()">댓글보이기</button>-->
+<body class="is-preload">
 
-	<label id="h">
-		<button onclick="hide()">댓글숨기기</button>
-	</label>
-	<label id="s">
-		<button onclick="show()">댓글보이기</button>
-	</label>
-	 <label id="test">test</label>
-	 
-	<label id="input">
-		<input type="hidden" id="step" value="0">
-		<textarea id="reply" name="reply" rows="10" cols="50" placeholder="댓글을 입력하세요"></textarea>
-		<button onclick="reply_reg()">등록</button>
-		<label id="here">
-			<table border="1" id="comment_table">
-			<tr>
-				<th>bnum</th> <th>rnum </th> <th>시간</th>
-				<th>닉네임</th> <th>댓글내용</th> 
-				<th>rgroup</th> <th>step</th> 
-			</tr>
-			<c:set var="cnt" value="1" />
-			<c:forEach items="${mate_reply_list }" var="reply_list">
-			<tr id="modify_area${cnt}">
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+		<!-- Main -->
+		<div class="inner">
+				<label id="h">
+					<button onclick="hide()">댓글숨기기</button>
+				</label>
+				<label id="s">
+					<button onclick="show()">댓글보이기</button>
+				</label>
+				<label id="input">
+					<input type="hidden" id="step" value="0">
+					<c:set var="loginUser" value="${loginUser }"/>
 
+					<textarea id="reply" name="reply" rows="10" cols="50" placeholder="댓글을 입력하세요"></textarea>
+					<button onclick="reply_reg()">등록</button>
+						<label id="here">				
+						<table id="comment_table">
+						<tr>
+							
+							
+							<td colspan="3"><input type="text"  placeholder="댓글을 입력하세요"></td>
+							<td>
+							<input type="hidden" id="loginUser" value="${loginUser }">
+							<input type="button" value="댓글달기" onclick="reply_reg()"></td>
+							<td>${loginUser }</td>
+						</tr>
+						<c:set var="cnt" value="1" />
+						<c:forEach items="${mate_reply_list }" var="reply_list">
+						<tr id="modify_area${cnt}">
 			<input type="hidden" id="rnum${cnt}" value="${reply_list.rnum}">
 			<input type="hidden" id="bnum${cnt}" value="${reply_list.bnum}">
 		 	<input type="hidden" id="nick${cnt}" value="${reply_list.nick}">
@@ -296,20 +304,27 @@
 					<th>  </th>
 				</c:otherwise>
 			</c:choose>
-				<td id="modify_bnum${cnt}">${reply_list.bnum }</td>
+				<!--  <td id="modify_bnum${cnt}">${reply_list.bnum }</td>
 				<td id="modify_rnum${cnt}">${reply_list.rnum }</td>
+				<td id="modify_rgroup${cnt}">${reply_list.rgroup }</td> 
+				<td id="modify_step${cnt}">${reply_list.step }</td> -->
 				<td id="modify_nick${cnt}">${reply_list.nick }</td> 
 				<td id="modify_reply${cnt}">${reply_list.reply }</td> 
-				<td id="modify_savetime${cnt}">${reply_list.savetime }</td> 
-				<td id="modify_rgroup${cnt}">${reply_list.rgroup }</td> 
-				<td id="modify_step${cnt}">${reply_list.step }</td> 
-				
-				<td><button onclick="reply_modify_form(${cnt})">수정</button></td>
-				<td><button onclick="reply_delete(${cnt})">삭제</button></td>
+				<td id="modify_savetime${cnt}">${reply_list.savetime } </td> 
+				<td> dfasdf ${loginUser }</td>
+				<c:choose>
+					<c:when test="${reply_list.nick eq loginUser }">
+						<td><button onclick="reply_modify_form(${cnt})">수정</button></td>
+						<td><button onclick="reply_delete(${cnt})">삭제</button></td>
+					</c:when>
+					<c:when test="${admin eq '관리자' }">
+						<td><button onclick="reply_delete(${cnt})">삭제</button></td>
+					</c:when>
+				</c:choose>
 				<c:choose>
 					<c:when test="${reply_list.step==0 }">
 						<td><input type="button" value="대댓글" onclick="reply_reply(${cnt })"></td>
-						<td><button onclick="reply_reply(${cnt })">대댓글</button></td>
+						<!--<td><button onclick="reply_reply(${cnt })">대댓글</button></td>-->
 						<tr id="reply_reply_area"></tr>
 					</c:when>
 				</c:choose>
@@ -317,16 +332,40 @@
 			<!-- 대댓글 위치할 공간 -->
 			<tr id="reply_reply_area${cnt}"></tr>
 			<c:set var="cnt" value="${cnt+1}" />
-			</c:forEach>
-		</label>
-	</label>
-	
-	
-	
-	
-	
+							<!-- <td colspan="2" style="text-align: center;width: 120px;">닉네임<br>
+								<span style="font-size: 10pt;">2020-07-21</span>
+							</td>
+							<td >댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다</td>
+							<td><input type="button" value="댓글달기"><br><input type="button" value="수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정"><br><input type="button" value="삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제"></td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;width: 120px;">닉네임<br>
+								<span style="font-size: 10pt;">2020-07-21</span>
+							</td>
+							<td>댓글내용입니다다다다ㅏ다	</td>
+							<td><input type="button" value="댓글달기"></td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;width: 120px;">닉네임<br>
+								<span style="font-size: 10pt;">2020-07-21</span>
+							</td>
+							<td >댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다</td>
+							<td><input type="button" value="댓글달기"></td>
+						</tr>
+						<tr>
+							<td style="text-align: center;width: 120px;">
+								=>
+							</td>
+							<td style="text-align: center;width: 120px;">닉네임<br>
+								<span style="font-size: 10pt;">2020-07-21</span>
+							</td>
+							<td >댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다댓글내용입니다다다다ㅏ다다다다다다ㅏ다다다</td>
+							<td><input type="button" value="댓글달기"></td>
+						</tr> -->
+					</c:forEach>
+					</table>
+				</label>
+			</label>	
+			</div>				
 </body>
-
-
-
 </html>

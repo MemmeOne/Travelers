@@ -1,40 +1,55 @@
-create table board(
-id number(4) primary key,
-name varchar2(20),
+--Travelers 리뷰게시판
+create table review_board(
+num number(4) primary key,
+nick varchar2(20),
 title varchar2(100),
-content varchar2(300),
+content varchar2(2000),
 savedate date default sysdate,
 hit number(4) default 0,
-idgroup number(4),
+numgroup number(4),
 step number(4),
 indent number(4)
 );
 
-create sequence board_seq;
+create sequence review_board_seq;
 
-create table comments(
-id number(4),
+--Travelers 리뷰게시판 댓글
+create table review_board_comment(
 num number(4),
+cnum number(4),
 numgroup number(4),
 indent number(4),
-cname varchar2(20),
-comments varchar2(100),
+cnick varchar2(20),
+comments varchar2(300),
 savedate date default sysdate,
-constraint cid foreign key(id) references board(id) on delete cascade
+constraint cid foreign key(num) references review_board(num) on delete cascade
 );
 
 
-create sequence comments_seq;
+create sequence review_board_comment_seq;
 
+--여행수첩 나라 Table
 create table nation(
 nation varchar2(30)
 );
 
+--여행수첩 Table
 create table traveldiary(
+num number(4) primary key,
 nick varchar2(30),
 nation varchar2(30),
 city varchar2(30),
 startdate date,
 enddate date,
-memo varchar2(30)
+memo varchar2(1000)
+);
+
+create sequence traveldiary_seq;
+
+--추천 Table
+create table favorite(
+boardnum number,
+num number,
+userid varchar2(30),
+CONSTRAINT a  PRIMARY KEY (boardnum,num,userid)
 );

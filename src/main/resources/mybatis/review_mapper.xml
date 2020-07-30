@@ -5,98 +5,134 @@
 <mapper namespace="Mapper">
 	<!-- 게시글 불러오기 -->
 	<select id="reviewboard" resultType="dto">
-		select B.*from(select rownum rn, A.*from(select*from board order by idgroup desc, step asc)A)B where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+		select B.*from(select rownum rn, A.*from(select*from review_board order by numgroup desc, step asc)A)B where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
 	</select>
 	
 	<!-- 게시글수 카운트 -->
 	<select id="totalcontent" resultType="int">
-		select count(*) from board
+		select count(*) from review_board
 	</select>
 	
 	<!-- 선택 게시글 정보 불러오기 -->
 	<select id="contentview" resultType="dto">
-		select*from board where id=#{id}
+		select*from review_board where num=#{num}
 	</select>
 	
 	<!-- 선택 게시글 조회수 올리기 -->
 	<update id="uphit">
-		update board set hit=hit+1 where id=#{id}
+		update review_board set hit=hit+1 where num=#{num}
 	</update>
 	
 	<!-- 선택 게시글 삭제 -->
 	<delete id="delete">
-		delete from board where id=#{id}
+		delete from review_board where num=#{num}
 	</delete>
 	
 	<!-- 선택 게시글 수정 -->
 	<update id="modify">
-		update board set title=#{title}, content=#{content} where id=#{id}
+		update review_board set title=#{title}, content=#{content} where num=#{num}
 	</update>
 	
 	<!-- 게시글 등록 -->
 	<insert id="contentreg">
-		insert into board(id,name,title,content,hit,idgroup,step,indent) values(board_seq.nextval,#{name},#{title},#{content},0,board_seq.currval,0,0)
-	</insert>
-	
-	<!-- 댓글 불러오기 -->
-	<select id="comments" resultType="cdto">
-		select B.*from(select rownum rn, A.*from(select*from comments where id=#{id} order by numgroup asc, indent asc, num asc)A)B where rn between 1 and #{count}
-	</select>
-	
-	<!-- 댓글 등록 -->
-	<insert id="comment">
-		insert into comments(id,num,numgroup,indent,cname,comments) values(#{id},comments_seq.nextval,comments_seq.currval,0,#{cname},#{comments})
+		insert into review_board(num,nick,title,content,hit,numgroup,step,indent) values(review_board_seq.nextval,#{nick},#{title},#{content},0,review_board_seq.currval,0,0)
 	</insert>
 	
 	<!-- 게시글 검색 -->
 	<select id="search" resultType="dto">
-		select C.*from(select rownum rn, B.*from(select A.*from(select*from board where ${searchtype} like '%${search}%')A  order by idgroup desc, step asc)B)C where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+		select C.*from(select rownum rn, B.*from(select A.*from(select*from review_board where ${searchtype} like '%${search}%')A  order by numgroup desc, step asc)B)C where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
 	</select>
 	
 	<!-- 검색 게시글 수 -->
 	<select id="totalsearch" resultType="int">
-		select count(*) from board where ${searchtype} like '%${search}%'
+		select count(*) from review_board where ${searchtype} like '%${search}%'
 	</select>
 	
-	<!-- 댓글수 id별 -->
+	<!-- 댓글 불러오기 -->
+	<select id="comments" resultType="cdto">
+		select B.*from(select rownum rn, A.*from(select*from review_board_comment where num=#{num} order by numgroup asc, indent asc, cnum asc)A)B where rn between 1 and #{count}
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="comment">
+		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments) values(#{num},review_board_comment_seq.nextval,review_board_comment_seq.currval,0,#{cnick},#{comments})
+	</insert>
+	
+	
+	<!-- 댓글수 게시글 별 -->
 	<select id="commentcount" resultType="cn">
-		select id, (count(*))count from comments group by id
+		select num, (count(*))count from review_board_comment group by num
 	</select>
 	
 	<!-- 대댓글 등록 -->
 	<insert id="reply">
-		insert into comments(id,num,numgroup,indent,cname,comments) values(#{id},comments_seq.nextval,#{numgroup},1,#{cname},#{comments})
+		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments) values(#{num},review_board_comment_seq.nextval,#{numgroup},1,#{cnick},#{comments})
 	</insert>
 	
 	<!-- 댓글 수정 -->
 	<update id="commentmodify">
-		update comments set comments=#{comments} where num=#{num}
+		update review_board_comment set comments=#{comments} where cnum=#{cnum}
 	</update>
 	
 	<!-- 댓글 삭제 -->
 	<delete id="commentdelete">
-		delete from comments where numgroup=#{num}
+		delete from review_board_comment where numgroup=#{cnum}
 	</delete>
 	
 	<!-- 대댓글 삭제 -->
 	<delete id="commentindentdelete">
-		delete from comments where num=#{num}
+		delete from review_board_comment where cnum=#{cnum}
 	</delete>
 	
 	<!-- id의 댓글수  -->
 	<select id="totalcomment" resultType="cn">
-		select A.*from(select id, (count(*))count from comments group by id)A where id=#{id}
+		select A.*from(select num, (count(*))count from review_board_comment group by num)A where num=#{num}
 	</select>
 	
+	<!-- 나라 불러오기  -->
 	<select id="nation" resultType="String">
 		select*from nation
 	</select>
 
+	<!-- 여행수첩 등록  -->
 	<insert id="travelDiaryReg" parameterType="td">
-		insert into traveldiary values(#{nick}, #{nation}, #{city}, #{startdate}, #{enddate}, #{memo})
+		insert into traveldiary(num,nick,nation,city,startdate,enddate,memo) values(traveldiary_seq.nextval,#{nick}, #{nation}, #{city}, #{startdate}, #{enddate}, #{memo})
 	</insert>
 	
+	<!-- 여행수첩불러오기  -->
 	<select id="travelDiaryList" resultType="td">
 		select*from traveldiary where nick=#{nick}
 	</select>
+	
+	<!-- 여행수첩 수정 불러오기 -->
+	<select id="travelDiaryMod" resultType="td">
+		select*from traveldiary where num=#{num}
+	</select>
+	
+	<!-- 여행수첩 수정 업데이트 -->
+	<update id="travelDiaryModUpdate">
+		update traveldiary set nation=#{nation}, city=#{city}, startdate=#{startdate}, enddate=#{enddate}, memo=#{memo} where num=#{num}
+	</update>
+	
+	<!-- 여행수첩 삭제 -->
+	<delete id="travelDiaryDel">
+		delete from traveldiary where num=#{num}
+	</delete>
+	
+	<!-- 게시글 추천 -->
+	<insert id="favoriteUp">
+		insert into favorite values(#{boardnum}, #{num}, #{userid})
+	</insert>
+	
+	
+	<!-- 게시글 추천  불러오기-->
+	<select id="favorite" resultType="cn">
+		select num, (count(*))count from favorite group by boardnum, num having boardnum=#{boardnum} and num=#{num}
+	</select>
+	
+	<!-- 게시글 목록  추천  불러오기-->
+	<select id="favoriteList" resultType="cn">
+		select num, (count(*))count from favorite group by boardnum, num having boardnum=#{num}
+	</select>
+	
 </mapper>

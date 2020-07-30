@@ -6,22 +6,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReviewBoardDTO {
 	
-	private int id;
-	private	String name, title, content;
+	private int num;
+	private	String nick, title, content;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT+9")
 	private Timestamp savedate;
 	private int hit, idgroup, step, indent;
 	
-	public int getId() {
-		return id;
+	public int getNum() {
+		return num;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setNum(int num) {
+		this.num = num;
 	}
-	public String getName() {
-		return name;
+	public String getNick() {
+		return nick;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 	public String getTitle() {
 		return title;

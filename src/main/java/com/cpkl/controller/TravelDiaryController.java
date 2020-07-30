@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.TravelDiaryDTO;
 import com.cpkl.service.TravelDiaryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,19 +23,38 @@ public class TravelDiaryController {
 	@RequestMapping("form")
 	public String form(Model model) {
 		tds.getNation(model);
-		return "travel_diary/form";
+		return "travel_diary/traveldiary_form";
 	}
 	
 	@RequestMapping("travelDiaryReg")
 	public String travelDiaryReg(TravelDiaryDTO dto) {
 		tds.travelDiaryReg(dto);
-		return "travel_diary/close";
+		return "travel_diary/traveldiary_form_close";
 	}
 	
 	@RequestMapping("travelDiary")
 	public String travelDiary() {
-		return "travel_diary/diary";
+		return "travel_diary/travekdiary";
 	}
+	
+	@RequestMapping("travelDiaryMod")
+	public String travelDiaryMod(@RequestParam("num") int num,Model model) {
+		tds.travelDiaryMod(num, model);
+		return "travel_diary/traveldiary_modify";
+	}
+	
+	@RequestMapping("travelDiaryModUpdate")
+	public String travelDiaryModUpdate(TravelDiaryDTO dto) {
+		tds.travelDiaryModUpdate(dto);
+		return "travel_diary/traveldiary_form_close";
+	}
+	
+	@RequestMapping("travelDiaryDel")
+	public String travelDiaryDel(@RequestParam("num") int num) {
+		tds.travelDiaryDel(num);
+		return "travel_diary/travekdiary";
+	}
+	
 	
 	@RequestMapping(value="travelDiaryList", produces = "application/json;charset=utf-8")
 	@ResponseBody
@@ -46,6 +64,5 @@ public class TravelDiaryController {
 		String json = mapper.writeValueAsString(list);
 		return json;
 	}
-	
 	
 }

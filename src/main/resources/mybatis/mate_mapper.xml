@@ -160,7 +160,8 @@
 		#{wnick},#{wgender},#{wage},
 		#{mtravel_date},#{mtravel_date_s},#{mtravel_date_e},
 		#{mthema},#{mroom},#{mgender},#{mage}, #{mcnt}, #{mexpenses},#{price1},#{price2},
-		#{deadline})
+		#{deadline}
+		)
 	</insert>
 	
 
@@ -175,12 +176,11 @@
 	</update>
 	<!-- 글 수정 -->
 	<update id="mate_content_modify">
-		update mate_board set  title=#{title}, content=#{content}
-		<!--  ,
+		update mate_board set title=#{title}, content=#{content},
 		wgender=#{wgender},wage=#{wage},
 		mtravel_date=#{mtravel_date},mtravel_date_s=#{mtravel_date_s},mtravel_date_e=#{mtravel_date_e},
 		mthema=#{mthema},mroom=#{mroom},mgender=#{mgender},
-		mage=#{mage}, mcnt=#{mcnt}, mexpense=#{mexpenses},price1=#{price1},price2=#{price2} )-->
+		mage=#{mage}, mcnt=#{mcnt}, mexpense=#{mexpenses},price1=#{price1},price2=#{price2} 
 		where num=#{num}
 	</update>
 	
@@ -220,7 +220,11 @@
 	<insert id="mate_reply_reply_save" parameterType="mate_reply_dto">
 		insert into mate_board_reply(bnum, rnum, nick, reply, rgroup, step)
 		values(#{bnum},mate_board_reply_seq.nextval, #{nick}, #{reply}, #{rgroup}, #{step} )
-	
 	</insert>
-
+	
+	
+	<!-- 게시글 별 댓글 수 -->
+	<select id="commentcount" resultType="mate_reply_cnt">
+		select bnum, (count(*))count from mate_board_reply group by bnum
+	</select>
 </mapper>

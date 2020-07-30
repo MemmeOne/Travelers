@@ -53,19 +53,6 @@ public class HomeController implements ServletContextAware {
 		return "home";
 	}
 	
-	@RequestMapping("list")
-	public String list() {
-		return "defualt/list";
-	}
-	@RequestMapping("write")
-	public String write() {
-		return "defualt/write";
-	}
-	@RequestMapping("post")
-	public String post() {
-		return "defualt/post";
-	}
-	
 	@RequestMapping(value = "/file_uploader_html5", method = RequestMethod.POST)
 	public void file_uploader_html5(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String sFileInfo = "";

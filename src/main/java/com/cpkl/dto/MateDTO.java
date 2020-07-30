@@ -10,7 +10,7 @@ public class MateDTO {
 	// 글 정보 (제목, 내용, 번호, 조회수, 글 쓴 시간)
 	private String title, content;
 	private int num, hit;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="GMT+9")
 	private Timestamp savedate;
 
 	// 글쓴이 닉, 성별, 나이

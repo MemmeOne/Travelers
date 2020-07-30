@@ -1,20 +1,25 @@
 package com.cpkl.dto;
 
 public class CommentNumber {
-	private int id;
+	private int num;
 	private int count;
 	
-	public int getId() {
-		return id;
+	public int getNum() {
+		return num;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setNum(int num) {
+		this.num = num;
 	}
 	public int getCount() {
 		return count;
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	
+	@Override
+	public String toString() {
+		return "CommentNumber [num=" + num + ", count=" + count + "]";
 	}
 	
 	

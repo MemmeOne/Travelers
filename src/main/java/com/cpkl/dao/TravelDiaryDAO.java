@@ -29,4 +29,15 @@ public class TravelDiaryDAO {
 		return sqlSession.selectList(namespace+".travelDiaryList", nick);
 	}
 	
+	public TravelDiaryDTO travelDiaryMod(int num) {
+		return sqlSession.selectOne(namespace+".travelDiaryMod", num);
+	}
+	
+	public void travelDiaryModUpdate(TravelDiaryDTO dto) {
+		sqlSession.update(namespace+".travelDiaryModUpdate", dto);
+	}
+	
+	public void travelDiaryDel(int num) {
+		sqlSession.delete(namespace+".travelDiaryDel", num);
+	}
 }

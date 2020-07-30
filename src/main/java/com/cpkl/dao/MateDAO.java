@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cpkl.dto.MateDTO;
+import com.cpkl.dto.MateReplyCnt;
 import com.cpkl.dto.MateReplyDTO;
 
 @Repository
@@ -283,4 +284,9 @@ public class MateDAO {
 			System.out.println("dao 대댓 step :"+mateReplydto.getStep());
 			mate_sqlsession.insert(namespace+".mate_reply_reply_save", mateReplydto);
 		}
+		
+		public List<MateReplyCnt> commentCount() {
+			return mate_sqlsession.selectList(namespace+".commentcount");
+		}
+		
 }

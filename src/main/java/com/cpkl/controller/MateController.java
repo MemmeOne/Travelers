@@ -1,11 +1,14 @@
 package com.cpkl.controller;
 
-import java.sql.Date;
 
+
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,20 @@ public class MateController {
 	@Autowired
 	private MateReplyService mateReplySer;
 	
+	@RequestMapping("list")
+	public String list() {
+		return "defualt/list";
+	}
+	@RequestMapping("write")
+	public String write() {
+		return "defualt/write";
+	}
+	@RequestMapping("post")
+	public String post() {
+		return "defualt/post";
+	}
+
+ 
 
 	// 글 전체 목록 보기
 	@RequestMapping("mate_board_list")
@@ -51,13 +68,31 @@ public class MateController {
 		HttpSession session=request.getSession();
 		session.setAttribute("loginGender", "무");
 		session.setAttribute("loginAge", 20);
-		session.setAttribute("loginNick", "testnick");
+		session.setAttribute("loginNick", "testnick2");
 		//session.setAttribute("loginNick", "testnick2");
 		//session.setAttribute("admin", "관리자");
 		MateDTO dto=new MateDTO();
 		System.out.println("board con 시간 : "+dto.getSavedate());
 		System.out.println("board con title : "+dto.getTitle());
 		mateSer.mate_board_list(model,page);
+//		java.util.Date cdate=new  java.util.Date();
+//		session.setAttribute("cdate", cdate);
+		
+//		Calendar cal=new GregorianCalendar();
+//		//Date cdate=new Date(cal.getTimeInMillis());
+//
+//		Timestamp cdate=new Timestamp(cal.getTimeInMillis());
+//		session.setAttribute("cdate", cdate);
+		
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date today=new java.util.Date();
+		String t=format.format(today);
+		session.setAttribute("cdate", t);
+		SimpleDateFormat format2=new SimpleDateFormat("hh:mm");
+		String t2=format2.format(today);
+		session.setAttribute("cdate_today", t2);
+		System.out.println("cdate="+t);
+		System.out.println("cdate_today="+t2);
 		return "mate_board/mate_board_list";
 	}
 	
@@ -174,7 +209,7 @@ public class MateController {
 	// 글 쓰기 저장
 	@RequestMapping(value="mate_write_save",  produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String mate_write_save(MateDTO matedto,HttpSession session,@RequestParam ArrayList<String> mthema) throws JsonProcessingException {
+	public String mate_write_save(MateDTO matedto,HttpSession session ) throws JsonProcessingException {
 		System.out.println("c write save 시작");
 //		System.out.println("mroom : "+mroom);
 //		ArrayList<String> th=new ArrayList<String>();
@@ -464,6 +499,11 @@ public class MateController {
 	@RequestMapping("mate_reply")
 	public String mate_reply() {
 		return "mate_board/mate_reply";
+	}
+	
+	@RequestMapping("reply")
+	public String reply() {
+		return "mate_board/reply";
 	}
 	
 	

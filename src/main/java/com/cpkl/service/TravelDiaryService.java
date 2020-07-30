@@ -26,4 +26,18 @@ public class TravelDiaryService {
 	public List<TravelDiaryDTO> travelDiaryList(String nick) {
 		return dao.travelDiaryList(nick);
 	}
+	
+	public void travelDiaryMod(int num, Model model) {
+		model.addAttribute("nationlist", dao.getNation());
+		model.addAttribute("diary", dao.travelDiaryMod(num));
+	}
+	
+	public void travelDiaryModUpdate(TravelDiaryDTO dto) {
+		dao.travelDiaryModUpdate(dto);
+	}
+	
+	public void travelDiaryDel(int num) {
+		dao.travelDiaryDel(num);
+	}
+	
 }

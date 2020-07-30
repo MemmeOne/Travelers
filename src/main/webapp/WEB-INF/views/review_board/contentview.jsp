@@ -12,31 +12,36 @@
 <script>
 	
 	var commentNumber = 10;
-	
+	var a = 0;
 	function commentReg(){
-		var id = $("#id").val();
-		var cname = $("#cname").val();
+		var num = $("#num").val();
+		var cnick = $("#cnick").val();
 		var comments = $("#comments").val();
-		var form={id:id, cname:cname, comments:comments}
-		$.ajax({
-			url:"comment",
-			type:"POST",
-			data:form,
-			success:function(){
-				$("#comments").val("");
-				commentlist();
-			},error:function(){
-				alert("댓글 등록 실패")
-			}
-		})
+		var form={num:num, cnick:cnick, comments:comments}
+		if(comments == ""|| comments == " "){
+			alert("내용을 입력하세요");
+		}else{
+			$.ajax({
+				url:"comment",
+				type:"POST",
+				data:form,
+				success:function(){
+					$("#comments").val("");
+					commentList();
+					$("#op").val("댓글닫기");
+				},error:function(){
+					alert("댓글 등록 실패")
+				}
+			})
+		}
 	}
 	
 	
-	function commentlist(){
-		var id = $("#id").val();
-		var form={id:id, count:commentNumber};
+	function commentList(){
+		var num = $("#num").val();
+		var form={num:num, count:commentNumber};
 		var i = 0;
-		var userName = '${user.name}'
+		var userNick = '${loginUser.nick}'
 		$.ajax({
 			url:"comments",
 			type:"POST",
@@ -45,37 +50,49 @@
 				let html= ""
 					$.each(data, function(index,item){
 						if(item.indent == 0){
-							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<tr><input type='hidden' id='cnum"+i+"' value='"+item.cnum+"'>"
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
-							html += "<td colspan='2'>"+item.cname+"<br>"+item.savedate+"</td>"
-							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
-							if(item.cname == userName){
-								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='3' align='right'><input type='button' value='수정' onclick='commentModify("+i+")'>"+
-								"<input type='button' value='삭제' onclick='commentDel("+i+")'>"+
-								"<input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
-								i += 1;
-							}else{
-								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='3' align='right'><input type='button' value='답글' onclick='reply("+i+")'></td> </tr>";
-								i += 1;
-							
+							html += "<input type='hidden' id='comments"+i+"' value='"+item.comments+"'>"
+							html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							html += "<td style='width: 680px;'>"+item.comments+"</td>"
+							if(item.cnick == userNick){
+								html += "<td><input type='button' value='댓글달기' onclick='reply("+i+")'><br>"+
+								"<input type='button' value='수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정' onclick='commentModify("+i+")'><br>"+
+								"<input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"'></tr>";
+							}else if(userNick == "관리자"){
+								console.log("dd")
+								html += "<td><input type='button' value='댓글달기' onclick='reply("+i+")'><br>"+
+								"<input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"'></tr>";
+							}else if(userNick != ""){
+								console.log("dd2")
+								html += "<td><input type='button' value='댓글달기' onclick='reply("+i+")'></td></tr><tr id='cn"+i+"'></tr>";
 							}
 						}else {
-							html += "<tr><input type='hidden' id='num"+i+"' value='"+item.num+"'>"
+							html += "<tr><input type='hidden' id='cnum"+i+"' value='"+item.cnum+"'>"
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
-							html += "<td>&#10149;</td> <td>"+item.cname+"<br>"+item.savedate+"</td>"
-							html += "<td align='left' width='350px'>"+item.comments+"</td> <tr>"
-							if(item.cname == userName){
-								html += "<tr id='cn"+i+"'>"+
-								"<td colspan='3' align='right'><input type='button' value='수정' onclick='commentModify("+i+")'>"+
-								"<input type='button' value='삭제' onclick='commentDel("+i+")'></td> </tr>"
-								i += 1;
-							}
+							html += "<td style='text-align: center;width: 120px;'>&#10149;</td><td id='cnick"+i+"' style='text-align: center;width: 120px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							html += "<td style='width: 560px;'>"+item.comments+"</td>"
+							if(item.cnick == userNick){
+								html += "<td><input type='button' value='수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정' onclick='commentModify("+i+")'><br>"+
+								"<input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"'></tr>"
+							}else if(userNick == "관리자")
+								html += "<td><input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"'></tr>"
 						}
+						i += 1;
 					})
 					$("#commentlist").html(html);
-					totalComment(i);
+					totalComment();
+					if(a > 9){
+						if(i == a){
+							html = "<td colspan='4' align='center'><input type='button' value='댓글 닫기' onclick='commentNumberM()'></td>"
+							$("#viewmore").html(html);
+						}else{
+							html = "<td colspan='4' align='center'><input type='button' value='댓글 더보기' onclick='commentNumberP()'></td>"
+							$("#viewmore").html(html);
+						}
+					}else{
+						$("#viewmore").html("");
+					}
 			},error:function(){
 				alert("댓글 보기 실패")
 			}
@@ -83,81 +100,86 @@
 	}
 	
 	function reply(i){
-		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'></td><td><input type='button' id='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentList()'></td>"
 		$("#cn"+i).html(html)
 	}	
 	
 	function replyReg(i){
-		var id = $("#id").val();
-		var cname = $("#cname").val();
+		var num = $("#num").val();
+		var cnick = $("#cnick").val();
 		var comments = $("#replycomment"+i).val();
-		var numgroup = $("#num"+i).val();
-		var form={id:id, numgroup:numgroup, cname:cname, comments:comments}
-		$.ajax({
-			url:"reply",
-			type:"POST",
-			data:form,
-			success:function(){
-				commentlist();
-			},error:function(){
-				alert("댓글 등록 실패")
-			}
-		})
+		var numgroup = $("#cnum"+i).val();
+		var form={num:num, numgroup:numgroup, cnick:cnick, comments:comments}
+		if(comments == ""){
+			alert("내용을 입력하세요");
+		}else{
+			$.ajax({
+				url:"reply",
+				type:"POST",
+				data:form,
+				success:function(){
+					commentList();
+				},error:function(){
+					alert("댓글 등록 실패")
+				}
+			})
+		}
 	}
 	
 	function commentModify(i){
-		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'><input type='button' id='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentlist()'></td>"
+		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"' value='"+$("#comments"+i).val()+"'></td><td><input type='button' id='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentList()'></td>"
 		$("#cn"+i).html(html)
 	}
 	
 	function commentModifyUpdate(i){
 		var comments = $("#replycomment"+i).val();
-		var num = $("#num"+i).val();
-		var form={num:num, comments:comments}
-		$.ajax({
-			url:"commentmodify",
-			type:"POST",
-			data:form,
-			success:function(){
-				commentlist();
-			},error:function(){
-				alert("댓글 수정 실패")
-			}
-		})
+		var cnum = $("#cnum"+i).val();
+		var form={cnum:cnum, comments:comments}
+		if(comments == "" || comments == " "){
+			alert("내용을 입력하세요");
+		}else{
+			$.ajax({
+				url:"commentmodify",
+				type:"POST",
+				data:form,
+				success:function(){
+					commentList();
+				},error:function(){
+					alert("댓글 수정 실패")
+				}
+			})
+		}
 	}
 	
 	function commentDel(i){
 		var indent = $("#indent"+i).val();
-		var num = $("#num"+i).val();
-		var form={num:num, indent:indent}
+		var cnum = $("#cnum"+i).val();
+		var form={cnum:cnum, indent:indent}
 		$.ajax({
 			url:"commentdelete",
 			type:"POST",
 			data:form,
 			success:function(){
-				commentlist();
+				commentList();
 			},error:function(){
 				alert("댓글 삭제 실패")
 			}
 		})
 	}
 	
-	function totalComment(i){
-		var id = $("#id").val();
-		var form={id:id}
+	function totalComment(){
+		var num = $("#num").val();
+		var form={num:num}
 		$.ajax({
 			url:"totalcomment",
 			type:"POST",
 			data:form,
 			success:function(total){
-				if(total.count > 10){
-					if(i == total.count){
-						html = "<td colspan='3'><input type='button' value='댓글 닫기' onclick='commentNumberM()'></td>"
-						$("#viewmore").html(html);
-					}else{
-						html = "<td colspan='3'><input type='button' value='댓글 열기' onclick='commentNumberP()'></td>"
-						$("#viewmore").html(html);
-					}
+				if(total == null){
+					$("#op").attr("disabled",true);
+				}else{
+					$("#op").attr("disabled",false);
+					a = total.count;
 				}
 			},error:function(){
 				alert("댓글 개수 실패")
@@ -167,13 +189,15 @@
 	
 	function commentNumberP(){
 		commentNumber += 10;
-		commentlist();
+		commentList();
 
 	}
 	
 	function commentNumberM(){
 		commentNumber = 10;
-		commentlist();
+		$("#op").val("댓글보기");
+		$("#viewmore").html("");
+		$("#commentlist").html("");
 	}
 	
 	function modify(){
@@ -185,68 +209,122 @@
 		document.getElementById("form").submit();
 	}
 	
+	function openClose(){
+		if($("#op").val() == "댓글보기"){
+			commentList();
+			$("#op").val("댓글닫기");
+		}else if($("#op").val() == "댓글닫기"){
+			$("#op").val("댓글보기");
+			$("#commentlist").html("");
+			$("#viewmore").html("");
+		}
+	}
+	
+	function favoriteUp(){
+		var boardnum = $("#boardnum").val();
+		var num = $("#num").val();
+		var userid = '${loginUser.id}';
+		var form = {boardnum:boardnum, num:num, userid:userid};
+		$.ajax({
+			url:"favoriteUp",
+			type:"POST",
+			data:form,
+			success:function(data){
+				favorite();
+			},error:function(){
+				alert("dd")
+			}
+		});
+	}
+	
+	
+	function favorite(){
+		var boardnum = $("#boardnum").val();
+		var num = $("#num").val();
+		var form = {boardnum:boardnum, num:num};
+		$.ajax({
+			url:"favorite",
+			type:"POST",
+			data:form,
+			success:function(data){
+				$("#favorite").html(data.count);
+			},error:function(){
+				alert("좋아요 부르기 실패")
+			}
+		});
+		
+	}
+	
 </script>
 </head>
-<body onload="commentlist()">
+<body class="is-preload" onload="totalComment();favorite();">
 <fmt:requestEncoding value="UTF-8"/>
-<div align="center">
-<form id="form" method="post">
-	<input type="hidden" id="id" name="id" value="${content.id }">
-	<input type="hidden" id="cname" name="cname" value="${user.name }">
-	<table border="1" style="width: 500px; border-collapse: collapse;">
-		<c:choose>
-		<c:when test="${user.name ne null && user.name eq content.name}">
-		<tr>
-		<td colspan="3" align="right">
-		<input type="button" onclick="modify()" value="수정"> 
-		<input type="button" onclick="del()" value="삭제"> 
-		</td>
-		</tr>
-		</c:when>
-		</c:choose>
-		<tr> 
-		<td colspan="3"><h1>${content.title }</h1></td> 
-		</tr>
-		<tr>
-		<td colspan="2" style="font-size: 12px;">작성자 : ${content.name }</td>
-		<td align="right" style="font-size: 12px;">조회수 : ${content.hit }</td>
-		</tr>			
-		<tr>
-		<td colspan="3" height="300px">${content.content }</td>
-		</tr>
-		<tbody id="commentlist">
-		</tbody>
-		<tr id="viewmore"></tr>
-		<c:choose>
-		<c:when test="${user.name ne null }">
-		<tr>
-		<td colspan="3">
-		<fieldset style="width: 500px;">
-		<legend>댓글</legend>
-		${user.name }
-		<br>
-		<textarea style="border: none; position: relative; left: 30px;" id="comments" name="comments" rows="3" cols="60"></textarea>
-		<br>
-		<input type="button" value="등록" style="position: relative; left: 450px;" onclick="commentReg()">
-		</fieldset>
-		</td>
-		</tr>
-		</c:when>
-		</c:choose>
-		<tr>
-		<td colspan="2">
-		<c:choose>
-		<c:when test="${user.name ne null }">
-		<input type="button" onclick="" value="답글">
-		</c:when>
-		</c:choose>
-		</td>
-		<td align="right">
-		<input type="button" onclick="location.href='reviewboard?page=1'" value="목록보기">
-		</td>
-		</tr>			
-	</table>
-</form>
-</div>
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+				<form id="form" method="post">
+					<input type="hidden" id="boardnum" value="1">
+					<input type="hidden" id="num" name="num" value="${content.num }">
+					<input type="hidden" id="cnick" name="cnick" value="${loginUser.nick }">
+					<table style="width: 1070px;">
+						<tr>
+							<td colspan="4">${content.title }</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								${content.nick }
+								<input type="image" src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;" onclick="favoriteUp()">
+								<span id="favorite"></span>
+							</td>
+							<fmt:formatDate var="savedate" value="${content.savedate }" pattern="yyyy-MM-dd"/>
+							<td colspan="2" style="text-align: right;">${savedate } | 조회 ${content.hit }</td>
+						</tr>
+						<tr>
+						<tr>
+							<td colspan="4" style="background: white; height: 300px;">
+								${content.content }
+							</td>
+						</tr>
+						<tr style="background: white; border-bottom: 0;">
+							<th colspan="2" style="text-align: left ;">
+								<input type="button" value="목록보기" onclick="location.href='reviewboard?boardnum=1&page=1'">	
+								<input type="button" value="댓글보기" id="op" onclick="openClose()">	
+							</th>
+							<th colspan="2" style="text-align: right;">
+								<c:choose>
+									<c:when test="${loginUser.nick eq content.nick }">
+										<input type="button" value="수정" onclick="modify()">
+										<input type="button" value="삭제" onclick="del()">
+									</c:when>
+									<c:when test="${loginUser.nick eq '관리자' }">
+										<input type="button" value="삭제" onclick="del()">
+									</c:when>
+								</c:choose>
+							</th>
+						</tr>
+					</table>
+					<table>
+						<c:choose>
+							<c:when test="${loginUser.nick ne null }">
+								<tr>
+									<td colspan="3"><input type="text" id="comments" style="width:800px;"></td>
+									<td><input type="button" value="댓글달기" onclick="commentReg()"></td>
+								</tr>
+							</c:when>				
+						</c:choose>
+						<tbody id="commentlist">
+						</tbody>
+						<tr id="viewmore"></tr>
+					</table>
+					</form>
+				</div>
+			</section>
+		</article>
+	</div>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

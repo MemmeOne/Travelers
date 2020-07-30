@@ -9,5 +9,6 @@
 		<typeAlias alias="cdto" type="com.cpkl.dto.ReviewBoardCommentsDTO"/>
 		<typeAlias alias="cn" type="com.cpkl.dto.CommentNumber"/>
 		<typeAlias alias="td" type="com.cpkl.dto.TravelDiaryDTO"/>
+		<typeAlias alias="favorite" type="com.cpkl.dto.FavoriteDTO"/>
 	</typeAliases>
 </configuration>

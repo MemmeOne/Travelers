@@ -32,7 +32,7 @@
 										<li><a href="mypage">마이페이지</a></li>
 										<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
 										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
-										<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
+										<li><a href="reviewboard?boardnum=1&page=1">여행 리뷰 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
 										<li><a href="list">게시판 형식</a></li>
 									</c:when>
@@ -42,7 +42,7 @@
 										<li><a href="reg_tos">회원가입</a></li>
 										<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
 										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
-										<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
+										<li><a href="reviewboard?boardnum=1&page=1">여행 리뷰 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
 										<li><a href="list">게시판 형식</a></li>
 									</c:otherwise>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 
@@ -29,16 +30,16 @@ public class ReviewBoardDAO {
 		return sqlSession.insert(namespace+".contentreg", dto);
 	}
 	
-	public ReviewBoardDTO contentView(int id) {
-		return sqlSession.selectOne(namespace+".contentview", id);
+	public ReviewBoardDTO contentView(int num) {
+		return sqlSession.selectOne(namespace+".contentview", num);
 	}
 	
-	public void upHit(int id) {
-		sqlSession.update(namespace+".uphit", id);
+	public void upHit(int num) {
+		sqlSession.update(namespace+".uphit", num);
 	}
 	
-	public void delete(int id) {
-		sqlSession.delete(namespace+".delete", id);
+	public void delete(int num) {
+		sqlSession.delete(namespace+".delete", num);
 	}
 	
 	public void modify(ReviewBoardDTO dto) {
@@ -86,8 +87,21 @@ public class ReviewBoardDAO {
 		sqlSession.delete(namespace+".commentindentdelete", dto);
 	}
 	
-	public CommentNumber totalComment(int id) {
-		return sqlSession.selectOne(namespace+".totalcomment", id);
+	public CommentNumber totalComment(int num) {
+		return sqlSession.selectOne(namespace+".totalcomment", num);
+	}
+	
+	public void favoriteUp(FavoriteDTO dto) {
+		sqlSession.insert(namespace+".favoriteUp", dto);
+	}
+	
+	
+	public List<ReviewBoardDTO> favoriteList(int boardnum) {
+		return sqlSession.selectList(namespace+".favoriteList", boardnum);
+	}
+	
+	public CommentNumber favorite(FavoriteDTO dto) {
+		return sqlSession.selectOne(namespace+".favorite", dto);
 	}
 	
 }

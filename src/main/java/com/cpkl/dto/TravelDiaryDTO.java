@@ -5,15 +5,22 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class TravelDiaryDTO {
+	int num;
 	String nick;
 	String nation;
 	String city;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy.MM.dd",timezone="GMT+9")
 	Date startdate;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy.MM.dd",timezone="GMT+9")
 	Date enddate;
 	String memo;
 	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public String getNick() {
 		return nick;
 	}

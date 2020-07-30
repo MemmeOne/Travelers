@@ -130,7 +130,7 @@ input, select, textarea {
 
 			body, input, select, textarea {
 				font-size: 11pt;
-				letter-spacing: 0.0375em;
+				/*letter-spacing: 0.0375em;*/
 			}
 
 		}
@@ -1814,9 +1814,9 @@ input, select, textarea {
 
 /* Form */
 
-	form {
-		margin: 0 0 2em 0;
-	}
+	 form {
+		margin: 0 0 0 0;
+	} 
 
 	label {
 		color: #fff;
@@ -2337,7 +2337,7 @@ input, select, textarea {
 	}
 
 	table {
-		margin: 0 0 2em 0;
+		margin: 0 0 0 0;
 		width: 100%;
 	}
 
@@ -2352,14 +2352,18 @@ input, select, textarea {
 			}
 
 		table td {
-			padding: 0.75em 0.75em;
+			padding: 0.3em;
+		}
+		/* 페이지 이동 버튼(a태그) 있는 부분만 여유 있게 여백을 줌*/
+		table.padding_larger td {
+			padding: 0.75em;
 		}
 
 		table th {
 			color: #fff;
 			font-size: 0.9em;
 			font-weight: 600;
-			padding: 0 0.75em 0.75em 0.75em;
+			padding: 0.3em ;
 			text-align: left;
 		}
 
@@ -2424,7 +2428,7 @@ input, select, textarea {
 		height: 3.125em;
 		letter-spacing: 0.225em;
 		line-height: 3.125em;
-		max-width: 30em;
+		/*max-width: 30em;*/
 		padding: 0 2.75em;
 		text-align: center;
 		text-decoration: none;
@@ -3244,13 +3248,21 @@ input, select, textarea {
 				border-color: #dfdfdf;
 			}
 
+			/* 테이블 테두리 선 (위, 아래만) */
 			.wrapper.style5 table tbody tr {
 				border-color: #dfdfdf;
 			}
+			.wrapper.style5 table#whiteline tbody tr {
+				border-color: #ffffff;
+			}
 
 				.wrapper.style5 table tbody tr:nth-child(2n + 1) {
-					background-color: rgba(0, 0, 0, 0.0375);
+					background-color:  rgba(0, 0, 0, 0.0375);
 				}
+				.wrapper.style5 table.all_white  tbody tr:nth-child(2n + 1) {
+					background-color: rgba(0, 0, 0, 0);
+				}
+				
 
 			.wrapper.style5 table th {
 				color: #2E3842;

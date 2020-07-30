@@ -81,6 +81,11 @@ public class ServiceLoginController {
 	public String reg() {
 		return "service_login/reg";
 	}
+	// 회원가입 완료 페이지
+	@RequestMapping("reg_end")
+	public String reg_end() {
+		return "service_login/reg_end";
+	}
 	/* 회원가입 유효성 검사 */
 	// 이메일 인증코드 보내기
 	private String email_code;

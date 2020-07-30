@@ -5,8 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>마이 페이지</title>
+<script type="text/javascript">
+function chk_loginUser() {
+	if ('${loginUser}' == "") {
+		alert("로그인 후 사용 가능합니다.")
+		location.href="login"
+	}else {
+		console.log("로그인 확인 성공")
+	}
+}
+</script>
 </head>
-<body class="is-preload">
+<body class="is-preload" onload="chk_loginUser()">
 	<%@ include file="../defualt/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">

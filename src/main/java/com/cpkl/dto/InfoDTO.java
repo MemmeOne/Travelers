@@ -6,7 +6,7 @@ public class InfoDTO {
 	private String num, nick, tag, title, content;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	private Timestamp savedate;
-	private int hit, numgroup;
+	private int hit, recommend;
 	// getter, setter
 	public String getNum() {
 		return num;
@@ -50,10 +50,10 @@ public class InfoDTO {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-	public int getNumgroup() {
-		return numgroup;
+	public int getRecommend() {
+		return recommend;
 	}
-	public void setNumgroup(int numgroup) {
-		this.numgroup = numgroup;
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
 	}
 }

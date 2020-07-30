@@ -41,11 +41,11 @@ public class InfoDAO {
 	public List<InfoDTO> listAll(final int page) {
 		map=new HashMap<String, Object>();
 		if(page>1) {
-			map.put("str", (page-1)*3+1);
-			map.put("end", (Integer)map.get("str")+2);
+			map.put("str", (page-1)*10+1);
+			map.put("end", (Integer)map.get("str")+9);
 		}else {
 			map.put("str", 1);
-			map.put("end", 3);
+			map.put("end", 10);
 		}
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -79,11 +79,11 @@ public class InfoDAO {
 		map.put("tag", tag);
 		map.put("word", word);
 		if(page>1) {
-			map.put("str", (Integer)(page-1)*3+1);
-			map.put("end", (Integer)map.get("str")+2);
+			map.put("str", (Integer)(page-1)*10+1);
+			map.put("end", (Integer)map.get("str")+9);
 		}else {
 			map.put("str", 1);
-			map.put("end", 3);
+			map.put("end", 10);
 		}
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -176,6 +176,7 @@ public class InfoDAO {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					result=info_sqlSession.delete(namespace+".info_delete",num);
+					info_sqlSession.delete(namespace+".info_delete_comment",num);
 				}
 			});
 		}catch (Exception e) {
@@ -229,11 +230,26 @@ public class InfoDAO {
 	}
 	// 댓글 삭제 기능
 	public void comment_delete(final InfoCommentDTO dto) {
+		dto.setContent("<b>삭제된 댓글입니다.</b>");
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					result=info_sqlSession.insert(namespace+".comment_delete",dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// admin 댓글 삭제 기능
+	public void comment_delete_admin(final InfoCommentDTO dto) {
+		dto.setContent("삭제된 댓글입니다.");
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=info_sqlSession.insert(namespace+".comment_delete_admin",dto);
 				}
 			});
 		}catch (Exception e) {

@@ -1,4 +1,5 @@
 package com.cpkl.service;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class InfoService {
 	// 댓글 삭제 기능
 	public List<InfoCommentDTO> comment_delete(InfoCommentDTO dto) {
 		dao.comment_delete(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	// admin 댓글 삭제 기능
+	public List<InfoCommentDTO> comment_delete_admin(InfoCommentDTO dto) {
+		dao.comment_delete_admin(dto);
 		return dao.comment_list(dto.getNumgroup());
 	}
 	// 대댓글 저장 기능

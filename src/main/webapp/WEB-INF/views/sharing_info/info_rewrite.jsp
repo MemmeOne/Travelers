@@ -11,53 +11,64 @@
 <script type="text/javascript" charset="utf-8">
 		sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
 </script>
-<style type="text/css">
-	#body { margin-top: 350px; display: flex; justify-content: center; align-items: center; }
-	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; width: 800px; }
-</style>
+<script type="text/javascript">
+function chk_loginUser() {
+	if ('${loginUser}' == "") {
+		alert("로그인 후 사용 가능합니다.")
+		location.href="login"
+	}else {
+		console.log("로그인 확인 성공")
+	}
+}
+</script>
 </head>
-<body>
-	<%@ include file="../defualt/header.jsp" %>
-	<!-- <textarea id = "editor4" name = "editor4"></textarea>
-	<script>CKEDITOR.replace('editor4',{filebrowserUploadUrl:'/mine/imageUpload.do'});</script> -->
-	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-	<fmt:requestEncoding value="utf-8"/>
-	<div id="body">
-		<form action="info_modify" id="frm">
-			<input type="hidden" value="${info_post.num }" name="num">
-			<table border="1">
-				<tr>
-					<th>닉네임</th>
-					<td>
-						${info_post.nick }
-					</td>
-				</tr>
-				<tr>
-					<th>태그</th>
-					<td>
-						<select name="tag" >
-							<optgroup label="태그 선택" >
-								<option value="관광지">관광지</option>
-								<option value="맛집">맛집</option>
-								<option value="숙박">숙박</option>
-								<option value="이동수단">이동수단</option>
-								<option value="여행팁">여행팁</option>
-							</optgroup>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td>
-						<input type="text" value="${info_post.title }" name="title">
-					</td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td>
-						<textarea id = "content" name = "content" >${info_post.content }</textarea>
+<body onload="chk_loginUser()" class="is-preload">
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+					<form action="info_modify" id="frm">
+						<input type="hidden" name="nick" value="${loginUser.nick }" >
+						<input type="hidden" name="num" value="${info_post.num }" >
+					<table>
+						<tr style="background: white;">
+							<td style="width:60px;text-align: center;">닉네임</td>
+							<td>${loginUser.nick }</td>
+						</tr>
+						<tr>
+							<td style="width:60px;text-align: center;">태그</td>
+							<td>
+								<c:choose>
+									<c:when test="${loginUser.id=='admin' }">
+										<select name="tag" >
+											<option value="공지">공지</option>
+											<option value="이벤트">이벤트</option>
+										</select>
+									</c:when>
+									<c:otherwise>
+										<select name="tag">
+											<optgroup label="태그 선택" >
+												<option value="관광지">관광지</option>
+												<option value="맛집">맛집</option>
+												<option value="숙박">숙박</option>
+												<option value="이동수단">이동수단</option>
+												<option value="여행팁">여행팁</option>
+											</optgroup>
+										</select>
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td style="width:60px;text-align: center;">제목</td>
+							<td><input type="text" placeholder="제목을 입력하세요." name="title" autofocus="autofocus" value="${info_post.title }"></td>
+						</tr>
+						<tr>
+						<td colspan="2" style="margin: 0 auto;background: white;">
+						<textarea rows="15" cols="50" id="content" name = "content">${info_post.content }</textarea>
 						<script type="text/javascript">
 							$(function() {
 								//전역변수선언
@@ -93,14 +104,22 @@
 							    }
 							});
 							</script>
-					</td>
-				</tr>
-				<tr>
-					<th colspan="2"><input type="button" value="글 작성" id="contentRegBtn"></th>
-				</tr>
-			</table>
-			<hr>
-		</form>
+						</td>
+						</tr>
+						<tr>
+						<td style="text-align: left: ;">
+						<input type="button" value="목록보기" onclick="location.href('info_list?page=1')">	
+						</td>
+						<td style="text-align: right;">
+						<input type="button" value="수정완료" id="contentRegBtn">
+						</td>
+						</tr>
+					</table>
+					</form>
+				</div>
+			</section>
+		</article>
 	</div>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

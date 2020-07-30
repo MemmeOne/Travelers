@@ -111,6 +111,16 @@ public class InfoController {
 		String strJson=mapper.writeValueAsString(list);
 		return strJson;
 	}
+	// admin 댓글 삭제 기능
+	@RequestMapping(value="comment_delete_admin",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String comment_delete_admin(InfoCommentDTO dto) throws JsonProcessingException {
+		List<InfoCommentDTO> list=service.comment_delete_admin(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
 	// 대댓글 저장 기능
 	@RequestMapping(value="info_comment_reply_save",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")

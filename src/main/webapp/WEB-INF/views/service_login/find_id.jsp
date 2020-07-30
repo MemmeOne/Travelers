@@ -41,6 +41,7 @@
 </script>
 </head>
 <body>
+<body class="is-preload">
 	<%@ include file="../defualt/header.jsp"%>
 	<!-- Main -->
 	<article id="main">

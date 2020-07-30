@@ -8,14 +8,39 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 정보 수정</title>
-<style type="text/css">
-	.form { margin-top: 350px;}
-	a { text-decoration: none; color: black; }
-	table { background: white; padding: 30px; }
-	table tr { height: 100px; }
+<style>
+.box-radio-input input[type="radio"]{
+    display:none;
+}
+
+.box-radio-input input[type="radio"] + span{
+    display:inline-block;
+    background:none;
+    border:1px solid #dfdfdf;    
+    padding:0px 10px;
+    text-align:center;
+    height:35px;
+    line-height:33px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.box-radio-input input[type="radio"]:checked + span{
+    border:1px solid #23a3a7;
+    background:#23a3a7;
+    color:#fff;
+}
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
+	function chk_loginUser() {
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
+			location.href="login"
+		}else {
+			console.log("로그인 확인 성공")
+		}
+	}
 	var useremail=""
 	// 이메일 인증번호 보내기
 	function sendEmail() {
@@ -23,10 +48,12 @@
 		var address = $('select[name=address]').val()
 		var idRegExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/; //아이디 유효성 검사
 		if(email=='${loginUser.email}') {
-			html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
+			/* html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
 			html += "<label>현재 사용중인 이메일입니다.</label><br>"
 			html += "<input type='hidden' name='useremail' value='${loginUser.email }'>"
-			$("#input_code").html(html)
+			$("#input_code").html(html) */
+			alert("현재 사용중인 이메일입니다.")
+			$('input[name=email]').focus()
 		}else if(email=="") {
 			alert("이메일을 입력해주세요!")
 			$('input[name=email]').focus()
@@ -44,9 +71,10 @@
 				success : function(result) {
 					if (result=="중복") {
 						console.log("이미 있는 이메일")
-						html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
+						/* html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
 						html += "<label>이미 있는 이메일입니다. 다른 이메일를 입력해주세요.</label><br>"
-						$("#input_code").html(html)
+						$("#input_code").html(html) */
+						alert("이미 사용중인 이메일입니다.\n다른 이메일를 입력해주세요.");
 						$('input[name=email]').focus
 					} else {
 						console.log("사용 가능한 이메일")
@@ -129,10 +157,11 @@
 		}else {	
 			var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
 			if ( usernick=='${loginUser.nick}' ) {
-				html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
+				alert("현재 사용중인 닉네임입니다.")
+				/* html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
 				html += "<br><label>현재 사용중인 닉네임입니다.</label>"
 				html += "<input type='hidden' name='usernick' value='${loginUser.nick }'>"
-				$("#input_nick").html(html)
+				$("#input_nick").html(html) */
 				$('input[name=nick]').focus
 			} else {
 			    if (!nickNameCheck.test(usernick)) {
@@ -227,62 +256,106 @@
 	}
 </script>
 </head>
-<body>
-<%@ include file="../defualt/header.jsp" %>
-	<table class="form" border="1">
-		<tr>
-			<th>아이디</th>
-			<td>
-				${loginUser.id }
-				<input type="hidden" name="userid" value="${loginUser.id }">
-			</td>
-		</tr>
-		<tr>
-			<th>닉네임</th>
-			<td>
-				닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.<br><input type="text" name="nick" placeholder="닉네임" value="${loginUser.nick }">
-				<span id="input_nick">
-					<input type="button" value="중복확인" onclick="nick_chk()">
-					<input type="hidden" name="usernick" value="${loginUser.nick }">
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<th>e-mail</th>
-			<td>
-				<input type="text" name="email" placeholder="이메일" value="${loginUser.email }">
-				<span id="input_code">
-					<input type="button" value="인증번호 발송" onclick="sendEmail()">
-					<input type="hidden" name="useremail" value="${loginUser.email }">
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<th>성별</th>
-			<td>
-				<c:choose>
-					<c:when test="${loginUser.gender eq '여자' }">
-						여자<input type="radio" name="gender" value="여자" checked="checked"> 남자<input type="radio" name="gender" value="남자">
-					</c:when>
-					<c:otherwise>
-						여자<input type="radio" name="gender" value="여자"> 남자<input type="radio" name="gender" value="남자" checked="checked">
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
-			<th>생년월일</th>
-			<td>
-				<input type="date" name="birth" max="2001-12-31" min="1940-01-01" value="${loginUser.birth }">
-			</td>
-		</tr>
-		<tr>
-			<th colspan="2">
-				<input type="button" value="수정" onclick="reg_chk()"> 
-				<input type="button" value="취소" onclick="location.href='/Travelers/'">
-			</th>
-		</tr>
-	</table>
+<body class="is-preload" onload="chk_loginUser()">
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+					<section>
+						<h2>My Page</h2>
+						<div class="row">
+							<div class="col-6 col-12-medium" style="width:200px;">
+								<ul class="alt">
+									<li><a href="mypage">내정보</a></li>
+									<li><a href="travelDiary">여행수첩</a></li>
+									<li><a href="mypage">메이트 신청 현황</a></li>
+									<li><a href="mypage">작성한 글 관리</a></li>
+									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+									<li><a href="withdrawal">회원탈퇴</a></li>
+								</ul>
+							</div>
+							<div class="col-6 col-12-medium" style="margin-left: 50px;width: 700px;">
+								<h3>회원 정보 수정</h3>
+								<table>
+									<tr style="background: white;">
+										<th>아이디</th>
+										<td>
+											${loginUser.id }
+											<input type="hidden" name="userid" value="${loginUser.id }">
+										</td>
+									</tr>
+									<tr>
+										<th rowspan="2">닉네임</th>
+										<td>
+											닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.
+										</td>
+									</tr>
+									<tr>
+										<td style="display: flex;background: white;border-top: none;">
+											<input type="text" name="nick" placeholder="닉네임" value="${loginUser.nick }">
+											<span id="input_nick">
+												<input type="button" value="중복확인" onclick="nick_chk()">
+												<input type="hidden" name="usernick" value="${loginUser.nick }">
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<th>e-mail</th>
+										<td style="display: flex;background: white;border-top: none;">
+											<input type="text" name="email" placeholder="이메일" value="${loginUser.email }">
+											<span id="input_code">
+												<input type="button" value="인증번호 발송" onclick="sendEmail()">
+												<input type="hidden" name="useremail" value="${loginUser.email }">
+											</span>
+										</td>
+									</tr>
+									<tr style="background: white;">
+										<th>성별</th>
+										<td style="display: flex;">
+											<c:choose>
+												<c:when test="${loginUser.gender eq '여자' }">
+													<label class="box-radio-input">
+														<input type="radio" name="gender" value="여자" checked="checked"><span>여자</span>
+													</label>
+													<label class="box-radio-input">
+														<input type="radio" name="gender" value="남자"><span>남자</span>
+													</label>
+												</c:when>
+												<c:otherwise>
+													<label class="box-radio-input">
+														<input type="radio" name="gender" value="여자"><span>여자</span>
+													</label>
+													<label class="box-radio-input">
+														<input type="radio" name="gender" value="남자" checked="checked"><span>남자</span>
+													</label>
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+									<tr>
+										<th>생년월일</th>
+										<td>
+											<input type="date" name="birth" max="2001-12-31" min="1940-01-01" value="${loginUser.birth }" style="color:black;">
+										</td>
+									</tr>
+									<tr style="background: white;">
+										<td colspan="2" style="text-align: right;">
+											<input type="button" value="수정" onclick="reg_chk()"> 
+											<input type="button" value="취소" onclick="location.href='/Travelers/'">
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+		</article>
+	</div>
 	<%@ include file="../defualt/footer.jsp" %>
 </body>
 </html>

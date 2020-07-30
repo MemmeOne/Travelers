@@ -36,4 +36,9 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping("write_view")
+	public String write_view() {
+		return "mate_board/write_view";
+	}
+	
 }

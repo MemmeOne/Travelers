@@ -43,7 +43,44 @@ div.b {
 	Hello world!  
 </h1>
 <a href="mate_board_list?page=1">이동</a>
+<a href="write_view">글쓰기  css 전</a>
+
 <P>  The time on the server is ${serverTime}. </P>
+								<form>
+									<input type="radio" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled(this.form)" checked="checked">상관없음
+									<input type="radio" id="chkprice" name="mexpenses" value="금액입력"   onclick="chk(this.form)">금액입력
+									<input type="number"  id="price1" name="price1" min="0" disabled  style = "text-align:right;">
+									~
+									<input type="number" id="price2" name="price2"  disabled  style = "text-align:right;">
+									<div class="placeholder" data-placeholder="New placeholder"></div>
+									<input type="radio" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled(this.form)">추후결정
+									</td></tr>
+								</form>
+
+<script type="text/javascript">
+function chkDisabled(form) {
+		if(form.chkNotPirce1.checked==true) {
+			//form.price1.disabled=false;
+			document.getElementById("price1").disabled=true;
+			form.price2.disabled=true;
+		} 
+		if(form.chkNotPirce2.checked==true) {
+			//form.price1.disabled=false;
+			document.getElementById("price1").disabled=true;
+			form.price2.disabled=true;
+		}  
+	}
+	function chk(form) {
+ 		if(form.chkprice.checked==true) {
+ 			//form.price1.disabled=false;
+ 			document.getElementById("price1").disabled=false;
+ 			form.price2.disabled=false;
+ 		}  
+ 	}
+
+</script>
+
+
 <label class="la">Heffforsdfgsfdgld!</label>ddd
 <div class="b">Heffforsdfgsfdgld!</div>
 

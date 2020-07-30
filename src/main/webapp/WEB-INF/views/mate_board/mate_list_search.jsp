@@ -83,7 +83,7 @@
 		
 		<c:choose>
 			<c:when test="${param.page<num}">
-				 <button type="button" 
+				<!--  <button type="button" 
 				onclick="location.href='mate_list_search?
 				page=${param.page+1}&word=${word }&tag=${tag }
 				&mtravel_date_s=${mtravel_date_s }&mtravel_date_e=${mtravel_date_e }
@@ -91,7 +91,7 @@
 				&price1=${price1 }&price2=${price2 }
 				&mgender=${mgender }
 				&mage=${mage }
-				' ">다음</button>
+				' ">다음</button>-->
 				
 				<a href="mate_list_search?page=${param.page+1}&word=${word }&tag=${tag }
 				&mtravel_date_s=${mtravel_date_s }&mtravel_date_e=${mtravel_date_e }

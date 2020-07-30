@@ -43,6 +43,20 @@ public class MateController {
 	@Autowired
 	private MateReplyService mateReplySer;
 	
+	@RequestMapping("list")
+	public String list() {
+		return "defualt/list";
+	}
+	@RequestMapping("write")
+	public String write() {
+		return "defualt/write";
+	}
+	@RequestMapping("post")
+	public String post() {
+		return "defualt/post";
+	}
+
+ 
 
 	// 글 전체 목록 보기
 	@RequestMapping("mate_board_list")
@@ -51,7 +65,7 @@ public class MateController {
 		HttpSession session=request.getSession();
 		session.setAttribute("loginGender", "무");
 		session.setAttribute("loginAge", 20);
-		session.setAttribute("loginNick", "testnick");
+		session.setAttribute("loginNick", "testnick2");
 		//session.setAttribute("loginNick", "testnick2");
 		//session.setAttribute("admin", "관리자");
 		MateDTO dto=new MateDTO();
@@ -174,7 +188,7 @@ public class MateController {
 	// 글 쓰기 저장
 	@RequestMapping(value="mate_write_save",  produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String mate_write_save(MateDTO matedto,HttpSession session,@RequestParam ArrayList<String> mthema) throws JsonProcessingException {
+	public String mate_write_save(MateDTO matedto,HttpSession session ) throws JsonProcessingException {
 		System.out.println("c write save 시작");
 //		System.out.println("mroom : "+mroom);
 //		ArrayList<String> th=new ArrayList<String>();
@@ -464,6 +478,11 @@ public class MateController {
 	@RequestMapping("mate_reply")
 	public String mate_reply() {
 		return "mate_board/mate_reply";
+	}
+	
+	@RequestMapping("reply")
+	public String reply() {
+		return "mate_board/reply";
 	}
 	
 	

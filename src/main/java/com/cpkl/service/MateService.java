@@ -24,7 +24,8 @@ public class MateService   {
 		
 		model.addAttribute("mate_list_all", matedao.mate_listall(page));
 		model.addAttribute("totPage", matedao.getTotalPage());
-	
+		model.addAttribute("commentcount", matedao.commentCount());
+		
 	}
 	// 글 전체 목록에서 검색 이거!
 //	public void mate_list_search(Model model,int page,String word,String tag) {

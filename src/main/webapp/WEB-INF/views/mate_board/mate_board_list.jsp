@@ -7,7 +7,10 @@
 <title>Insert title here</title>
 <style type="text/css">
 #list{border-collapse:collapse;}
-#hidden{display:none;} 
+#hidden{display:none;}
+#link:hover{background-color:rgba(140,140,140,1);}
+#link:active{background-color:rgba(3,3,3, 0.7);}
+.d{background:yellow}
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 
@@ -193,24 +196,365 @@ var frm=document.getElementById("s")
  			form.price2.disabled=true;
  		}
  	}
+	
+	function but() {
+		console.log(" ㅅ이ㅏ먼")
+	}
+
 </script>
 </head>
-<body>mate_board_list.jsp<br>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<input type="hidden" name="page" value="1">
-<!-- <h1>동행찾기게시판</h1> -->
+<body class="is-preload">
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner" style="width: 1000px;">
+<style>
+.checks {position: relative;}
 
-<!--<form action="mate_list_search" >-->
-	<input type="hidden" name="page" value="1">
+.checks input[type="checkbox"] {  /* 실제 체크박스는 화면에서 숨김 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0
+}
+.checks input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.checks input[type="checkbox"] + label:before {  /* 가짜 체크박스 */
+  content: ' ';
+  display: inline-block;
+  width: 21px;  /* 체크박스의 너비를 지정 */
+  height: 21px;  /* 체크박스의 높이를 지정 */
+  line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+  margin: -2px 8px 0 0;
+  text-align: center; 
+  vertical-align: middle;
+  background: #fafafa;
+  border: 1px solid #cacece;
+  border-radius : 3px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+}
+.checks input[type="checkbox"] + label:active:before,
+.checks input[type="checkbox"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.checks input[type="checkbox"]:checked + label:before {  /* 체크박스를 체크했을때 */ 
+  content: '\2714';  /* 체크표시 유니코드 사용 */
+  color: #99a1a7;
+  text-shadow: 1px 1px #fff;
+  border-color: #adb8c0;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+}
+.checks.etrans input[type="checkbox"] + label {
+  padding-left: 30px;
+}
+.checks.etrans input[type="checkbox"] + label:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 0;
+  opacity: .6;
+  box-shadow: none;
+  border-color: #6cc0e5;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+.checks.etrans input[type="checkbox"]:checked + label:before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity:1; 
+  background: transparent;
+  border-color:transparent #6cc0e5 #6cc0e5 transparent;
+  border-top-color:transparent;
+  border-left-color:transparent;
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
+}
+
+.no-csstransforms .checks.etrans input[type="checkbox"]:checked + label:before {
+  /*content:"\2713";*/
+  content: "\2714";
+  top: 0;
+  left: 0;
+  width: 21px;
+  line-height: 21px;
+  color: #6cc0e5;
+  text-align: center;
+  border: 1px solid #6cc0e5;
+}
+input[type=checkbox]:checked + label  {
+	background-color: white;
+}
+input[type=checkbox] {
+	display:none;
+}
+</style>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+					<div class="checks etrans" style="margin: 0 auto;">
+					
+						<h4>< 여행 정보 ></h4>
+						<div id="hidden">
+							<input type="date" name="mtravel_date_s" value="0001-01-01">
+							~ 
+							<input type="date" name="mtravel_date_e" value="0001-01-01">
+						</div>
+						
+						<!--  <table style=" font-size:0.9em;">
+							<tr>
+								<td>기간<br>테마</td>
+								<td><input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black; font-size:0.9em;">
+									 ~ 
+									<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black; font-size:0.9em;">
+									<br>
+									<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
+									<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+									<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
+									<div id="hidden">
+										<input type="checkbox" class="mthema_chk" name="mthema" value="" checked>
+									</div> 
+								</td>
+							</tr>
+ 
+						</table>-->
+						<!--  
+						<table  style=" font-size:0.9em; height:300px ">
+							<tr style="height:30px">
+								<td>기간</td>
+								<td><input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black; font-size:0.9em; ">
+									 ~ 
+									<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black; font-size:0.9em;">
+								</td>
+							</tr>
+							<tr style="vertical-align: middle; height:100px" >
+								<td style="vertical-align: middle;">테마</td>
+								<td style="vertical-align: middle;">
+								  
+								<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1" style="vertical-align: middle;" > <label for="mthema_chk1" >관광</label>
+								<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
+								<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+								<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
+								<div id="hidden">
+									<input type="checkbox" class="mthema_chk" name="mthema" value="" checked>
+								</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								기간
+								</td>
+								<td>
+								<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black; font-size:0.9em; ">
+								</td>
+							</tr>
+							<tr>
+								<td>숙소</td>
+								<td><input type="checkbox" name="mroom" value="개인실" id="mroom1" onclick="oneChk(this)"> <label for="mroom1">개인실 </label>
+									<input type="checkbox" name="mroom" value="다인실" id="mroom2"onclick="oneChk(this)"> <label for="mroom2">다인실</label>
+									<div id="hidden">
+										<input type="checkbox" name="mroom" value="" checked>
+									</div></td>
+							</tr>
+							<tr>
+								<td>1일 경비</td>
+								<td>
+									<form>
+										<input type="number" id="price1" name="price1" min="0" style="text-align: right;;color:black; vertical-align: middle;"> 
+										~ <input type="number" id="price2" name="price2" style="text-align: right;color:black;">
+									</form> </td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+							</tr>
+						
+						</table>
+						
+						
+						
+						
+						
+						==========표 아닌 것=================
+						-->
+						기간 : <input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black;">
+						 ~ 
+						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black;">
+							<br>입력하는 날짜 범위 안에 들어가는 경우에만 출력됨<br>
+						<br>
+						테마 : 
+						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
+						<div id="hidden">
+							<input type="checkbox" class="mthema_chk" name="mthema" value="" checked>
+						</div><br>
+						숙소 : <input type="checkbox" name="mroom" value="개인실" id="mroom1"> <label for="mroom1">개인실 </label>
+						<input type="checkbox" name="mroom" value="다인실" id="mroom2"> <label for="mroom2">다인실</label>
+						<div id="hidden">
+							<input type="checkbox" name="mroom" value="" checked>
+						</div>
+						<form>
+						1일경비 : 금액입력 <input type="number" id="price1" name="price1" min="0" style="text-align: right; color:black;"> 
+							~ <input type="number" id="price2" name="price2" style="text-align: right;color:black;">
+						</form><Br>
+						<h4>< 여행 동행 조건 ></h4>
+						성별 : <input type="checkbox" name="mgender" value="여자" id="mgender1" onclick="oneChk(this)">  <label for="mgender1">여자</label>
+						<input type="checkbox" name="mgender" value="남자" id="mgender2" onclick="oneChk(this)"> <label for="mgender2">남자</label>
+						<div id="hidden">
+							<input type="checkbox" name="mgender" value="" checked>
+						</div>
+						<br>
+						나이 : <input type="checkbox" name="mage" value="20대" id="mage1"> <label for="mage1">20대 </label>
+						<input type="checkbox" name="mage" value="30대" id="mage2"> <label for="mage2">30대  </label>
+						<input type="checkbox" name="mage" value="40대" id="mage3"> <label for="mage3">40대  </label>
+						<input type="checkbox" name="mage" value="50대" id="mage4"> <label for="mage4">50대  </label>
+						<input type="checkbox" name="mage" value="60대이상" id="mage5"> <label for="mage5">60대이상 </label>
+						<div id="hidden">
+							<input type="checkbox" name="mage" value="" checked>
+						</div>
+						<br> 
+<input type="hidden" name="page" value="1">
+ <table style="text-align: center;width: 1070px; margin: 0 auto; ">
+ <tr>
  <form id="s"> 
-	<input type="text" id="word" name="word" placeholder="검색할 키워드를 입력하세요"  value="">
-	<select name="tag">
+ <td style="width:20%">
+ 	<select name="tag">
 		<option value="title">제목</option>
 		<option value="nick">닉네임</option>
 	</select>
-<input type="submit" value="검색 non ajax"  >
+</td>
+<td style="width:60%">
+	<input type="text" id="word" name="word" placeholder="검색할 키워드를 입력하세요"  value="">
+</td>
+<!--  <input type="submit" value="검색 non ajax"  >-->
+<Td style="width:20%"><input type="button" value="검색 아작스" onclick="search()"></Td>
+</tr>
+ </FORM> 
+ </table>
+ <br>
+ <!-- 동행 게시판 버튼 형태로 만들고 싶음 
+ <table id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
+ <tr>
+ 	<td> <button type="button" style=" width: 100em; " >
+ 	</button>
+ 	</td>
+ </tr>
+ </table>
+ 
+ <c:forEach items="${mate_list_all}" var="mate_dto">	
+ <button type="button" style=" width: 1070px; " onclick="mate_content_view?num=${mate_dto.num }"  >
+	제목 ${mate_dto.title}
+	여행기간 :   ${mate_dto.mtravel_date_s }
+ </button>
+ </c:forEach>
+		-->
+ 					
+						
+						<h2 style="text-align: center;width: 1070px; margin: 0 auto;">여행 동행 찾기</h2><Br>
+							<table  class="all_white" id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
+								<c:forEach items="${mate_list_all}" var="mate_dto">
+								<tr id="link" style="margin : 5px;padding: 5px;" onclick="location.href='mate_content_view?num=${mate_dto.num }'">
+									<th>
+										[${mate_dto.mthema}] 
+										   <a href="mate_content_view?num=${mate_dto.num }">${mate_dto.title}</a> 
+										${mate_dto.title}
+										<!-- 각 개시글 별 댓글 수 -->
+										<c:forEach var="cnum" items="${commentcount }">
+												<c:choose>
+													<c:when test="${mate_dto.num eq cnum.bnum }">
+														[${cnum.count }]
+													</c:when>
+												</c:choose>
+										</c:forEach>
+										<br>
+										여행기간 : ${mate_dto.mtravel_date_s } ~ ${mate_dto.mtravel_date_e }<br>
+										동행조건 : ${mate_dto.mgender}, ${mate_dto.mage}<br>
+									</th>
+									<th style="text-align: right;vertical-align: middle;">
+									<c:choose>
+										<c:when test="${mate_dto.deadline eq '진행중'}">
+										<span class="d"> ${mate_dto.deadline}</span> 
+										</c:when>
+										<c:otherwise>
+										${mate_dto.deadline}
+										</c:otherwise>
+									</c:choose>
+										
+										<br>작성자 : ${mate_dto.wnick}<br>작성일 : ${mate_dto.savedate}
+									</th>
+								</tr>
+								</c:forEach>
+								<tr>
+								<td colspan="2" style="text-align: right;">
+								<button onclick="location.href='mate_write_view'">글작성</button>
+								<a href="mate_write_view">글작성</a>	
+								</td>
+								</tr>
+							</table>
+				
+							<br>
+							
+							<c:set var="num" value="0"/>
+
+							<table class="padding_larger" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
+								<tr style="width: 60px;" >
+									<td colspan="6" style="font-size:2em;">
+										<a href="" style="vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
+										</a>
+										<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
+										</a>
+										<c:forEach begin="1" end="${totPage }" step="3" var="cnt">
+											<c:set var="num" value="${num+1 }"/>
+											<a href="mate_board_list?page=${num }"> ${num} </a>
+										</c:forEach>
+										<a href="" style="vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
+										</a>
+										<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
+											<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
+										</a>
+										<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
+					</div>
+					
+					<br>
+					<br>
+					<br>
+					
+					<input type="hidden" name="page" value="1">
+<!-- <h1>동행찾기게시판</h1> -->
+<!--<form action="mate_list_search" >-->
+
+
+
 <!--</form>-->
-	<table>
+	<!-- <table>
 				<tr> <td colspan="2"> < 여행 정보  > </td></tr>
 				<tr> <td colspan="2"> 기간
 				<div id="hidden"> 
@@ -264,12 +608,9 @@ var frm=document.getElementById("s")
 									</div>
 									</td>   </tr>
 	
-	</table>
-	<input type="button" value="검색 아작스" onclick="search()">
+	</table> -->
 
-
- </FORM> 
-
+<!--  
 <table id="list" border="1">
 	<tr>
 		<th>번호</th>   <th>글 제목</th> <th>닉네임</th>
@@ -295,7 +636,7 @@ var frm=document.getElementById("s")
 			<c:otherwise>
 				<c:set var="page" value="${param.page }"/>
 			</c:otherwise>
-		</c:choose>-->
+		</c:choose> 
 		<c:choose>
 			<c:when test="${param.page>1 }">
 				<button type="button" onclick="location.href='mate_board_list?page=${param.page-1}'">이전</button>
@@ -332,10 +673,33 @@ var frm=document.getElementById("s")
 		총 글 개수 ${totPage}
 		</td>
 	</tr>
-</table>
-
-<a href="mate_write_view">글작성</a>
+</table>-->
 
 
+			
+				</div>
+			</section>
+		</article>
+	</div>
+	<%@ include file="../defualt/footer.jsp"%>
+	<script type="text/javascript">
+	
+ 
+	function oneChk(a) {
+		var obj=document.getElementsByName("mroom");
+		var obj2=document.getElementsByName("mgender");
+		for(var i=0;i<obj.length;i++) {
+			if(obj[i]!=a) {
+				obj[i].checked=false;
+			}
+		}
+		for(var i=0;i<obj2.length;i++) {
+			if(obj2[i]!=a) {
+				obj2[i].checked=false;
+			}
+		}
+	}
+	
+	</script>
 </body>
 </html>

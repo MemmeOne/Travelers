@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+</style>
+<style type="text/css">
 #mate_content_view {border-collapse:collapse; }
 </style>
-<script src="resources/jquery-3.5.1.min.js">
+<script src="resources/jquery-3.5.1.min.js"></script>
+
+<script type="text/javascript">
 		function deadlineChk() {
 			console.log("deadlineChk() 함수 시작부분")
 			var deadline=1;
@@ -75,91 +79,115 @@
 
 
 </script>-->
-
-
 </head>
-<body>mate_content_view.jsp<br>
+<body class="is-preload">
+
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-	<c:set value="${ccc }" var="mmm" />
-	<!-- <form action="mate_content_modify?num=${ccc.num }" method="post"> -->
-	<form action="mate_content_modify"> 
-	<!--<input type="button" value="모집완료 dddd" onclick="deadlineChk()" >-->
-		
-		<table id="mate_content_view" border="1">
-		<tr><td>진행 상태 : ${ccc.deadline }</td></tr>
-		<tr> <td>  < 여행 정보 > </td> </tr>
-		<tr> <td> 기간 : ${ccc.mtravel_date_s } ~ ${ccc.mtravel_date_e } (${ccc.mtravel_date})</td> </tr>
-		<tr> <td> </td> </tr>
-		<tr> <td> </td> </tr>
-		<tr> <td> 테마 : ${ccc.mthema} </td> </tr>
-		<tr> <td> 숙소 : ${ccc.mroom }</td> </tr>
-		<tr> <td> 1일 경비 : </td> </tr>
-		<tr> <td>  < 여행 동행 조건 > </td> </tr>
-		<tr> <td> 성별 : 
-		<c:choose>
-			<c:when test="${fn:contains(ccc.mgender,'상관없음') }">
-				상관없음
-			</c:when>
-			<c:otherwise>
-				${ccc.mage }
-			</c:otherwise>
-		</c:choose>
-		  </td> </tr>
-		<c:set var="age" value="${ccc.mage }"/>
-		
+	<%@ include file="../defualt/header.jsp"%>
+	<!-- Page Wrapper -->
+ 
+	<div id="page-wrapper">
+		<!-- Main -->
+		<article id="main">
+			<section class="wrapper style5">
+				<div class="inner">
+				<form action="mate_content_modify"> 
+	
+				<table class="all_white" id="whiteline" border="0">
+					<tr>
+						<td><h4> >> 여행 동행 찾기 </h4></td>
+						<td>
+						<img alt="" src="resources/main_image/RecruitmentComplete.png" style="width: 300px; ">
+						<img alt="" src="resources/main_image/RecruitmentInProgress.png" style="width: 300px; ">
+						</td>
+						<TD> ${ccc.deadline }
+						</TD>
+					</tr>
+				
+				</table>
+					<table  id="mate_content_view" style=" width: 1070px; margin: 0 auto;font-size:0.9em;">
+						<tr>
+							<td colspan="2" style="background-color:transparent">
+								[${ccc.mthema}]  ${ccc.title}
+							</td>
+							<td colspan="2" style="text-align: right;">작성일   ${ccc.savedate} |  조회 ${ccc.hit} </td>
+						</tr>
+						<table class="all_white" style=" width: 1070px; margin: 0 auto;font-size:0.8em;">
+						<tr>
+							<td colspan="2">
+							<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+							모집자
+							<img alt="" src="resources/main_image/writer.jpg" style=" height: 30px; vertical-align: middle;">
+							 ${ccc.wnick}, ${ccc.wage }, ${ccc.wgender }
+								<!-- <img src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;"> -->
+							</td><!-- style="text-align: right;" -->
+								<td colspan="2" >
+								<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+								동행자  
+								<img alt="" src="resources/main_image/writer.jpg" style=" height: 30px; vertical-align: middle;">
+								 성별 : ${ccc.mgender}, 나이 : ${ccc.mage}</td>
+						</tr>
 
-		<tr><td> ${fn:substring(age,0,1) }  </td></tr>
-		<tr><td> ${fn:substring(age,1,2) }  </td></tr>
-		<tr><td> ${fn:substring(age,4,5) }  </td></tr>
-		<tr> <td> 나이 : ${ccc.mage }  </td> </tr>
-			<tr><td>번호</td><td>${mmm.num}</td></tr>
-			<tr><td>조회수</td><td>${ccc.hit}</td></tr>
-			<tr><td>닉네임</td><td>${ccc.wnick}</td></tr>
-			<tr><td>성별</td><td>${ccc.wgender }</td></tr>
-			<tr><td>나이</td><td>${ccc.wage }</td></tr>
-			<tr><td>제목</td><td>${ccc.title}</td></tr>
-			<tr><td>내용</td><td>${ccc.content}</td></tr>
-			<tr><td>${loginNick }</td></tr>
-			
-			<tr>
-				<td colspan="2">
-					<a href="mate_board_list?page=1">전체목록보기</a>&nbsp;&nbsp; 
-				<c:choose>
-					<c:when test="${ccc.wnick eq loginNick }">
-					<input type="submit" value="수정"  >
-					<a href="mate_content_delete?num=${ccc.num}">삭제</a>&nbsp;&nbsp; 
-					<input type="button" value="모집완료 " onclick="d()" >
-					</c:when>
-					<c:when test="${admin eq '관리자' }">
-					<a href="mate_content_delete?num=${ccc.num}">삭제</a>&nbsp;&nbsp; 
-					<input type="button" value="모집완료" onclick="location.href='deadline'" >
-					</c:when>
-				</c:choose>
-				</td>
-			</tr>
-			<!--  <tr>
-				<td><span id="reply_area">여기</span>
-				<button type="button" onclick="reply()">답변</button>
-				<td><span id="reply_area_b">여기b</span>
-				<button type="button" onclick="reprep()">답변B</button>
-				 <a href="reply_view.jsp?id=${dto.id}">답변</a>  </td>
-			</tr>
-			<tr><td>
-				<textarea name="r" rows="10" cols="50"></textarea>
-				<button type="button" onclick="replyyy()">댓글 등록</button>
-			</td></tr>
-			<tr><td>
-				<label id="label">댓글 장소</label>
-			</td></tr>-->
-		</table>
-		
-	</form> 
-		<%@ include file="mate_reply.jsp" %>
-	<script type="text/javascript">
-		function d() {
-			location.href="deadline"
-		}
-	</script>
+
+							<tr>
+								<td style=" width: 130px; background-color:white">
+								<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+								여행기간</td>
+								<td style="   background-color:white" >
+								${ccc.mtravel_date_s } ~ ${ccc.mtravel_date_e } (${ccc.mtravel_date })
+								</td>
+								<td style=" width: 130px;">
+								<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+								숙소 </td>
+								<td>${ccc.mroom }</td>
+							</tr>
+
+								<td>
+								<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+								1일경비</td>
+								<td>${ccc.mexpenses } ${ccc.price1 }~${ccc.price2 }</td>
+								<td>
+								<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
+								모집인원
+								</td>
+								<td>${ccc.mcnt }</td>
+							</tr>
+						</table>
+						<table class="all_white" style=" width: 1070px; margin: 0 auto;font-size:0.9em;">
+						<tr>
+							<td colspan="4" style="  background-color:white">
+								내용 ${ccc.content}
+							</td>
+						</tr>
+						<tr>
+							<th  style="text-align: left ;">
+								<input type="button" onclick="location.href='mate_board_list?page=1'" value="전체목록보기">	
+								<input type="button" value="댓글보기">	
+							</th>
+						<c:choose>
+							<c:when test="${ccc.wnick eq loginNick }">
+								<th   style="text-align: right;">
+									<input type="submit" value="수정"  >
+									<input type="button" onclick="location.href='mate_content_delete?num=${ccc.num}'" value="삭제">	
+									<input type="button" value="모집완료 " onclick="d()" >
+								</th>
+							</c:when>
+							<c:when test="${admin eq '관리자' }">
+								<th  style="text-align: right;">
+									<input type="button" onclick="location.href='mate_content_delete?num=${ccc.num}'" value="삭제">	
+									<input type="button" value="모집완료 " onclick="d()" >
+								</th>
+							</c:when>
+						</c:choose>
+						</tr>
+					</table>
+				</form>
+				</div>
+	    	  	<%@ include file="mate_reply.jsp" %>
+			</section>
+		</article>
+	</div>
+	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

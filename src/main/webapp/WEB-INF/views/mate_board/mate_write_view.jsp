@@ -353,7 +353,7 @@ input[type=checkbox] {
 								<td>
 								<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
-						<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3"> <label for="mthema_chk3">식도락</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
  
 						<br></td>
@@ -420,7 +420,7 @@ input[type=checkbox] {
 						테마 : 
 						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
-						<input type="checkbox" class="mthema_chk" name="mthema" value="맛집 탐방" id="mthema_chk3"> <label for="mthema_chk3">맛집 탐방</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3"> <label for="mthema_chk3">식도락</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
 						<br>
 						숙소 : <input type="checkbox" name="mroom" value="개인실" id="mroom1" checked="checked" onclick="oneChk_room(this)" > <label for="mroom1">개인실 </label>

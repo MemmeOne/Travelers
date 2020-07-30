@@ -75,3 +75,4 @@ select*from info_board_comment;
 create sequence info_board_comment_seq;
 drop table info_board_comment;
 commit;
+insert into mate_board values(1,'제목','내용','2020-07-30',0,'닉','여자',20,'상관없음','2020-08-01','2020-08-04','관광','개인실','여자','20대',0,'추후결정',0,0,'진행중');

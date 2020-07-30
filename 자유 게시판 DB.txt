@@ -1,9 +1,9 @@
---Travelers 자유게시판
+--Travelers 자유게시판 DB
 create table free_board(
 num number(4) primary key,
 nick varchar2(20),
 title varchar2(100),
-content varchar2(1000),
+content varchar2(2000),
 savedate date default sysdate,
 hit number(4) default 0,
 numgroup number(4),
@@ -12,6 +12,7 @@ indent number(4)
 );
 create sequence free_board_seq;
 
+--Travelers 자유게시판 댓글 DB
 create table free_board_comment(
 cnum number(4) primary key,
 numgroup number(4) not null,
@@ -19,6 +20,10 @@ commentgroup number(4) not null,
 nick varchar2(20)not null,
 content varchar2(1000) not null,
 savedate date default sysdate not null,
-step number(4) not null
+step number(4) not null,
+indent number(4)
 );
+
 create sequence free_board_comment_seq;
+
+Alter table free_board_comment add constraint cidcid foreign key(numgroup) References free_board(num) on delete cascade;

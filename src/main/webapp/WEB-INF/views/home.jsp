@@ -26,25 +26,32 @@
 						<div id="menu">
 							<ul>
 								<c:choose>
+									<c:when test="${loginUser.id == 'admin' }">
+										<li><a href="/Travelers/">Home</a></li>
+										<li><a href="logout">로그아웃</a></li>
+										<li><a href="admin_page">관리자 페이지</a></li>
+										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
+										<li><a href="reviewboard?boardnum=1&page=1">여행 리뷰 게시판</a></li>
+										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
+										<li><a href="free_board_list?page=1">자유 게시판</a></li>
+									</c:when>
 									<c:when test="${loginUser!=null }">
 										<li><a href="/Travelers/">Home</a></li>
 										<li><a href="logout">로그아웃</a></li>
 										<li><a href="mypage">마이페이지</a></li>
-										<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
-										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
+										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
 										<li><a href="reviewboard?boardnum=1&page=1">여행 리뷰 게시판</a></li>
+										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
-										<li><a href="list">게시판 형식</a></li>
 									</c:when>
 									<c:otherwise>
 										<li><a href="/Travelers/">Home</a></li>
 										<li><a href="login">로그인</a></li>
 										<li><a href="reg_tos">회원가입</a></li>
-										<li><a href="mate_board_list?page=1">여행 메이트 찾기</a></li>
-										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
+										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
 										<li><a href="reviewboard?boardnum=1&page=1">여행 리뷰 게시판</a></li>
+										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
-										<li><a href="list">게시판 형식</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ul>

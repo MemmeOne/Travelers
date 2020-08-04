@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
+import com.cpkl.dto.ReportPostDTO;
 import com.cpkl.service.InfoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -129,6 +130,16 @@ public class InfoController {
 		List<InfoCommentDTO> list=service.comment_reply_save(dto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// 글 신고
+	@RequestMapping(value="report",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String report(ReportPostDTO dto) throws JsonProcessingException {
+		String result=service.report(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
 }

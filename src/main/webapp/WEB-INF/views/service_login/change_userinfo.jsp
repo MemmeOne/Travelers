@@ -8,29 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 정보 수정</title>
-<style>
-.box-radio-input input[type="radio"]{
-    display:none;
-}
-
-.box-radio-input input[type="radio"] + span{
-    display:inline-block;
-    background:none;
-    border:1px solid #dfdfdf;    
-    padding:0px 10px;
-    text-align:center;
-    height:35px;
-    line-height:33px;
-    font-weight:500;
-    cursor:pointer;
-}
-
-.box-radio-input input[type="radio"]:checked + span{
-    border:1px solid #23a3a7;
-    background:#23a3a7;
-    color:#fff;
-}
-</style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	function chk_loginUser() {
@@ -46,18 +23,14 @@
 	function sendEmail() {
 		var email = $('input[name=email]').val()
 		var address = $('select[name=address]').val()
-		var idRegExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/; //아이디 유효성 검사
+		var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; //이메일 유효성 검사
 		if(email=='${loginUser.email}') {
-			/* html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-			html += "<label>현재 사용중인 이메일입니다.</label><br>"
-			html += "<input type='hidden' name='useremail' value='${loginUser.email }'>"
-			$("#input_code").html(html) */
 			alert("현재 사용중인 이메일입니다.")
 			$('input[name=email]').focus()
 		}else if(email=="") {
 			alert("이메일을 입력해주세요!")
 			$('input[name=email]').focus()
-		}else if (!idRegExp.test(email)) {
+		}else if (hangulcheck.test(email)) {
 		    alert("유효하지 않은 이메일입니다. 이메일을 확인해주세요.");
 		    $('input[name=email]').val("")
 		    $('input[name=email]').focus();
@@ -70,12 +43,10 @@
 				data : form,
 				success : function(result) {
 					if (result=="중복") {
-						console.log("이미 있는 이메일")
-						/* html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-						html += "<label>이미 있는 이메일입니다. 다른 이메일를 입력해주세요.</label><br>"
-						$("#input_code").html(html) */
-						alert("이미 사용중인 이메일입니다.\n다른 이메일를 입력해주세요.");
-						$('input[name=email]').focus
+						console.log("이미 사용 중인 이메일")
+						alert("이미 사용 중인 이메일입니다. 다른 이메일를 입력해주세요.")
+						$('input[name=email]').val("")
+						$('input[name=email]').focus()
 					} else {
 						console.log("사용 가능한 이메일")
 						$.ajax({
@@ -158,10 +129,6 @@
 			var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
 			if ( usernick=='${loginUser.nick}' ) {
 				alert("현재 사용중인 닉네임입니다.")
-				/* html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
-				html += "<br><label>현재 사용중인 닉네임입니다.</label>"
-				html += "<input type='hidden' name='usernick' value='${loginUser.nick }'>"
-				$("#input_nick").html(html) */
 				$('input[name=nick]').focus
 			} else {
 			    if (!nickNameCheck.test(usernick)) {
@@ -214,10 +181,7 @@
 		var usergender = $('input:radio[name=gender]:checked').val()
 		var userbirth = $('input[name=birth]').val()
 		console.log($('input:radio[name=gender]:checked').val())
-		if(userid==null) {
-			alert("아이디를 확인해주세요.")
-			$('input[name=id]').focus()
-		}else if(usernick==null) {
+		if(usernick==null) {
 			alert("닉네임을 확인해주세요.")
 			$('input[name=nick]').focus()
 		}else if(useremail==null) {
@@ -265,60 +229,81 @@
 			<section class="wrapper style5">
 				<div class="inner">
 					<section>
-						<h2>My Page</h2>
-						<div class="row">
-							<div class="col-6 col-12-medium" style="width:200px;">
-								<ul class="alt">
-									<li><a href="mypage">내정보</a></li>
-									<li><a href="travelDiary">여행수첩</a></li>
-									<li><a href="mypage">메이트 신청 현황</a></li>
-									<li><a href="mypage">작성한 글 관리</a></li>
-									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
-									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
-									<li><a href="withdrawal">회원탈퇴</a></li>
-								</ul>
-							</div>
-							<div class="col-6 col-12-medium" style="margin-left: 50px;width: 700px;">
+						<c:choose>
+							<c:when test="${loginUser.id=='admin'}">
+								<h2>Admin Page</h2>
+								<div class="row" style="width:1400px;display: flex;">
+									<div class="col-6 col-12-medium" style="width:250px;">
+										<ul class="alt">
+											<li><a href="notice_event">공지 &middot; 이벤트 글 관리</a></li>
+											<li><a href="report_post">신고 글 관리</a></li>
+											<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+											<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+											<li><a href="withdrawal">회원탈퇴</a></li>
+										</ul>
+									</div>
+							</c:when>
+							<c:otherwise>
+								<h2>My Page</h2>
+									<div class="row" style="width:1400px;display: flex;">
+									<div class="col-6 col-12-medium" style="width:200px;">
+										<ul class="alt">
+											<li><a href="mypage">내정보</a></li>
+											<li><a href="travelDiary">여행수첩</a></li>
+											<li><a href="mypage">메이트 신청 현황</a></li>
+											<li><a href="mypage">작성한 글 관리</a></li>
+											<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+											<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+											<li><a href="withdrawal">회원탈퇴</a></li>
+										</ul>
+									</div>
+							</c:otherwise>
+						</c:choose>
+							<div class="col-6 col-12-medium" style="margin-left: 50px;width:1050px;">
 								<h3>회원 정보 수정</h3>
-								<table>
-									<tr style="background: white;">
-										<th>아이디</th>
+								<table class="form" border="1">
+									<tr style="height: 100px;vertical-align: middle;">
+										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">아이디</td>
+										<td>&nbsp;&nbsp;${loginUser.id }</td>
+										<input type="hidden" name="userid" value="${loginUser.id }">
+										<input type="hidden" name="usernick" value="${loginUser.nick }">
+										<input type="hidden" name="useremail" value="${loginUser.email }">
+									</tr>
+									<tr id="none">
+										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:130px;">닉네임</td>
+										<td>&nbsp;&nbsp;2자 이상의 영어와 한글, 숫자를 사용하세요.</td>
+									</tr>
+									<tr>
 										<td>
-											${loginUser.id }
-											<input type="hidden" name="userid" value="${loginUser.id }">
+											<div style="display: flex;margin: 10px;"><input type="text" name="nick" placeholder="닉네임" style="width:380px;" value="${loginUser.nick }">
+												<span id="input_nick">&nbsp;&nbsp;<input type="button" value="중복확인" onclick="nick_chk()"></span>
+											</div>
 										</td>
 									</tr>
 									<tr>
-										<th rowspan="2">닉네임</th>
+										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:180px;">Email</td>
 										<td>
-											닉네임은  2자 이상의 영어와 한글, 숫자를 사용하세요.
-										</td>
-									</tr>
-									<tr>
-										<td style="display: flex;background: white;border-top: none;">
-											<input type="text" name="nick" placeholder="닉네임" value="${loginUser.nick }">
-											<span id="input_nick">
-												<input type="button" value="중복확인" onclick="nick_chk()">
-												<input type="hidden" name="usernick" value="${loginUser.nick }">
-											</span>
-										</td>
-									</tr>
-									<tr>
-										<th>e-mail</th>
-										<td style="display: flex;background: white;border-top: none;">
-											<input type="text" name="email" placeholder="이메일" value="${loginUser.email }">
+											<div style="display: flex;margin: 10px; vertical-align: middle;">
+											<input type="text" name="email" placeholder="이메일" style="width:380px;" value="${loginUser.email }">
 											<span id="input_code">
-												<input type="button" value="인증번호 발송" onclick="sendEmail()">
-												<input type="hidden" name="useremail" value="${loginUser.email }">
+											&nbsp;&nbsp;<input type="button" value="인증코드발송" onclick="sendEmail()">
 											</span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span>&nbsp;&nbsp;이메일 발송시 최대 5분의 시간이 소요 될 수 있습니다.</span><br>
+											<div style="display:flex;">&nbsp;&nbsp;<input type="text" name="usercode" style="width:250px;" placeholder="인증번호">
+											&nbsp;&nbsp;<input type="button" value="인증코드확인" onclick="code_chk()"><span id="code_chk_ok"></span></div>
 										</td>
 									</tr>
 									<tr style="background: white;">
-										<th>성별</th>
-										<td style="display: flex;">
+										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">성별</td>
+										<td style="display: flex;height: 28px; vertical-align: middle;border: 0px solid 0.0;">
 											<c:choose>
 												<c:when test="${loginUser.gender eq '여자' }">
-													<label class="box-radio-input">
+													<label class="box-radio-input" style="height: 28px;">
 														<input type="radio" name="gender" value="여자" checked="checked"><span>여자</span>
 													</label>
 													<label class="box-radio-input">
@@ -337,18 +322,70 @@
 										</td>
 									</tr>
 									<tr>
-										<th>생년월일</th>
-										<td>
-											<input type="date" name="birth" max="2001-12-31" min="1940-01-01" value="${loginUser.birth }" style="color:black;">
+										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">생년월일</td>
+										<td style="height:100px; vertical-align: middle;">
+											<input type="date" name="birth" max="2001-12-31" min="1940-01-01" style="color:black; width:200px;text-align: center;"  value="${loginUser.birth }">
 										</td>
 									</tr>
-									<tr style="background: white;">
-										<td colspan="2" style="text-align: right;">
+									<tr>
+										<td colspan="2" style="text-align: center;">
+											<br>
 											<input type="button" value="수정" onclick="reg_chk()"> 
 											<input type="button" value="취소" onclick="location.href='/Travelers/'">
+											<br><br>
 										</td>
 									</tr>
 								</table>
+								<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
+								<script type="text/javascript">
+									var pwdchk=false
+									var pwdokchk=false
+									document.getElementById('pwd').onkeyup = function() {
+										var msg = '', val = this.value;
+										var id = '${loginUser.id}';
+										var pwd = $('input[name=pwd]').val()
+										var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,20}$/;
+										var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+										if (false === reg.test(pwd)) {
+											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;유효하지 않는 비밀번호입니다."
+										} else if (/(\w)\1\1\1/.test(pwd)) {
+											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;같은 문자를 4번 이상 사용하실 수 없습니다."
+										} else if ( (pwd.search(id) > -1 ) && id!="") {
+											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 아이디가 포함되었습니다."
+										} else if (pwd.search(/\s/) != -1) {
+											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호는 공백 없이 입력해주세요."
+										} else if (hangulcheck.test(pwd)) {
+											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 한글을 사용 할 수 없습니다."
+										} else {
+												pwdchk=true
+												msg = GetAjaxPW(val);
+										}
+										$("#pwc").html(msg)
+									};
+									var GetAjaxPW = function(val) {
+										// ajax func....
+										return "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;사용 가능한 비밀번호입니다."
+									}
+									document.getElementById('pwdok').onkeyup = function() {
+										let html = ""
+										var msg = '', val = this.value;
+										if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
+											if(pwdchk) {
+												html = "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 서로 일치합니다."
+												html += "<input type='hidden' value='"
+														+ $('input[name=pwdok]').val() + "' name='userpwd'>"
+											}
+										} else {
+											html = GetAjaxPWok(val);
+										};
+										$("#pwokc").html(html)
+									};
+							
+									var GetAjaxPWok = function(val) {
+										// ajax func....
+										return "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 일치하지 않습니다."
+									}
+								</script>
 							</div>
 						</div>
 					</section>
@@ -357,5 +394,41 @@
 		</article>
 	</div>
 	<%@ include file="../defualt/footer.jsp" %>
+<style>
+table  {
+    width: 100%;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
+    border-collapse: collapse;
+  }
+th, td {
+	background-color: white;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
+    vertical-align: middle;
+  }
+#none {border-bottom: 0px solid 0.0;}
+.box-radio-input input[type="radio"]{
+    display:none;
+}
+
+.box-radio-input input[type="radio"] + span{
+    display:inline-block;
+    background:none;
+    border:1px solid #dfdfdf;    
+    padding:0px 10px;
+    text-align:center;
+    height:35px;
+    line-height:33px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.box-radio-input input[type="radio"]:checked + span{
+    border:1px solid #23a3a7;
+    background:#23a3a7;
+    color:#fff;
+}
+</style>
 </body>
 </html>

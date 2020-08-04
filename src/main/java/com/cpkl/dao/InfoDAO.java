@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
+import com.cpkl.dto.ReportPostDTO;
 
 /* 정보 게시판 DAO  */
 @Repository
@@ -267,6 +268,24 @@ public class InfoDAO {
 			});
 		}catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	public String report(final ReportPostDTO dto2) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=info_sqlSession.insert(namespace+".report",dto2);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(result);
+		if(result==1) {
+			return "신고 성공";
+		}else {
+			return "신고 실패";
 		}
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.cpkl.dao.ServiceLoginDAO;
 import com.cpkl.dto.EmailDTO;
-import com.cpkl.dto.TrevelersDTO;
+import com.cpkl.dto.TravelersDTO;
 
 @Service
 public class RegisterService {
@@ -60,7 +60,7 @@ public class RegisterService {
 	}
 	// 아이디 중복 확인
 	public String email_chk(String email) {
-		TrevelersDTO dto=dao.email_chk(email);
+		TravelersDTO dto=dao.email_chk(email);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -70,7 +70,7 @@ public class RegisterService {
 	}
 	// 아이디 중복 확인
 	public String id_chk(String id) {
-		TrevelersDTO dto=dao.id_chk(id);
+		TravelersDTO dto=dao.id_chk(id);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -80,7 +80,7 @@ public class RegisterService {
 	}
 	// 닉네임 중복 확인
 	public String nick_chk(String usernick) {
-		TrevelersDTO dto=dao.nick_chk(usernick);
+		TravelersDTO dto=dao.nick_chk(usernick);
 		if(dto!=null) {
 			result="중복";
 		}else {
@@ -91,7 +91,7 @@ public class RegisterService {
 	// 회원 추가
 	@Inject
 	PasswordEncoder passwordEncoder;
-	public void insert_user(TrevelersDTO dto) {
+	public void insert_user(TravelersDTO dto) {
 		try {
 			dto.setPwd(security(dto.getPwd()));
 			dao.insert_user(dto);

@@ -5,7 +5,7 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="logindto" type="com.cpkl.dto.TrevelersDTO"/>
+		<typeAlias alias="logindto" type="com.cpkl.dto.TravelersDTO"/>
 		<typeAlias alias="map" type="java.util.Map"/>
 	</typeAliases>
 </configuration>

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.cpkl.dto.TrevelersDTO;
+import com.cpkl.dto.TravelersDTO;
 import com.cpkl.service.LoginService;
 import com.cpkl.service.RegisterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +29,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="login_chk",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String login_chk(TrevelersDTO dto, HttpSession session) throws JsonProcessingException {
+	public String login_chk(TravelersDTO dto, HttpSession session) throws JsonProcessingException {
 		String result=logingservice.login_chk(dto, session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(result);
@@ -57,7 +57,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="send_pwd",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String send_pwd(TrevelersDTO dto) throws Exception {
+	public String send_pwd(TravelersDTO dto) throws Exception {
 		String result = logingservice.send_pwd(dto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(result);
@@ -142,7 +142,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="insert_user",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String insert_user(TrevelersDTO dto) throws JsonProcessingException {
+	public String insert_user(TravelersDTO dto) throws JsonProcessingException {
 		regservice.insert_user(dto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString("회원가입");
@@ -163,7 +163,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="chk_dbpwd",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String chk_dbpwd(TrevelersDTO dto) throws Exception {
+	public String chk_dbpwd(TravelersDTO dto) throws Exception {
 		String result=logingservice.chk_dbpwd(dto);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(result);
@@ -178,7 +178,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="update_user",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String update_user(TrevelersDTO dto, HttpSession session) throws Exception {
+	public String update_user(TravelersDTO dto, HttpSession session) throws Exception {
 		logingservice.update_user(dto,session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString("");
@@ -193,7 +193,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="delete_User",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String delete_User(TrevelersDTO dto, HttpSession session) throws JsonProcessingException {
+	public String delete_User(TravelersDTO dto, HttpSession session) throws JsonProcessingException {
 		logingservice.delete_User(dto,session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString("회원가입");
@@ -207,7 +207,7 @@ public class ServiceLoginController {
 	@RequestMapping(value="change_pwd_save",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String change_pwd_save(TrevelersDTO dto, HttpSession session) throws Exception {
+	public String change_pwd_save(TravelersDTO dto, HttpSession session) throws Exception {
 		String result = logingservice.change_pwd_save(dto,session);
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(result);

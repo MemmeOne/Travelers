@@ -35,14 +35,14 @@
 	function sendEmail() {
 		var email = $('input[name=email]').val()
 		var address = $('select[name=address]').val()
-		var idRegExp = /^[a-z0-9]{5,20}$/; //아이디 유효성 검사
+		var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; //이메일 유효성 검사
 		if(email==null) {
 			alert("이메일을 입력해주세요!")
 			$('input[name=email]').focus()
 		}else if(email=="") {
 			alert("이메일을 입력해주세요!")
 			$('input[name=email]').focus()
-		}else if (!idRegExp.test(email)) {
+		}else if (hangulcheck.test(email)) {
 		    alert("유효하지 않은 이메일입니다. 이메일을 확인해주세요.");
 		    $('input[name=email]').val("")
 		    $('input[name=email]').focus();
@@ -181,7 +181,6 @@
 			$('input[name=nick]').focuss
 		}else {	
 			var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
-			var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
 			console.log(usernick)
 		    if (!nickNameCheck.test(usernick)) {
 			    alert("닉네임은  2 ~ 10자의 영어와 한글, 숫자를 사용하세요.");
@@ -261,7 +260,6 @@
 				success : function(result) {
 					console.log(result)
 					if(result!=null) {
-						alert("회원가입 성공!");
 						location.href="reg_end"
 					}else {
 						console.log("회원가입 실패")
@@ -393,7 +391,7 @@
 							var msg = '', val = this.value;
 							var id = '${loginUser.id}';
 							var pwd = $('input[name=pwd]').val()
-							var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
+							var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,20}$/;
 							var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 							if (false === reg.test(pwd)) {
 								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;유효하지 않는 비밀번호입니다."

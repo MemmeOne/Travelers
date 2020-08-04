@@ -25,19 +25,36 @@ function chk_loginUser() {
 			<section class="wrapper style5">
 				<div class="inner" style="height: 600px;">
 					<section>
-						<h2>My Page</h2>
-						<div class="row">
-							<div class="col-6 col-12-medium" style="width:200px;">
-								<ul class="alt">
-									<li><a href="mypage">내정보</a></li>
-									<li><a href="travelDiary">여행수첩</a></li>
-									<li><a href="mypage">메이트 신청 현황</a></li>
-									<li><a href="mypage">작성한 글 관리</a></li>
-									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
-									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
-									<li><a href="withdrawal">회원탈퇴</a></li>
-								</ul>
-							</div>
+						<c:choose>
+							<c:when test="${loginUser.id=='admin'}">
+								<h2>Admin Page</h2>
+								<div class="row" style="width:1400px;display: flex;">
+									<div class="col-6 col-12-medium" style="width:250px;">
+										<ul class="alt">
+											<li><a href="notice_event">공지 &middot; 이벤트 글 관리</a></li>
+											<li><a href="report_post">신고 글 관리</a></li>
+											<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+											<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+											<li><a href="withdrawal">회원탈퇴</a></li>
+										</ul>
+									</div>
+							</c:when>
+							<c:otherwise>
+								<h2>My Page</h2>
+									<div class="row" style="width:1400px;display: flex;">
+									<div class="col-6 col-12-medium" style="width:200px;">
+										<ul class="alt">
+											<li><a href="mypage">내정보</a></li>
+											<li><a href="travelDiary">여행수첩</a></li>
+											<li><a href="mypage">메이트 신청 현황</a></li>
+											<li><a href="mypage">작성한 글 관리</a></li>
+											<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
+											<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
+											<li><a href="withdrawal">회원탈퇴</a></li>
+										</ul>
+									</div>
+							</c:otherwise>
+						</c:choose>
 							<div class="col-6 col-12-medium" style="margin-left: 50px;">
 								<h2> 회원 정보</h2>
 								<table>

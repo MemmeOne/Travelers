@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cpkl.dao.InfoDAO;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
+import com.cpkl.dto.ReportPostDTO;
 
 /* 정보 게시판 서비스  */
 @Service
@@ -72,5 +73,8 @@ public class InfoService {
 	public List<InfoCommentDTO> comment_reply_save(InfoCommentDTO dto) {
 		dao.comment_reply_save(dto);
 		return dao.comment_list(dto.getNumgroup());
+	}
+	public String report(ReportPostDTO dto) {
+		return dao.report(dto);
 	}
 }

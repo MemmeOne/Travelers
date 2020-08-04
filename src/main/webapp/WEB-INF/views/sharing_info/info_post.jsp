@@ -53,11 +53,11 @@ div img:hover + p.arrow_box {
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	function chk_loginUser() {
-		if ('${loginUser}' == "") {
-			alert("로그인 후 사용 가능합니다.")
+		if ('${loginUser.id}' != null) {
+			console.log("로그인함")
+		} else {
+			alert("로그인 후 사용해주세요.")
 			location.href="login"
-		}else {
-			console.log("로그인 확인 성공")
 		}
 	}
 	// 댓글 틀
@@ -180,7 +180,7 @@ div img:hover + p.arrow_box {
 					alert("code:" + request.status + "\n" + "message:"
 							+ request.responseText + "\n" + "error:" + error);
 				}
-			})
+			});
 		}
 	}
 	// 댓글 수정 틀
@@ -229,7 +229,7 @@ div img:hover + p.arrow_box {
 					alert("code:" + request.status + "\n" + "message:"
 							+ request.responseText + "\n" + "error:" + error);
 				}
-			})
+			});
 		}
 	}
 	// 댓글 삭제
@@ -261,7 +261,7 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
 	// 댓글 삭제
 	function comment_delete_admin(cnt) {
@@ -292,7 +292,7 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
 	// 대댓글 틀
 	function comment_reply(cnt) {
@@ -341,29 +341,63 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
-	// 추천
-	function come(cnt) {
-		var cnum = $("#recnum" + cnt).val();
-		var form = { 
-			cnum : cnum,
-		}
-		$.ajax({
-			url : "sssssssss",
-			type : "POST",
-			data : form,
-			dataType: "json",
-			success : function(list) {
-				showComment(list);
-				console.log("성공")
-			},
-			error : function(request, status, error) {
-				console.log("실패")
-				alert("code:" + request.status + "\n" + "message:"
-						+ request.responseText + "\n" + "error:" + error);
+	// 글 신고
+	function report_post() {
+		var content=prompt("신고 사유를 입력해주세요."+"");
+		var board = "info_board";
+		var num = "${info_post.num }"
+		var title = "[${info_post.tag }] ${info_post.title }"
+		var writer = "${info_post.nick }"
+		var usernick = "${loginUser.nick }"
+		console.log(board)
+		console.log(num)
+		console.log(title)
+		console.log(content)
+		console.log(writer)
+		console.log(usernick)
+		if(content==null) {
+			alert("신고를 취소합니다.")
+		}else if(content=="") {
+			alert("신고 사유를 입력하지 않아 신고를 취소합니다.\n다시 시도해주세요.")
+		}else if(usernick=="") {
+			alert("로그인 후 사용가능합니다.")
+			location.href="login"
+		}else {
+			var form = {
+				board:board,
+				num:num,
+				title:title,
+				content:content,
+				writer:writer,
+				usernick:usernick
 			}
-		})
+			$.ajax({
+				url : "report",
+				type : "POST",
+				data : form,
+				dataType: "json",
+				success : function(list) {
+					console.log(list)
+					if(list=="신고 성공") {
+						console.log("성공");
+						alert("해당 게시글을 신고하였습니다.")
+					}else if(list=="신고 실패") {
+						console.log("실패");
+						alert("이미 해당 게시글을 신고하였습니다.")
+					}else {
+						console.log("실패");
+						alert("오류로 인해 신고에 실패하였습니다.")
+					}
+				},
+				error : function(request, status, error) {
+					console.log("실패")
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:" + error);
+				}
+			});
+		}
 	}
 </script>
 </head>
@@ -405,6 +439,7 @@ div img:hover + p.arrow_box {
 									<span id="show_hide">
 										<input type="button" value="댓글보기" onclick="comment_table_show()">	
 									</span>
+									<input type="button" value="신고" onclick="report_post()">	
 								</td>
 								<td colspan="2" style="text-align: right;">
 									<c:choose>

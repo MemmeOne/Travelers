@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import com.cpkl.dto.TrevelersDTO;
+import com.cpkl.dto.TravelersDTO;
 
 @Repository
 public class ServiceLoginDAO {
@@ -14,7 +14,7 @@ public class ServiceLoginDAO {
 	@Resource(name="servicelogin_sqlSession")
 	private SqlSession servicelogin_sqlSession;
 	public static final String namespace="com.cpkl.ServiceLogin_mybatis.myMapper";
-	private TrevelersDTO dto;
+	private TravelersDTO dto;
 	private String result;
 	/* 트랜잭션 */
 	@Autowired
@@ -24,7 +24,7 @@ public class ServiceLoginDAO {
 		this.transactionTemplate = transactionTemplate;
 	}
 	// 로그인 정보 가져오기
-	public TrevelersDTO login_chk(final String id) {
+	public TravelersDTO login_chk(final String id) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -57,7 +57,7 @@ public class ServiceLoginDAO {
 		return result;
 	}
 	// 아이디 찾기. 아이디와 이메일로 아이디 가져오기
-	public String get_pwd(final TrevelersDTO dto2) {
+	public String get_pwd(final TravelersDTO dto2) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -76,7 +76,7 @@ public class ServiceLoginDAO {
 		return result;
 	}
 	// 비밀번호 임시 비밀번호로 설정
-	public void update_pwd(final TrevelersDTO dto) {
+	public void update_pwd(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -89,7 +89,7 @@ public class ServiceLoginDAO {
 		}
 	}
 	// 이메일 중복 체크
-	public TrevelersDTO email_chk(final String email) {
+	public TravelersDTO email_chk(final String email) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -103,7 +103,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 아이디 중복 확인
-	public TrevelersDTO id_chk(final String id) {
+	public TravelersDTO id_chk(final String id) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -117,7 +117,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 닉네임 중복 확인
-	public TrevelersDTO nick_chk(final String usernick) {
+	public TravelersDTO nick_chk(final String usernick) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -131,7 +131,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 회원가입 기능
-	public String insert_user(final TrevelersDTO dto) {
+	public String insert_user(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -145,7 +145,7 @@ public class ServiceLoginDAO {
 		return result;
 	}
 	// 회원탈퇴 기능
-	public void delete_User(final TrevelersDTO dto) {
+	public void delete_User(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -158,7 +158,7 @@ public class ServiceLoginDAO {
 		}
 	}
 	// 정보 수정
-	public void update_user(final TrevelersDTO dto) {
+	public void update_user(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -171,7 +171,7 @@ public class ServiceLoginDAO {
 		}
 	}
 	// 정보 수정 후 loginUser 값 다시 담기
-	public TrevelersDTO change_session_value(final String id) {
+	public TravelersDTO change_session_value(final String id) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -185,7 +185,7 @@ public class ServiceLoginDAO {
 		return dto;
 	}
 	// 비밀번호 변경
-	public void change_pwd_save(final TrevelersDTO dto) {
+	public void change_pwd_save(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override

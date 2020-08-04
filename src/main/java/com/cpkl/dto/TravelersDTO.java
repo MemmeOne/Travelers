@@ -3,7 +3,7 @@ import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class TrevelersDTO {
+public class TravelersDTO {
 	private String id, pwd, nick, email, gender;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
 	private Date birth;

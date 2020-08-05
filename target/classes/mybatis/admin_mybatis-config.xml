@@ -6,6 +6,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="reportdto" type="com.cpkl.dto.ReportPostDTO"/>
+		<typeAlias alias="packagedto" type="com.cpkl.dto.PackageDTO"/>
 		<typeAlias alias="map" type="java.util.Map"/>
 	</typeAliases>
 </configuration>

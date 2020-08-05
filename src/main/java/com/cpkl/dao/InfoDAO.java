@@ -13,6 +13,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
 import com.cpkl.dto.ReportPostDTO;
@@ -73,6 +75,20 @@ public class InfoDAO {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	// 공지, 이벤트 글 가져오기
+	public List<InfoDTO> notis_list() {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					list=info_sqlSession.selectList(namespace+".notis_list");
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 	// 정보 게시판 글 검색 목록 가져오기 기능
 	public List<InfoDTO> search(String tag, String word, int page) {
@@ -270,6 +286,7 @@ public class InfoDAO {
 			e.printStackTrace();
 		}
 	}
+	// 신고
 	public String report(final ReportPostDTO dto2) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -287,5 +304,77 @@ public class InfoDAO {
 		}else {
 			return "신고 실패";
 		}
+	}
+	
+	// 추천 눌렀을때
+	public void favoriteUp(final FavoriteDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					info_sqlSession.insert(namespace+".favoriteUp", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 추천취소
+	public void favoriteDown(final FavoriteDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					info_sqlSession.delete(namespace+".favoriteDown", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	List<CommentNumber> cnlist;
+	public List<CommentNumber> favoriteList() {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					cnlist=info_sqlSession.selectList(namespace+".favoriteList");
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cnlist;
+	}
+
+	CommentNumber cn;
+	public CommentNumber favorite(final FavoriteDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					cn=info_sqlSession.selectOne(namespace+".favorite", dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cn;
+	}
+
+	List<FavoriteDTO> favorite;
+	public List<FavoriteDTO> postFavoriteList(final int num){
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					favorite=info_sqlSession.selectList(namespace+".postFavoriteList", num);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return favorite;
 	}
 }

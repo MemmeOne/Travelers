@@ -399,9 +399,73 @@ div img:hover + p.arrow_box {
 			});
 		}
 	}
+	
+	
+	function favoriteUp(){
+		var num = "${info_post.num }";
+	    var userid = '${loginUser.id}';
+	    var form = { num:num, userid:userid };
+	    if(userid == ""){
+			alert("로그인이 필요합니다")
+	    }else{
+			$.ajax({
+				url:"info_favoriteUp",
+				type:"POST",
+				data:form,
+	            success:function(data){
+	               favorite();
+	               $("#heart").attr("src", "resources/main_image/heart-on.png");
+	               $("#heart").attr("onclick", "favoriteDown()");
+	            },error:function(){
+	               favoriteDown();
+	            }
+	       })
+	    }
+	}
+	function favoriteDown(){
+		console.log("취소소ㅗ")
+		var num = "${info_post.num }";
+		var userid = '${loginUser.id}';
+		var form = {num:num, userid:userid};
+		var check = confirm("추천 취소하시겠습니까?")
+		if(check){
+			$.ajax({
+				url:"info_favoriteDown",
+				type:"POST",
+				data:form,
+				success:function(data){
+					favorite();
+					$("#heart").attr("src", "resources/main_image/heart.png");
+					$("#heart").attr("onclick", "favoriteUp()");
+				},error:function(){
+					favoriteDown();
+				}
+			});
+		}
+	}
+
+	function favorite(){
+		var num = "${info_post.num }";
+		var userid = '${loginUser.id}';
+		var form = {num:num};
+		$.ajax({
+			url:"info_favorite",
+			type:"POST",
+			data:form,
+	        success:function(data){
+	        	if(data != null){
+	            	$("#favorite").html(data.count);
+	            }else{
+	               	$("#favorite").html("");
+	            }
+	        },error:function(){
+	            alert("favorite loading fail")
+	        }
+	   });
+	}
 </script>
 </head>
-<body onload="chk_loginUser()" class="is-preload" id="top">
+<body onload="chk_loginUser();favorite();" class="is-preload" id="top">
 	<%@ include file="../defualt/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
@@ -409,9 +473,9 @@ div img:hover + p.arrow_box {
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
-					<form action="info_rewrite?num=${info_post.num }" method="post">
+					<form onsubmit="return false" id="form" method="post">
 						<input type="hidden" value="${info_post.num }" name="num">
-						<table id="post_table" style="width: 1070px; ">
+						<table id="post_table" style="width: 1070px;margin: 0 auto;">
 							<tr>
 								<td colspan="4">
 									[${info_post.tag }] ${info_post.title }
@@ -420,10 +484,24 @@ div img:hover + p.arrow_box {
 							<tr>
 								<td colspan="2">
 								${info_post.nick } | 
-								<span id="post_recommend">
-								<img src="resources/main_image/heart.png" style="width:25px; vertical-align: middle; opacity: 0.5;" onclick="">
-								${info_post.recommend }
-								</span>
+								<c:set var="i" value="0"/>
+		                        <c:forEach var="favoriteList" items="${favoriteList }">
+		                           <c:choose>
+		                              <c:when test="${favoriteList.userid eq loginUser.id && favoriteList.num eq info_post.num }">
+		                                 <c:set var="i" value="1"/>
+		                              </c:when>   
+		                           </c:choose>
+		                        </c:forEach>
+		                        <c:choose>
+		                           <c:when test="${i eq 1}">
+		                              <input id="heart" type="image" src="resources/main_image/heart-on.png" style="width:28px; vertical-align: middle;" onclick="favoriteDown()">
+		                           </c:when>
+		                           <c:otherwise>
+		                              <input id="heart" type="image" src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;" onclick="favoriteUp()">
+		                           </c:otherwise>
+		                        </c:choose>
+		                        <span id="favorite"></span>
+
 								</td>
 								<fmt:formatDate  var="postsavedate" value="${info_post.savedate}" pattern="yyyy-MM-dd hh:mm"/>
 								<td colspan="2" style="text-align: right;">${postsavedate } | 조회 ${info_post.hit }</td>
@@ -590,6 +668,19 @@ div img:hover + p.arrow_box {
   }
 #comment_table td a {
 	text-decoration: none;
+  }
+</style>
+<style>
+table  {
+    width: 100%;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
+    border-collapse: collapse;
+  }
+th, td {
+	background-color: white;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
   }
 </style>
 </body>

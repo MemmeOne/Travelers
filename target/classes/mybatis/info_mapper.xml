@@ -10,6 +10,11 @@
 		where rn between #{str} and #{end}
 	</select>
 	
+	<!-- 공지 글 목록 가져오기 기능 -->
+	<select id="notis_list" resultType="infodto" parameterType="map">
+		select * from info_board where nick='관리자' order by num desc
+	</select>
+	
 	<!-- 글 전체 수 -->
 	<select id="totPage" resultType="int" >
 		select count(*) from info_board
@@ -84,5 +89,26 @@
 	<insert id="report">
 		insert into report_post values(#{board},#{num},#{title},#{content},#{writer},#{usernick})
 	</insert>
-	
+
+	<!-- 게시글 추천 -->
+	<insert id="favoriteUp">
+		insert into info_favorite values(#{num}, #{userid})
+	</insert>
+	<!-- 게시글 추천 취소 -->
+	<delete id="favoriteDown">
+		delete from info_favorite where num=#{num} and userid=#{userid}
+	</delete>
+	<!-- 게시글 추천 불러오기 -->
+	<select id="favorite" resultType="com.cpkl.dto.CommentNumber">
+		select num, (count(*))count from info_favorite group by num having
+		num=#{num}
+	</select>
+	<!-- 게시글 목록 추천 불러오기 -->
+	<select id="favoriteList" resultType="com.cpkl.dto.CommentNumber">
+		select num, (count(*))count from info_favorite group by num
+	</select>
+	<!-- 게시글 추천 목록 -->
+	<select id="postFavoriteList" resultType="com.cpkl.dto.FavoriteDTO">
+		select*from info_favorite where num=#{num}
+	</select>
 </mapper>

@@ -20,13 +20,62 @@
 						<hr>
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 							<tr style="vertical-align: middle;" >
-								<td style="width:80px;text-align: center;">번호</td>
+								<td style="width:100px;text-align: center;">번호</td>
 								<td style="width:460px;text-align: center;">제목</td>
 								<td style="width:200px;text-align: center;">닉네임</td>
 								<td style="width:170px;text-align: center;">작성일</td>
-								<td style="width:80px;text-align: center;">조회</td>
-								<td style="width:80px;text-align: center;">추천</td>
+								<td style="width:100px;text-align: center;">조회</td>
+								<td style="width:100px;text-align: center;">추천</td>
 							</tr>
+							<c:forEach var="notis" items="${notis_list }">
+							<c:if test="${notis.nick=='관리자'}">
+							<tr id="notis" style="font-weight:bold; background: rgba(50, 50, 50, 0.05);font-size: 1.1em;">
+								<jsp:useBean id="now1" class="java.util.Date" />
+									<fmt:formatDate value="${now1}" pattern="yyyy-MM-dd" var="today" />
+									<fmt:formatDate var="savedate" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
+									<th style="text-align: center;color:red;">[${notis.tag }]</th>
+									<c:choose>
+										<c:when test="${notis==today}">
+											<th style="text-align: left;color:red;">
+												<a href="info_post?num=${notis.num }"> ${notis.title }</a>
+												<img src="resources/main_image/new.png" style="width:25px;">
+											</th>
+											<th style="text-align: center;">${notis.nick }</th>
+											<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="hh:mm"/>
+											<th style="text-align: center;">
+												${savedate2}
+											</th>
+										</c:when>
+										<c:otherwise>
+											<th style="text-align: left;color:red;">
+												<a href="info_post?num=${notis.num }"> ${notis.title }</a>
+											</th>
+											<th style="text-align: center;">${notis.nick }</th>
+											<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
+											<th style="text-align: center;">${savedate2}</th>
+										</c:otherwise>
+									</c:choose>
+									<th style="text-align: center;">${notis.hit }</th>
+									<th style="text-align: center;">
+			                            <c:set var="zero2" value="true" />
+										<c:forEach var="favoriteList2" items="${favoriteList }">
+											<c:choose>
+												<c:when test="${notis.num eq favoriteList2.num }">
+				                                   	${favoriteList2.count }
+				                                   	<c:set var="zero2" value="false" />
+		                                     	</c:when>
+											</c:choose>
+										</c:forEach>
+										<c:choose>
+											<c:when test="${zero2==true}">
+	                                 	      	0
+                                     	  	</c:when>
+										</c:choose>
+									</th>
+								</tr>
+							</c:if>
+							</c:forEach>
+							
 							<c:choose >
 								<c:when test="${info_list==null }">
 									<tr>
@@ -62,7 +111,22 @@
 												</c:otherwise>
 											</c:choose>
 											<td>${list.hit }</td>
-											<td>${list.recommend }</td>
+											<td>
+			                                    <c:set var="zero" value="true" />
+												<c:forEach var="favoriteList" items="${favoriteList }">
+													<c:choose>
+														<c:when test="${list.num eq favoriteList.num }">
+			                                            	${favoriteList.count }
+			                                            	<c:set var="zero" value="false" />
+			                                         	</c:when>
+													</c:choose>
+												</c:forEach>
+												<c:choose>
+													<c:when test="${zero==true}">
+			                                           	0
+			                                       	</c:when>
+												</c:choose>
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
@@ -80,12 +144,12 @@
 									<c:choose>
 										<c:when test="${param.page > 1 }">
 											<a href="info_list?page=${param.page-1}" style="vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_left.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_left.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:when>
 										<c:otherwise>
 											<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_left.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_left.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:otherwise>
 									</c:choose>
@@ -97,19 +161,19 @@
 									<c:choose>
 										<c:when test="${param.page < num }">
 											<a href="info_list?page=${param.page+1}" style="vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_right.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_right.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:when>
 										<c:otherwise>
 											<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_right.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_right.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:otherwise>
 									</c:choose>
 									<br>
 								</td>
 							</tr>
-							<tr style="border-bottom: 0px;">
+							<tr style="background-color: white; border-top:0; border-bottom:0; ">
 								<td style="width: 85px;"></td>
 								<td style="width: 200px;">
 									<select name="tag" style="width: 200px;">
@@ -140,12 +204,20 @@ table  {
     border-top: 1px solid rgba(50, 50, 50, 0.2);
     border-collapse: collapse;
   }
-th, td {
+td {
 	background-color: white;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2);
     padding: 10px;
     margin: 10px;
   }
+th {
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
+}
+a {
+	text-decoration: none;
+}
 </style>
 </body>
 </html>

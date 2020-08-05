@@ -1,8 +1,5 @@
 package com.cpkl.controller;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cpkl.dto.PackageDTO;
 import com.cpkl.dto.ReportPostDTO;
 import com.cpkl.service.AdminService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,5 +67,52 @@ public class AdminController {
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(list);
 		return strJson;
+	}
+	
+	/* 여행패키지 */
+	// 여행패키지 리스트
+	@RequestMapping("package_list")
+	public String package_list(HttpSession session) {
+		service.package_list(session);
+		return "package/package_list";
+	}
+	// 여행패키지 글 보기
+	@RequestMapping("package_post")
+	public String package_post(int num,HttpSession session) {
+		
+		return "package/package_post";
+	}
+	// 여행패키지 글 쓰기
+	@RequestMapping("package_write")
+	public String package_write() {
+		return "package/package_write";
+	}
+	// 여행패키지 글 쓰기
+	@RequestMapping("package_save")
+	public String package_save(PackageDTO dto) {
+		System.out.println(dto.getTitle());
+		int result=service.package_save(dto);
+		if(result==1) {
+			return "redirect:package_list?page=1";
+		}else {
+			return "redirect:package_write";
+		}
+	}
+	// 결제 페이지
+	@RequestMapping("payment")
+	public String payment(HttpSession session) {
+		return "package/payment";
+	}
+	// 결제 popup - 이니시스 결제창
+	@RequestMapping("pay_popup")
+	public String pay_popup(HttpSession session) {
+		return "package/pay_popup";
+	}
+	
+	
+	@RequestMapping("testcard")
+	public String testcard(HttpSession session) {
+		service.list(session);
+		return "package/test";
 	}
 }

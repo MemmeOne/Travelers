@@ -33,7 +33,9 @@ public class LoginService {
 					session.setAttribute("loginUser", dtoresult);
 					sessions.put(dto.getId(), session);
 				}else {
-					sessions.get(dto.getId()).invalidate();
+					if(sessions.get(dto.getId())!=null){
+						sessions.get(dto.getId()).invalidate();
+					}
 					sessions.remove(dto.getId());
 					result=dto.getId();
 					session.setAttribute("loginUser", dtoresult);

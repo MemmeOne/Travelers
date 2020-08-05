@@ -1,13 +1,11 @@
 package com.cpkl.service;
-import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.cpkl.dao.InfoDAO;
+import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
 import com.cpkl.dto.ReportPostDTO;
@@ -22,6 +20,8 @@ public class InfoService {
 	public void listAll(Model model, int page) {
 		model.addAttribute("info_list",dao.listAll(page));
 		model.addAttribute("totPage",dao.totPage());
+		model.addAttribute("favoriteList",dao.favoriteList());
+		model.addAttribute("notis_list",dao.notis_list());
 	}
 	// 정보 게시판 글 검색 목록 가져오기 기능
 	public void search(Model model, String tag, String word, int page) {
@@ -29,6 +29,7 @@ public class InfoService {
 		model.addAttribute("totPage",dao.totPageSearch(tag, word));
 		model.addAttribute("tag",tag);
 		model.addAttribute("word",word);
+		model.addAttribute("favoriteList",dao.favoriteList());
 	}
 	// 정보 게시판 글 저장 기능
 	public int info_save(InfoDTO dto) {
@@ -39,6 +40,7 @@ public class InfoService {
 		dao.info_uphit(num);
 		model.addAttribute("info_post",dao.info_post(num));
 		model.addAttribute("comment_list",dao.comment_list(num));
+		model.addAttribute("favoriteList",dao.postFavoriteList(num));
 	}
 	// 정보 게시판 글 수정 기능
 	public int info_modify(InfoDTO dto) {
@@ -74,7 +76,25 @@ public class InfoService {
 		dao.comment_reply_save(dto);
 		return dao.comment_list(dto.getNumgroup());
 	}
+	// 신고
 	public String report(ReportPostDTO dto) {
 		return dao.report(dto);
+	}
+	
+	// 추천
+	public void favoriteUp(FavoriteDTO dto) {
+		dao.favoriteUp(dto);
+	}
+	// 추천 취소
+	public void favoriteDown(FavoriteDTO dto) {
+		dao.favoriteDown(dto);
+	}
+	// 게시글별 추천 수
+	public void favoriteList(Model model) {
+		model.addAttribute("favoriteList", dao.favoriteList());
+	}
+	// 게시글의 추천 수
+	public CommentNumber favorite(FavoriteDTO dto) {
+		return dao.favorite(dto);
 	}
 }

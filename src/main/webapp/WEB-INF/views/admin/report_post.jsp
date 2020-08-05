@@ -381,7 +381,7 @@ function matedelete_chk(cnt) {
 						<div class="row">
 							<div class="col-6 col-12-medium" style="width:250px;">
 								<ul class="alt">
-									<li><a href="notice_event">공지 &middot; 이벤트 글 관리</a></li>
+									<li><a href="notice_event">Admin 글 관리</a></li>
 									<li><a href="report_post">신고 글 관리</a></li>
 									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
 									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>

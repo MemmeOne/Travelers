@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.cpkl.dto.PackageDTO;
 import com.cpkl.dto.ReportPostDTO;
 
 @Repository
@@ -131,5 +132,34 @@ public class AdminDAO {
 			e.printStackTrace();
 		}
 		return matedto;
+	}
+	
+	List<PackageDTO> package_list;
+	public List<PackageDTO> package_list() {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					package_list=admin_sqlSession.selectList(namespace+".package_list");
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return package_list;
+	}
+	int result;
+	public int package_save(final PackageDTO dto) {
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					result=admin_sqlSession.insert(namespace+".package_save",dto);
+				}
+			});
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

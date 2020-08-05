@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.InfoDTO;
 import com.cpkl.dto.ReportPostDTO;
@@ -142,4 +145,28 @@ public class InfoController {
 		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
+	
+	@RequestMapping(value="info_favoriteUp", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String favoriteUp(FavoriteDTO dto) {
+       service.favoriteUp(dto);
+       return null;
+    }
+    
+    @RequestMapping(value="info_favoriteDown", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String favoriteDown(FavoriteDTO dto) {
+    	System.out.println("DTO:"+dto);
+       service.favoriteDown(dto);
+       return null;
+    }
+    
+    @RequestMapping(value="info_favorite", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String favorite(FavoriteDTO dto) throws JsonProcessingException {
+       CommentNumber cn = service.favorite(dto);
+       ObjectMapper mapper = new ObjectMapper();
+       String json = mapper.writeValueAsString(cn);
+       return json;
+    }
 }

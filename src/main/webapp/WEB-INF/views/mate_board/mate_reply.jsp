@@ -258,7 +258,7 @@
 
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 		<!-- Main -->
 		<div class="inner">

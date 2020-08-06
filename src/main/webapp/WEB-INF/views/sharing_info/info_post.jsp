@@ -53,13 +53,15 @@ div img:hover + p.arrow_box {
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	function chk_loginUser() {
-		if ('${loginUser.id}' != null) {
-			console.log("로그인함")
-		} else {
-			alert("로그인 후 사용해주세요.")
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
 			location.href="login"
+		}else {
+			console.log("로그인 확인 성공")
 		}
 	}
+</script>
+<script type="text/javascript">
 	// 댓글 틀
 	var comment_html=""
 	comment_html += "<tr><input type='hidden' id='numgroup' value='${info_post.num }'>"
@@ -153,6 +155,7 @@ div img:hover + p.arrow_box {
 	}
 	// 댓글 저장
 	function comment_save() {
+		chk_loginUser();
 		var nick = $("#nick").val();
 		var content = $("#content").val();
 		var numgroup = $("#numgroup").val();
@@ -198,6 +201,7 @@ div img:hover + p.arrow_box {
 	}
 	// 수정한 댓글 저장
 	function comment_modify_save(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -234,6 +238,7 @@ div img:hover + p.arrow_box {
 	}
 	// 댓글 삭제
 	function comment_delete(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -265,6 +270,7 @@ div img:hover + p.arrow_box {
 	}
 	// 댓글 삭제
 	function comment_delete_admin(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -313,6 +319,7 @@ div img:hover + p.arrow_box {
 	}
 	// 대댓글 저장
 	function comment_reply_save(cnt) {
+		chk_loginUser();
 		var cnum = $("#recnum" + cnt).val();
 		var nick = $("#renick" + cnt).val();
 		var content = $("#recontent" + cnt).val();
@@ -345,63 +352,62 @@ div img:hover + p.arrow_box {
 	}
 	// 글 신고
 	function report_post() {
-		var content=prompt("신고 사유를 입력해주세요."+"");
-		var board = "info_board";
-		var num = "${info_post.num }"
-		var title = "[${info_post.tag }] ${info_post.title }"
-		var writer = "${info_post.nick }"
-		var usernick = "${loginUser.nick }"
-		console.log(board)
-		console.log(num)
-		console.log(title)
-		console.log(content)
-		console.log(writer)
-		console.log(usernick)
-		if(content==null) {
-			alert("신고를 취소합니다.")
-		}else if(content=="") {
-			alert("신고 사유를 입력하지 않아 신고를 취소합니다.\n다시 시도해주세요.")
-		}else if(usernick=="") {
-			alert("로그인 후 사용가능합니다.")
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
 			location.href="login"
 		}else {
-			var form = {
-				board:board,
-				num:num,
-				title:title,
-				content:content,
-				writer:writer,
-				usernick:usernick
-			}
-			$.ajax({
-				url : "report",
-				type : "POST",
-				data : form,
-				dataType: "json",
-				success : function(list) {
-					console.log(list)
-					if(list=="신고 성공") {
-						console.log("성공");
-						alert("해당 게시글을 신고하였습니다.")
-					}else if(list=="신고 실패") {
-						console.log("실패");
-						alert("이미 해당 게시글을 신고하였습니다.")
-					}else {
-						console.log("실패");
-						alert("오류로 인해 신고에 실패하였습니다.")
-					}
-				},
-				error : function(request, status, error) {
-					console.log("실패")
-					alert("code:" + request.status + "\n" + "message:"
-							+ request.responseText + "\n" + "error:" + error);
+			var content=prompt("신고 사유를 입력해주세요."+"");
+			var board = "info_board";
+			var num = "${info_post.num }"
+			var title = "[${info_post.tag }] ${info_post.title }"
+			var writer = "${info_post.nick }"
+			var usernick = "${loginUser.nick }"
+			if(content==null) {
+				alert("신고를 취소합니다.")
+			}else if(content=="") {
+				alert("신고 사유를 입력하지 않아 신고를 취소합니다.\n다시 시도해주세요.")
+			}else if(usernick=="") {
+				alert("로그인 후 사용가능합니다.")
+				location.href="login"
+			}else {
+				var form = {
+					board:board,
+					num:num,
+					title:title,
+					content:content,
+					writer:writer,
+					usernick:usernick
 				}
-			});
+				$.ajax({
+					url : "report",
+					type : "POST",
+					data : form,
+					dataType: "json",
+					success : function(list) {
+						console.log(list)
+						if(list=="신고 성공") {
+							console.log("성공");
+							alert("해당 게시글을 신고하였습니다.")
+						}else if(list=="신고 실패") {
+							console.log("실패");
+							alert("이미 해당 게시글을 신고하였습니다.")
+						}else {
+							console.log("실패");
+							alert("오류로 인해 신고에 실패하였습니다.")
+						}
+					},
+					error : function(request, status, error) {
+						console.log("실패")
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+					}
+				});
+			}
 		}
 	}
 	
-	
 	function favoriteUp(){
+		chk_loginUser();
 		var num = "${info_post.num }";
 	    var userid = '${loginUser.id}';
 	    var form = { num:num, userid:userid };
@@ -423,7 +429,7 @@ div img:hover + p.arrow_box {
 	    }
 	}
 	function favoriteDown(){
-		console.log("취소소ㅗ")
+		chk_loginUser();
 		var num = "${info_post.num }";
 		var userid = '${loginUser.id}';
 		var form = {num:num, userid:userid};
@@ -465,8 +471,8 @@ div img:hover + p.arrow_box {
 	}
 </script>
 </head>
-<body onload="chk_loginUser();favorite();" class="is-preload" id="top">
-	<%@ include file="../defualt/header.jsp"%>
+<body onload="favorite();" class="is-preload" id="top">
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -483,7 +489,7 @@ div img:hover + p.arrow_box {
 							</tr>
 							<tr>
 								<td colspan="2">
-								${info_post.nick } | 
+								<a onclick="window.open('userInfoPop?nick=${info_post.nick }','','width=500,height=700')">${info_post.nick }</a> | 
 								<c:set var="i" value="0"/>
 		                        <c:forEach var="favoriteList" items="${favoriteList }">
 		                           <c:choose>
@@ -508,14 +514,22 @@ div img:hover + p.arrow_box {
 							</tr>
 							<tr>
 								<td colspan="4" style="background: white ;">
+									<br>
 									${info_post.content }
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align: left ;">
-									<input type="button" value="목록보기" onclick="location.href='info_list?page=1'">	
+									<input type="button" value="목록보기" onclick="location.href='info_list?page=1'">
+									<c:forEach var="cc" items="${commentcount }">
+										<c:choose>
+											<c:when test="${param.num eq cc.numgroup }">
+												<c:set var="ccc" value="[${cc.count }]" />
+											</c:when>
+										</c:choose>
+									</c:forEach>	
 									<span id="show_hide">
-										<input type="button" value="댓글보기" onclick="comment_table_show()">	
+										<input type="button" value="댓글보기${ccc}" onclick="comment_table_show()">	
 									</span>
 									<input type="button" value="신고" onclick="report_post()">	
 								</td>
@@ -652,7 +666,7 @@ div img:hover + p.arrow_box {
 		</article>
 	</div>
 	
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 
 <style>
 #comment_table  {

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -31,6 +31,6 @@
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 </body>
 </html>

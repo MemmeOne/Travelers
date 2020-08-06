@@ -13,8 +13,28 @@
 <script src="resources/jquery-3.5.1.min.js"></script>
 
 <script type="text/javascript">
+function cal_save(mtravel_date_s,mtravel_date_3,wnick) {
+	console.log("달력저장버튼도눌림")
+	var cal_data={mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,wnick:wnick}
+	$.ajax({
+		url:"",
+		type:"POST",
+		data:cal_data,
+		success:function(data) {
+		 
+		},
+		error:function(request, status, error) {
+				console.log("실패");
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	})
+ 
+}
+
+
+
 function write_save() {
-	var title=$("#title").val();
+	var title =$("#title").val();
 	var content=$("#content").val();
 	
 	var mtravel_date=$("input[name=mtravel_date]:checked").val();
@@ -96,7 +116,7 @@ function write_save() {
 	
 	
 	//var mthema;
-	//$("input[name=mthema]:checked").each(function() {
+	//$("input[name=mthema]:checked").each(functitleon() {
 	//	mthema=$(this).val();
 	//})
 	//var mthema=$("input[name=mthema]:checked").val();
@@ -150,18 +170,28 @@ function write_save() {
 	var mexpenses=$("input[name=mexpenses]:checked").val();
 	var price1=$("input[name=price1]").val();
 	var price2=$("input[name=price2]").val();
+
+	var p1=$("input[name=price1]").val();
+	var p2=$("input[name=price2]").val();
+	console.log("p1="+p1)
+	var price1=p1.replace(/,/gi,"");
+	var price2=p2.replace(/,/gi,"");
+	console.log("price1="+price1)
+	
 	if(price1=="") {
 		price1=0;
 	}
 	if(price2=="") {
 		price2=0;
 	}
-	var deadline="진행중";
+	var deadline="모집중";
 	console.log("mcnt :"+mcnt)
 	console.log("mexpenses :"+mexpenses)
 	console.log("price1 :"+price1)
 	console.log("price2 :"+price2)
+	
 	var write_save_ok=0;
+	
 	if (title=="") {
 		alert("제목을 입력해주세요")
 	} else if(mtravel_date_s>mtravel_date_e||mtravel_date_s=="2000-01-01"||mtravel_date_e=="2000-01-01") {
@@ -173,13 +203,19 @@ function write_save() {
 	else if(mthema=="") {
 		alert("원하는 여행 테마를 입력해주세요")
 	}
+	else if(mroom=="") {
+		alert("원하는 숙소 종류를 입력해주세요")
+	}
+	else if(mgender=="") {
+		alert("원하는 동행 성별을 입력해주세요")
+	}
 	else if(mage=="") {
 		alert("원하는 동행 나이를 입력해주세요")
 	} else {
 		write_save_ok=1;
 	}
 
-	var total={title:title,content:content,mtravel_date:mtravel_date,mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,
+	var total={title:title ,content:content,mtravel_date:mtravel_date,mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,
 		mthema:mthema,mroom:mroom,mgender:mgender,mage:mage, mcnt:mcnt, mexpenses:mexpenses, price1:price1,price2:price2,deadline:deadline,
 		write_save_ok:write_save_ok}
 	console.log("여기부터");
@@ -207,6 +243,7 @@ function write_save() {
 				console.log("성공"); 
 				//location.href="mate_write_save00";
 				if(write_save_ok==1) {
+				//cal_save(mtravel_date_s,mtravel_date_e,wnick)
 				location.href="mate_board_list?page=1"; 
 				}
 			},
@@ -225,7 +262,7 @@ function write_save() {
 		sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
 </script>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
  
 <style>
 .checks {position: relative;}
@@ -411,9 +448,10 @@ input[type=checkbox] {
 
  
  						<h4>< 여행 정보 ></h4>
-						기간 : <input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" max="9999-12-31" style="color: black;">
+						기간 : 
+						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" max="9999-12-31" style="color: black; background-color:transparent;">
 						 ~ 
-						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" max="9999-12-31" style="color: black;">
+						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" max="9999-12-31" style="color: black;background-color:transparent; ">
 						<input type="checkbox" id="mtravel_date1" name="mtravel_date" value="예정" checked onclick="oneChk_date(this)"><label for="mtravel_date1">예정</label>
 						<input type="checkbox" id="mtravel_date2" name="mtravel_date" value="확정" onclick="oneChk_date(this)"><label for="mtravel_date2">확정</label>
 						<br>
@@ -423,32 +461,38 @@ input[type=checkbox] {
 						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3"> <label for="mthema_chk3">식도락</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
 						<br>
-						숙소 : <input type="checkbox" name="mroom" value="개인실" id="mroom1" checked="checked" onclick="oneChk_room(this)" > <label for="mroom1">개인실 </label>
-						<input type="checkbox" name="mroom" value="다인실" id="mroom2" onclick="oneChk_room(this)"> <label for="mroom2">다인실</label>
+						숙소 : 
+						<input type="checkbox" name="mroom" value="상관없음" id="mroom1" checked="checked" onclick="oneChk_room(this)" > <label for="mroom1">상관없음 </label>
+						<input type="checkbox" name="mroom" value="개인실" id="mroom2"   onclick="oneChk_room(this)" > <label for="mroom2">개인실 </label>
+						<input type="checkbox" name="mroom" value="다인실" id="mroom3" onclick="oneChk_room(this)"> <label for="mroom3">다인실</label>
  
 						<br>
-						<form>
-							1일경비 
-							<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
-							<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
-							<input type="number"  id="price1" name="price1" min="0" disabled  style = "text-align:right;">
-							~
-							<input type="number" id="price2" name="price2"  disabled  style = "text-align:right;">
-							<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled(this.form)"><label for="chkNotPirce2">추후결정</label>
+						<form style="display:flex" >
+						1일경비 
+						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
+						<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
+						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+						~ &nbsp;&nbsp;
+						<input type="text" numberOnly id="price2" name="price2" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+							<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled2(this.form)"><label for="chkNotPirce2">추후결정</label>
 						</form>
 						<h4>< 여행 동행 조건 ></h4>
-						성별 : <input type="checkbox" name="mgender" value="여자" id="mgender1" checked="checked"  onclick="oneChk_gender(this)">  <label for="mgender1">여자</label>
-						<input type="checkbox" name="mgender" value="남자" id="mgender2"  onclick="oneChk_gender(this)"> <label for="mgender2">남자</label>
+						성별 : 
+						<input type="checkbox" name="mgender" value="상관없음" id="mgender1" checked="checked"  onclick="oneChk_gender(this)">  <label for="mgender1">상관없음</label>
+						<input type="checkbox" name="mgender" value="여자" id="mgender2"  onclick="oneChk_gender(this)">  <label for="mgender2">여자</label>
+						<input type="checkbox" name="mgender" value="남자" id="mgender3"  onclick="oneChk_gender(this)"> <label for="mgender3">남자</label>
  
 						<br>
-						나이 : <input type="checkbox" name="mage" value="20대" id="mage1"> <label for="mage1">20대 </label>
+						나이 : 
+						<input type="checkbox" name="mage" value="20대" id="mage1"> <label for="mage1">20대 </label>
 						<input type="checkbox" name="mage" value="30대" id="mage2"> <label for="mage2">30대  </label>
 						<input type="checkbox" name="mage" value="40대" id="mage3"> <label for="mage3">40대  </label>
 						<input type="checkbox" name="mage" value="50대" id="mage4"> <label for="mage4">50대  </label>
 						<input type="checkbox" name="mage" value="60대이상" id="mage5"> <label for="mage5">60대이상 </label>
 						<br>
 						모집 인원
-						<input type="number" id="mcnt" name="mcnt" style = "text-align:right; color:black;">명
+						<input type="number" id="mcnt" name="mcnt" onkeyup="this.value=this.value.replace(/^0-9]/g,'');" style = "text-align:right; color:black; background-color:transparent ;">명
+						
 						<br>
 						<!--  <input type="text" id="title" name="title" size="100" autofocus >
 						<textarea id="content" name="content" rows="10" cols="100"></textarea>-->
@@ -459,6 +503,7 @@ input[type=checkbox] {
 						<tr>
 						<th colspan="2" style="margin: 0 auto;">
 						<textarea rows="15" cols="50" id="content"></textarea>
+
 						<script type="text/javascript">
 							$(function() {
 								//전역변수선언
@@ -516,7 +561,7 @@ input[type=checkbox] {
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 	<script type="text/javascript">
 	
  
@@ -557,7 +602,11 @@ input[type=checkbox] {
 		}
 	}
 	
-	  <!-- 금액 입력 버튼 활성&비활성화-->
+	   // 금액 입력 버튼 활성&비활성화 
+	   // 상관없음 chkNotPirce1
+	   // 금액입력 chkprice
+	   // 추후결정 chkNotPirce2
+	   
 	 	function chkAbled(form) {
 	 		if(form.chkprice.checked==true) {
 	 			//form.price1.disabled=false;
@@ -569,23 +618,27 @@ input[type=checkbox] {
 	 		}  
 	 	}
 	 	
-		function chkDisabled(form) {
+		function chkDisabled1(form) {
 	 		if(form.chkNotPirce1.checked==true) {
 	 			//form.price1.disabled=false;
 	 			document.getElementById("price1").disabled=true;
 	 			form.price2.disabled=true;
- 
-	 			
- 
+	 			var a=chkNotPirce1
+	 			oneChkeExpenses(a)
 	 		} 
-	 		if(form.chkNotPirce2.checked==true) {
-	 			//form.price1.disabled=false;
-	 			document.getElementById("price1").disabled=true;
-	 			form.price2.disabled=true;
- 
- 
-	 		}  
 	 	}
+		function chkDisabled2(form) {
+ 			if(form.chkNotPirce2.checked==true) {
+ 				//form.price1.disabled=false;
+ 				document.getElementById("price1").disabled=true;
+ 				form.price2.disabled=true;
+ 				var a=chkNotPirce2
+ 				oneChkeExpenses(a)
+
+ 			}  
+		}
+		
 	</script>
+						
 </body>
 </html>

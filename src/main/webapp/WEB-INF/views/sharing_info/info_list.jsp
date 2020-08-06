@@ -7,7 +7,7 @@
 <title>정보 공유 게시판</title>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -17,8 +17,8 @@
 					<form action="info_search">
 						<input type="hidden" name="page" value="1">
 						<h2 style="text-align: center;">정보 공유 게시판</h2>
-						<hr>
-						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
+						<hr style="width: 1070px;">
+						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px;">
 							<tr style="vertical-align: middle;" >
 								<td style="width:100px;text-align: center;">번호</td>
 								<td style="width:460px;text-align: center;">제목</td>
@@ -93,9 +93,16 @@
 												<c:when test="${savedate==today}">
 													<td style="text-align: left;">
 														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+														<c:forEach var="cnum" items="${commentcount }">
+															<c:choose>
+																<c:when test="${list.num eq cnum.numgroup }">
+																	[${cnum.count }]
+																</c:when>
+															</c:choose>
+														</c:forEach>
 														<img src="resources/main_image/new.png" style="width:25px;">
 													</td>
-													<td>${list.nick }</td>
+													<td><a onclick="window.open('userInfoPop?nick=${list.nick }','','width=500,height=700')">${list.nick }</a></td>
 													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="hh:mm"/>
 													<td>
 														${savedate}
@@ -104,6 +111,13 @@
 												<c:otherwise>
 													<td style="text-align: left;">
 														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+														<c:forEach var="cnum" items="${commentcount }">
+															<c:choose>
+																<c:when test="${list.num eq cnum.numgroup }">
+																	[${cnum.count }]
+																</c:when>
+															</c:choose>
+														</c:forEach>
 													</td>
 													<td>${list.nick }</td>
 													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd"/>
@@ -131,15 +145,17 @@
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
-							<tr>
-								<td colspan="4"></td>
-								<td colspan="4">
-									<input type="button" value="글작성" onclick="location.href='info_write'">
-								</td>
+							<tr style="border-bottom:0;">
+								<c:if test="${loginUser!=null }">
+									<td colspan="4"></td>
+									<td colspan="4">
+										<input type="button" value="글작성" onclick="location.href='info_write'">
+									</td>
+								</c:if>
 							</tr>
 						</table><br>
 						<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
-							<tr style="width: 60px;" >
+							<tr style="width: 60px;border-bottom:0;border-top:0;" >
 								<td colspan="6" style="font-size:2em;">
 									<c:choose>
 										<c:when test="${param.page > 1 }">
@@ -197,8 +213,8 @@
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
-<style>
+	<%@ include file="../default/footer.jsp"%>
+<!-- <style>
 table  {
     width: 100%;
     border-top: 1px solid rgba(50, 50, 50, 0.2);
@@ -217,6 +233,14 @@ th {
 }
 a {
 	text-decoration: none;
+}
+</style> -->
+<style>
+a{
+border-bottom:0;
+}
+td  {
+background-color: white;
 }
 </style>
 </body>

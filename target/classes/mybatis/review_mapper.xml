@@ -121,18 +121,27 @@
 	
 	<!-- 게시글 추천 -->
 	<insert id="favoriteUp">
-		insert into favorite values(#{boardnum}, #{num}, #{userid})
+		insert into review_favorite values(#{num}, #{userid})
 	</insert>
 	
+	<!-- 게시글 추천  취소 -->
+	<delete id="favoriteDown">
+		delete from review_favorite where num=#{num} and userid=#{userid}
+	</delete>
 	
 	<!-- 게시글 추천  불러오기-->
 	<select id="favorite" resultType="cn">
-		select num, (count(*))count from favorite group by boardnum, num having boardnum=#{boardnum} and num=#{num}
+		select num, (count(*))count from review_favorite group by num having num=#{num}
 	</select>
 	
 	<!-- 게시글 목록  추천  불러오기-->
 	<select id="favoriteList" resultType="cn">
-		select num, (count(*))count from favorite group by boardnum, num having boardnum=#{num}
+		select num, (count(*))count from review_favorite group by num
 	</select>
 	
+	<!-- 게시글 추천 목록 -->
+	<select id="postFavoriteList" resultType="favorite">
+		select*from review_favorite where num=#{num} 
+	</select>
+		
 </mapper>

@@ -77,7 +77,7 @@
 				</ul>
 			</div>
 		</section>
-		<%@ include file="defualt/footer.jsp"%>
+		<%@ include file="default/footer.jsp"%>
 	</div>
 </body>
 </html>

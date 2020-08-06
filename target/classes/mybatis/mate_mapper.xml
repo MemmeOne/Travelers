@@ -39,6 +39,9 @@
 		select B.*from (select rownum rn, A.* from (select*from mate_board order by num desc)A)B 
 		where rn between #{start} and #{end} 
 	</select>  
+	<select id="mate_list_for_cal" resultType="mate_dto">
+		select *from mate_board 
+	</select>
 	
 	<!-- 글 검색 
 	<select id="mate_list_search" resultType="mate_dto">
@@ -75,39 +78,44 @@
 	<select id="mate_search" resultType="mate_dto">
 		select B.*from (select rownum rn, A.* from (select*from mate_board where 
 		<!-- 태그 (제목, 닉네임)-->
+		( (  (  (    (   (
 		(#{tag} like '%${word}%')
 		and
 		<!-- 날짜 -->
-		    (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
-	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) 
+		(   (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
+	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) )  )
 	 	and
 		<!-- 테마 -->
 		(   mthema like '%${mthema0}%'
 		or mthema like '%${mthema1}%'
 		or mthema like '%${mthema2}%'
-		or mthema like '%${mthema3}%')
+		or mthema like '%${mthema3}%')    )
 		and
 		<!-- 숙소 -->
 		(  mroom like '%${mroom0}%'
 		or mroom like '%${mroom1}%'
-		or mroom='상관없음')
+		or mroom='상관없음')         )
 		and
 		<!-- 1일 경비 -->
-		    (price1  between #{price1} and #{price2}) 
+		(   (price1  between #{price1} and #{price2}) 
 	 	and (price2  between #{price1} and #{price2}) 
-	 	or  (price1=0 and price2=0)
+	 	or  (price1=0 and price2=0) )               )
 	 	and
 		<!-- 동행자 성별 -->
 		(  mgender like '%${mgender0}%'
 		or mgender like '%${mgender1}%' 
-		or mgender='상관없음')
+		or mgender='상관없음')          )
 		and
 		<!-- 동행자 나이 -->
-		(   mage like '%$mage0}%'
-		or mage like '%${mage1}%'
-		or mage like '%${mage2}%'
-		or mage like '%${mage3}%'
-		or mage like '%${mage4}%')
+		( ( (  ( (mage like '%$mage0}%')
+		or mage like '%${mage1}%')
+		or mage like '%${mage2}%')
+		or mage like '%${mage3}%')
+		or mage like '%${mage4}%')  )
+		
+		
+		and  deadline='모집중'
+		
 		)A)B 
 		
 		where rn between #{start} and #{end} order by num desc								 
@@ -116,41 +124,44 @@
 	<!-- 검색 글 전체 수 -->
 	<select id="totPageSearch" resultType="int" parameterType="map">
 		select count(*) from mate_board where
-		<!-- 태그 (제목, 닉네임)-->
+ 		<!-- 태그 (제목, 닉네임)-->
+		( (  (  (    (   (
 		(#{tag} like '%${word}%')
 		and
 		<!-- 날짜 -->
-		    (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
-	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) 
+		(   (mtravel_date_s  between #{mtravel_date_s} and #{mtravel_date_e})  
+	 	and (mtravel_date_e  between #{mtravel_date_s} and #{mtravel_date_e}) )  )
 	 	and
 		<!-- 테마 -->
 		(   mthema like '%${mthema0}%'
 		or mthema like '%${mthema1}%'
 		or mthema like '%${mthema2}%'
-		or mthema like '%${mthema3}%')
+		or mthema like '%${mthema3}%')    )
 		and
 		<!-- 숙소 -->
 		(  mroom like '%${mroom0}%'
 		or mroom like '%${mroom1}%'
-		or mroom='상관없음')
+		or mroom='상관없음')         )
 		and
 		<!-- 1일 경비 -->
-		    (price1  between #{price1} and #{price2}) 
+		(   (price1  between #{price1} and #{price2}) 
 	 	and (price2  between #{price1} and #{price2}) 
-	 	or  (price1=0 and price2=0)
+	 	or  (price1=0 and price2=0) )               )
 	 	and
 		<!-- 동행자 성별 -->
 		(  mgender like '%${mgender0}%'
 		or mgender like '%${mgender1}%' 
-		or mgender='상관없음')
+		or mgender='상관없음')          )
 		and
 		<!-- 동행자 나이 -->
-		(   mage like '%$mage0}%'
-		or mage like '%${mage1}%'
-		or mage like '%${mage2}%'
-		or mage like '%${mage3}%'
-		or mage like '%${mage4}%')
+		( ( (  ( (mage like '%$mage0}%')
+		or mage like '%${mage1}%')
+		or mage like '%${mage2}%')
+		or mage like '%${mage3}%')
+		or mage like '%${mage4}%')  )
 		
+		
+		and  deadline='모집중'
 	</select>
 	
 	<!-- 글 저장 -->
@@ -164,6 +175,16 @@
 		)
 	</insert>
 	
+	<insert id="mate_cal"  parameterType="mate_dao">
+		insert into cal
+		values(cal_seq.nextval,#{title},
+		#{description},#{start_date},#{end_date},
+		#{type_cate},#{username},#{backgroundColor},
+		#{textColor})
+	</insert>
+	<select id="mate_cal_list" resultType="mate_cal">
+		select*from cal
+	</select>
 
 	
 	<!-- 글 내용 조회 -->
@@ -227,4 +248,39 @@
 	<select id="commentcount" resultType="mate_reply_cnt">
 		select bnum, (count(*))count from mate_board_reply group by bnum
 	</select>
+	
+	
+	
+	
+	<!-- 댓글 전체 목록 가져오기 -->
+	<select id="comment_list" resultType="commentdto">
+		select * from mate_board_comment where numgroup=#{numgroup}
+		order by commentgroup asc, cnum asc
+	</select>
+	<!-- 댓글 저장 기능 -->
+	<insert id="comment_save" parameterType="commentdto">
+		insert into mate_board_comment(cnum,numgroup,commentgroup,nick,content,step)
+		values(mate_board_comment_seq.nextval, #{numgroup}, mate_board_comment_seq.currval, #{nick}, #{content}, #{step})
+	</insert>
+	<!-- 대댓글 저장 기능 -->
+	<insert id="comment_reply_save" parameterType="commentdto">
+		insert into mate_board_comment(cnum,numgroup,commentgroup,nick,content,step)
+		values(mate_board_comment_seq.nextval,#{numgroup},#{commentgroup},#{nick},#{content},#{step})
+	</insert>
+	<!-- 댓글 정렬하는 기능 -->
+	<update id="replyShape" >
+		update mate_board_comment set step=step+1 where numgroup=#{numgroup} and step > #{step}
+	</update>
+	<!-- 댓글 수정 기능 -->
+	<update id="comment_modify" parameterType="commentdto">
+		update mate_board_comment set content=#{content} where cnum=#{cnum}
+	</update>
+	<!-- 댓글 삭제 기능 -->
+	<update id="comment_delete" parameterType="commentdto">
+		update mate_board_comment set content=#{content} where cnum=#{cnum}
+	</update>
+	<delete id="comment_delete_admin" parameterType="commentdto">
+		delete from mate_board_comment where commentgroup=#{commentgroup}
+	</delete>
+	
 </mapper>

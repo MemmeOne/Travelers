@@ -11,10 +11,28 @@
 #link:hover{background-color:rgba(140,140,140,1);}
 #link:active{background-color:rgba(3,3,3, 0.7);}
 .d{background:yellow}
+	textarea.black_border {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		background-color: rgba(144, 144, 144, 0.25);
+		border-radius: 3px;
+		color: inherit;
+		border:1px;
+		display: block;
+		outline: 0;
+		padding: 0 1em;
+		text-decoration: none;
+		width: 100%;
+	}
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 
 <script type="text/javascript">
+
+ 
+ 
 var frm=document.getElementById("s")
 	function search() {
 	
@@ -128,8 +146,13 @@ var frm=document.getElementById("s")
 		})
 
 
-		var price1=$("input[name=price1]").val();
-		var price2=$("input[name=price2]").val();
+		var p1=$("input[name=price1]").val();
+		var p2=$("input[name=price2]").val();
+		console.log("p1="+p1)
+		var price1=p1.replace(/,/gi,"");
+		var price2=p2.replace(/,/gi,"");
+		console.log("price1="+price1)
+		
 		if(price1=="") {
 			price1=0;
 		}
@@ -210,7 +233,7 @@ var frm=document.getElementById("s")
 </script>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -403,44 +426,80 @@ input[type=checkbox] {
 						
 						==========표 아닌 것=================
 						-->
-						기간 : <input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black;">
+						기간 : 
+						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black;">
 						 ~ 
 						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black;">
 							<br>입력하는 날짜 범위 안에 들어가는 경우에만 출력됨<br>
 						<br>
 						테마 : 
-						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
-						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2"> <label for="mthema_chk2">휴양</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1">  <label for="mthema_chk1">관광</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2">  <label for="mthema_chk2">휴양</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3"> <label for="mthema_chk3">식도락</label>
-						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4"> <label for="mthema_chk4">기타</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4">  <label for="mthema_chk4">기타</label>
 						<div id="hidden">
 							<input type="checkbox" class="mthema_chk" name="mthema" value="" checked>
 						</div><br>
-						숙소 : <input type="checkbox" name="mroom" value="개인실" id="mroom1"> <label for="mroom1">개인실 </label>
+						숙소 : 
+						<input type="checkbox" name="mroom" value="개인실" id="mroom1"> <label for="mroom1">개인실 </label>
 						<input type="checkbox" name="mroom" value="다인실" id="mroom2"> <label for="mroom2">다인실</label>
 						<div id="hidden">
 							<input type="checkbox" name="mroom" value="" checked>
 						</div>
-						<form>
-						1일경비 : 금액입력 <input type="number" id="price1" name="price1" min="0" style="text-align: right; color:black;"> 
-							~ <input type="number" id="price2" name="price2" style="text-align: right;color:black;">
+						<form style="display:flex" >
+						1일경비 : 금액입력  &nbsp;&nbsp;
+						<input type="text" numberOnly id="price1" name="price1" style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+						~ &nbsp;&nbsp;
+						<input type="text" numberOnly id="price2" name="price2"  style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
 						</form><Br>
-						<h4>< 여행 동행 조건 ></h4>
-						성별 : <input type="checkbox" name="mgender" value="여자" id="mgender1"  >  <label for="mgender1">여자</label>
-						<input type="checkbox" name="mgender" value="남자" id="mgender2"  > <label for="mgender2">남자</label>
+						<h4>< 동행 조건 ></h4>
+						성별 : 
+						<input type="checkbox" name="mgender" value="여자" id="mgender1"  >  <label for="mgender1">여자</label>
+						<input type="checkbox" name="mgender" value="남자" id="mgender2"  >  <label for="mgender2">남자</label>
 						<div id="hidden">
 							<input type="checkbox" name="mgender" value="" checked>
 						</div>
 						<br>
-						나이 : <input type="checkbox" name="mage" value="20대" id="mage1"> <label for="mage1">20대 </label>
-						<input type="checkbox" name="mage" value="30대" id="mage2"> <label for="mage2">30대  </label>
-						<input type="checkbox" name="mage" value="40대" id="mage3"> <label for="mage3">40대  </label>
-						<input type="checkbox" name="mage" value="50대" id="mage4"> <label for="mage4">50대  </label>
+						나이 : 
+						<input type="checkbox" name="mage" value="20대" id="mage1">   <label for="mage1">20대 </label>
+						<input type="checkbox" name="mage" value="30대" id="mage2">   <label for="mage2">30대  </label>
+						<input type="checkbox" name="mage" value="40대" id="mage3">   <label for="mage3">40대  </label>
+						<input type="checkbox" name="mage" value="50대" id="mage4">   <label for="mage4">50대  </label>
 						<input type="checkbox" name="mage" value="60대이상" id="mage5"> <label for="mage5">60대이상 </label>
 						<div id="hidden">
 							<input type="checkbox" name="mage" value="" checked>
 						</div>
 						<br> 
+						
+						<script type="text/javascript">
+						// 1일 경비 숫자만 입력, 3자리마다 콤마
+						$("input:text[numberOnly]").on("focus", function() {
+						    var x = $(this).val();
+						    x = removeCommas(x);
+						    $(this).val(x);
+						}).on("focusout", function() {
+						    var x = $(this).val();
+						    if(x && x.length > 0) {
+						        if(!$.isNumeric(x)) {
+						            x = x.replace(/[^0-9]/g,"");
+						        }
+						        x = addCommas(x);
+						        $(this).val(x);
+						    }
+						}).on("keyup", function() {
+						    $(this).val($(this).val().replace(/[^0-9]/g,""));
+						});
+
+						function addCommas(x) {
+						    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+						}
+						 
+						//모든 콤마 제거
+						function removeCommas(x) {
+						    if(!x || x.length == 0) return "";
+						    else return x.split(",").join("");
+						}
+						</script>
 <input type="hidden" name="page" value="1">
  <table style="text-align: center;width: 1070px; margin: 0 auto; ">
  <tr>
@@ -471,19 +530,17 @@ input[type=checkbox] {
  
  <c:forEach items="${mate_list_all}" var="mate_dto">	
  <button type="button" style=" width: 1070px; " onclick="mate_content_view?num=${mate_dto.num }"  >
-	제목 ${mate_dto.title}
-	여행기간 :   ${mate_dto.mtravel_date_s }
- </button>
- </c:forEach>
-		-->
+	여행기간 :   ${mate_dto.mtravel_date_s }<br> 
+ </c:forEach>-->
+		
  					
 						
 						<h2 style="text-align: center;width: 1070px; margin: 0 auto;">여행 동행 찾기</h2><Br>
-							<table  class="all_white" id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
+							<table  id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
 								<c:forEach items="${mate_list_all}" var="mate_dto">
 								<tr id="link" style="margin : 5px;padding: 5px;" onclick="location.href='mate_content_view?num=${mate_dto.num }'">
 									<th>
-										[${mate_dto.mthema}] 
+										[${mate_dto.mthema}/${mate_dto.mroom}] 
 										${mate_dto.title}
 										<!-- 각 개시글 별 댓글 수 -->
 										<c:forEach var="cnum" items="${commentcount }">
@@ -499,7 +556,7 @@ input[type=checkbox] {
 									</th>
 									<th style="text-align: right;vertical-align: middle;">
 									<c:choose>
-										<c:when test="${mate_dto.deadline eq '진행중'}">
+										<c:when test="${mate_dto.deadline eq '모집중'}">
 										<span class="d"> ${mate_dto.deadline}</span> 
 										</c:when>
 										<c:otherwise>
@@ -524,9 +581,13 @@ input[type=checkbox] {
 								</tr>
 								</c:forEach>
 								<tr>
-								<td colspan="2" style="text-align: right;">
+								<td style="text-align: left;">
+								<input type="button" onclick="location.href='mate_board_list?page=1'" value="목록보기">
+								<input type="button" onclick="location.href='cal'" value="달력">
+									
+								</td>
+								<td  style="text-align: right;">
 								<button onclick="location.href='mate_write_view'">글작성</button>
-								<a href="mate_write_view">글작성</a>	
 								</td>
 								</tr>
 							</table>
@@ -551,7 +612,7 @@ input[type=checkbox] {
 											</c:otherwise>
 										</c:choose>
  										<c:set var="num" value="0"/>
- 											<c:forEach begin="1" end="${totPage }" step="3" var="cnt">
+ 											<c:forEach begin="1" end="${totPage }" step="10" var="cnt">
 												<c:set var="num" value="${num+1 }"/>
 													<a href="mate_board_list?page=${num }">${num}</a>
 											</c:forEach>
@@ -714,24 +775,10 @@ input[type=checkbox] {
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 	<script type="text/javascript">
 	
  
-	function oneChk(a) {
-		var obj=document.getElementsByName("mroom");
-		var obj2=document.getElementsByName("mgender");
-		for(var i=0;i<obj.length;i++) {
-			if(obj[i]!=a) {
-				obj[i].checked=false;
-			}
-		}
-		for(var i=0;i<obj2.length;i++) {
-			if(obj2[i]!=a) {
-				obj2[i].checked=false;
-			}
-		}
-	}
 	
 	</script>
 </body>

@@ -22,6 +22,7 @@ public class InfoService {
 		model.addAttribute("totPage",dao.totPage());
 		model.addAttribute("favoriteList",dao.favoriteList());
 		model.addAttribute("notis_list",dao.notis_list());
+		model.addAttribute("commentcount",dao.commentCount());
 	}
 	// 정보 게시판 글 검색 목록 가져오기 기능
 	public void search(Model model, String tag, String word, int page) {
@@ -30,6 +31,7 @@ public class InfoService {
 		model.addAttribute("tag",tag);
 		model.addAttribute("word",word);
 		model.addAttribute("favoriteList",dao.favoriteList());
+		model.addAttribute("commentcount",dao.commentCount());
 	}
 	// 정보 게시판 글 저장 기능
 	public int info_save(InfoDTO dto) {
@@ -41,6 +43,7 @@ public class InfoService {
 		model.addAttribute("info_post",dao.info_post(num));
 		model.addAttribute("comment_list",dao.comment_list(num));
 		model.addAttribute("favoriteList",dao.postFavoriteList(num));
+		model.addAttribute("commentcount",dao.commentCount());
 	}
 	// 정보 게시판 글 수정 기능
 	public int info_modify(InfoDTO dto) {

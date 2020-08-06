@@ -8,5 +8,9 @@
       <typeAlias alias="dto" type="com.cpkl.dto.FreeDTO"/>
       <typeAlias alias="Commentdto" type="com.cpkl.dto.FreeCommentDTO"/>
       <typeAlias alias="cn" type="com.cpkl.dto.FreeCommentNumber"/>
+      <typeAlias alias="favorite" type="com.cpkl.dto.FavoriteDTO"/>
+      <typeAlias alias="infodto" type="com.cpkl.dto.InfoDTO"/>
+      <typeAlias alias="reviewdto" type="com.cpkl.dto.ReviewBoardDTO"/>
+      <typeAlias alias="mate_dto" type="com.cpkl.dto.MateDTO"/>
    </typeAliases>
 </configuration>

@@ -1,7 +1,7 @@
 --Travelers 리뷰게시판
 create table review_board(
 num number(4) primary key,
-nick varchar2(20),
+nick varchar2(30),
 title varchar2(100),
 content varchar2(2000),
 savedate date default sysdate,
@@ -19,7 +19,7 @@ num number(4),
 cnum number(4),
 numgroup number(4),
 indent number(4),
-cnick varchar2(20),
+cnick varchar2(30),
 comments varchar2(300),
 savedate date default sysdate,
 constraint cid foreign key(num) references review_board(num) on delete cascade
@@ -47,9 +47,8 @@ memo varchar2(1000)
 create sequence traveldiary_seq;
 
 --추천 Table
-create table favorite(
-boardnum number,
+create table review_favorite(
 num number,
 userid varchar2(30),
-CONSTRAINT a  PRIMARY KEY (boardnum,num,userid)
+CONSTRAINT a  PRIMARY KEY (num,userid)
 );

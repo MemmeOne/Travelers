@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +21,7 @@
 			success:function(list){
 				length = list.length;
 				if(length == 0){
-					alert("여행 수첩을 추가하세요")
+					alert("등록된 여행 수첩이 없습니다")
 				}else{
 					let html = ""
 						html += '<input type="hidden" name="num" value="'+list[rn].num+'">';
@@ -44,9 +42,7 @@
 						html +=	'<input type="button" value=">" onclick="next()" style="margin-top: 200px;">';
 						html +=	'</div>';
 						html +=	'<br><br>';
-						html +=	'<input type="button" value="수정" onclick="travelDiaryMod()" >';
-						html +=	'<input type="button" value="삭제" onclick="travelDiaryDel()" >';
-						html +=	'<input type="button" value="닫기" style="margin-right: 50px;" onclick="window.location.reload()" >';
+						html +=	'<input type="button" value="닫기" style="margin-right: 50px;" onclick="window.close()" >';
 					$("#view").html(html);
 				}
 			},error:function(){
@@ -82,46 +78,20 @@
 	}
 </script>
 </head>
-<body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
-	<!-- Page Wrapper -->
-	<div id="page-wrapper">
-		<!-- Main -->
-		<article id="main">
-			<section class="wrapper style5">
-				<div class="inner">
-					<section>
-					<input type="hidden" id="nick" value="${loginUser.nick }">
-					<h2>My Page</h2>
-						<div class="row">
-							<div class="col-6 col-12-medium" style="width:200px;">
-								<ul class="alt">
-									<li><a href="mypage">내정보</a></li>
-									<li><a href="travelDiary">여행수첩</a></li>
-									<li><a href="mypage">메이트 신청 현황</a></li>
-									<li><a href="mypage">작성한 글 관리</a></li>
-									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
-									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
-									<li><a href="withdrawal">회원탈퇴</a></li>
-								</ul>
-							</div>
-							<form id="frm" method="post">
-							<div id="view" class="col-6 col-12-medium" align="center" style="margin-left: 50px;">
-								<h2>여행 수첩</h2>
-								<div style="width: 88mm; height: 125mm;">
-									<img src="resources/main_image/passport.jpg" style="width: 88mm; height: 125mm;; margin: 0 auto;">
-								</div>
-								<br><br>
-								<input type="button" value="열기" onclick="travelDiaryList()">
-								<input type="button" value="추가" onclick="window.open('form','','width=355,height=280')">
-							</div>
-							</form>
-						</div>
-					</section>
-				</div>
-			</section>
-		</article>
+<body>
+	<input type="hidden" id="nick" value="${param.nick }">
+	<div class="row">
+		<form id="frm" method="post">
+		<div id="view" align="center" style="margin-left: 50px;">
+			<h2>${param.nick }님의 여행 수첩</h2>
+			<div style="width: 88mm; height: 125mm;">
+				<img src="resources/main_image/passport.jpg" style="width: 88mm; height: 125mm;; margin: 0 auto;">
+			</div>
+				<br><br>
+				<input type="button" value="열기" onclick="travelDiaryList()">
+				<input type="button" value="닫기" onclick="window.close()" >
+			</div>
+		</form>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
 </body>
 </html>

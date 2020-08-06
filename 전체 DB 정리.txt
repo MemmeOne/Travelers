@@ -24,32 +24,6 @@ drop SEQUENCE info_board_seq;
 drop table info_board_comment;
 drop SEQUENCE info_board_comment_seq;
 
-drop table package;
-drop sequence package_seq;
-
---------------------------------------------------------------------------------
-
-create table package(
-num int primary key, --패키지 글 번호
-title varchar2(200), --패키지 글 제목
-pay number, --가격
-theme varchar2(200), --여행테마
-term number, --여행기간
-start_point varchar2(100), --출발지 ex) 인천=>괌
-start_date date, --여행 출발날짜 ex)2020년 9월 23일 22:05
-start_plane varchar2(100), --출발항공편[에어부산 BX797편]
-end_point varchar2(100), --도착지 ex) 괌=>인천
-end date, --도착날짜 ex)2020년 9월 26일 06:35
-end_plane varchar2(100), --도착항공편[에어부산 BX798편]
-hotel varchar2(300),--호텔 : 1인실(+100000원) / 2인실
-city varchar2(300),--부산-타이페이(3일)-부산
-count number(4) default 0,--현재예약한인원 10명
-max number(4),--최대 예약 가능한 인원
-cut_line number(4),--패키지 최소 인원
-content varchar2(3000) -- 상세내용
-);
-create sequence package_seq;
-
 --------------------------------------------------------------------------------
 
 신고글 DB

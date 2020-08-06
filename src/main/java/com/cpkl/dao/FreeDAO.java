@@ -15,9 +15,11 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
 /* 자유 게시판 DAO */
+import com.cpkl.dto.ReportPostDTO;
 @Repository
 public class FreeDAO {
 	@Autowired
@@ -137,22 +139,50 @@ public class FreeDAO {
 	}
 	//댓글 삭제 기능
 	public void comment_delete(final FreeCommentDTO dto) {
+		dto.setContent("<b>삭제된 댓글입니다.</b>");
 		result=free_sqlSession.insert(namespace+".comment_delete",dto);
 	    System.out.println("댓글 삭제 완료");
 	}
+	//admin 댓글 삭제 기능
+	public void comment_delete_admin(final FreeCommentDTO dto) {
+		dto.setContent("삭제된 댓글입니다.");
+		result=free_sqlSession.insert(namespace+".comment_delete_admin",dto);
+	}
+		
 	//대댓글 저장 기능
 	public void comment_reply_save(final FreeCommentDTO dto) {
 		result=free_sqlSession.insert(namespace+".comment_reply_save",dto);
 		System.out.println("대댓글 저장 완료");
 	}
 	//대댓글 삭제 기능
-	public void comment_indent_delete(final FreeCommentDTO dto) {
-		free_sqlSession.delete(namespace+".comment_indent_delete", dto);
-		System.out.println("대댓글 삭제 완료");
-	}
+	/*
+	  public void comment_step_delete(final FreeCommentDTO dto) {
+	  free_sqlSession.delete(namespace+".comment_step_delete", dto);
+	  System.out.println("대댓글 삭제 완료"); }
+	 */
 	
 	//댓글 수 표시 기능
 	public List<CommentNumber> commentCount(){
 		return free_sqlSession.selectList(namespace+".commentcount");
+	}
+	//추천 클릭 시 
+	public void favoriteUp(FavoriteDTO dto) {
+		free_sqlSession.insert(namespace+".favoriteUp", dto);
+	}
+	//추천 취소
+	public void favoriteDown(FavoriteDTO dto) {
+		free_sqlSession.delete(namespace+".favoriteDown", dto);
+	}
+	
+	public List<CommentNumber> favoriteList() {
+		return free_sqlSession.selectList(namespace+".favoriteList");
+	}
+	
+	public CommentNumber favorite(FavoriteDTO dto) {
+		return free_sqlSession.selectOne(namespace+".favorite", dto);
+	}
+	
+	public List<FavoriteDTO> postFavoriteList(int num){
+		return free_sqlSession.selectList(namespace+".postFavoriteList", num);
 	}
 }

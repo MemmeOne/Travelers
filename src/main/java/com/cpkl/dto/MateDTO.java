@@ -21,9 +21,20 @@ public class MateDTO {
 	// 여행 동행 조건
 	private String mtravel_date, mthema, mroom, mgender, mexpenses,mage;
 	private int  mcnt, price1, price2;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="GMT+9")
 	private Date mtravel_date_s;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone="GMT+9")
+	private Date mtravel_date_e;
+	//private Timestamp mtravel_date_e;
+	
+	// private int mage;
+	// expenses 여행경비는어카지..?
+
+	
 	private String deadline;
  
+	
+	
 	// 검색용
 	private String word, tag;
 	
@@ -79,11 +90,6 @@ public class MateDTO {
 	public void setPrice2(int price2) {
 		this.price2 = price2;
 	}
-	private Date mtravel_date_e;
-	//private Timestamp mtravel_date_e;
-	
-	// private int mage;
-	// expenses 여행경비는어카지..?
 
 	//-----------------------
 	public Date getMtravel_date_s() {

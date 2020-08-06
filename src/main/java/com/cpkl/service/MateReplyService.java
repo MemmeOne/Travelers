@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.cpkl.dao.MateDAO;
+import com.cpkl.dto.MateCommentDTO;
+import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateReplyDTO;
 
 @Service
@@ -62,6 +64,34 @@ public class MateReplyService {
 //		
 //		
 //	}
+	
+	
+	/* 댓글 기능 */
+	// 댓글 저장 기능
+	public List<MateCommentDTO> comment_save(MateCommentDTO dto) {
+		matedao.comment_save(dto);
+		return matedao.comment_list(dto.getNumgroup());
+	}
+	// 댓글 수정 기능
+	public List<MateCommentDTO> comment_modify(MateCommentDTO dto) {
+		matedao.comment_modify(dto);
+		return matedao.comment_list(dto.getNumgroup());
+	}
+	// 댓글 삭제 기능
+	public List<MateCommentDTO> comment_delete(MateCommentDTO dto) {
+		matedao.comment_delete(dto);
+		return matedao.comment_list(dto.getNumgroup());
+	}
+	// admin 댓글 삭제 기능
+	public List<MateCommentDTO> comment_delete_admin(MateCommentDTO dto) {
+		matedao.comment_delete_admin(dto);
+		return matedao.comment_list(dto.getNumgroup());
+	}
+	// 대댓글 저장 기능
+	public List<MateCommentDTO> comment_reply_save(MateCommentDTO dto) {
+		matedao.comment_reply_save(dto);
+		return matedao.comment_list(dto.getNumgroup());
+	}
 	
 	
 	

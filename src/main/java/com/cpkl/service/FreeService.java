@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 
 import com.cpkl.dao.FreeDAO;
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
+import com.cpkl.dto.ReportPostDTO;
 /* 자유 게시판 서비스 */
 @Service
 public class FreeService {
@@ -44,6 +46,7 @@ public class FreeService {
 		dao.uphit(num);
 	   model.addAttribute("lists",dao.free_content_view(num));
 	   model.addAttribute("comment_list",dao.comment_list(num));
+	   model.addAttribute("favoriteList", dao.postFavoriteList(num));
 	}
 	// 자유 게시판 글 삭제 기능
 	public void free_board_delete(Model model,int num) {
@@ -71,17 +74,40 @@ public class FreeService {
 	}
 	// 댓글 삭제 기능
 	public List<FreeCommentDTO> comment_delete(FreeCommentDTO dto) {
-		if(dto.getStep() == 0) {
-			dao.comment_delete(dto);
-		}else {
-			dao.comment_indent_delete(dto);
-		}
+		dao.comment_delete(dto);
 		return dao.comment_list(dto.getNumgroup());
 	}
+	// admin 댓글 삭제 기능
+	public List<FreeCommentDTO> comment_delete_admin(FreeCommentDTO dto) {
+		dao.comment_delete_admin(dto);
+		return dao.comment_list(dto.getNumgroup());
+	}
+	// 댓글 삭제 기능
+	/*
+	  public List<FreeCommentDTO> comment_delete(FreeCommentDTO dto) {
+	  if(dto.getStep() == 0) { dao.comment_delete(dto); }else {
+	  dao.comment_step_delete(dto); } return dao.comment_list(dto.getNumgroup()); }
+	 */
 	// 대댓글 저장 기능
 	public List<FreeCommentDTO> comment_reply_save(FreeCommentDTO dto) {
 		dao.comment_reply_save(dto);
 		return dao.comment_list(dto.getNumgroup());
+	}
+	//추천
+	public void favoriteUp(FavoriteDTO dto) {
+		dao.favoriteUp(dto);
+	}
+	//추천 취소
+	public void favoriteDown(FavoriteDTO dto) {
+		dao.favoriteDown(dto);
+	}
+	//게시글 별 추천 수
+	public void favoriteList(Model model) {
+		model.addAttribute("favoriteList", dao.favoriteList());
+	}
+	//게시글의 추천 수
+	public CommentNumber favorite(FavoriteDTO dto) {
+		return dao.favorite(dto);
 	}
 }
 

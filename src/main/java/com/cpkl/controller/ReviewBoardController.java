@@ -1,17 +1,16 @@
 package com.cpkl.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,18 +27,15 @@ public class ReviewBoardController {
 
 	@Autowired
 	private ReviewBoardService rbs;
-	@Autowired
-	private HttpSession session;
 	
 	@RequestMapping("reviewboard")
 	public String reviewBoard(HttpServletRequest request, Model model) {
 		String page = request.getParameter("page");
-		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
 		String searchtype = (String) request.getParameter("searchtype");
 		String search = (String) request.getParameter("search");
 		if(search == null) {
 			rbs.reviewBoard(page, model);
-			rbs.favoriteList(boardnum, model);
+			rbs.favoriteList(model);
 		}else {
 			Map<String,	Object> map = new HashMap<String, Object>();
 			map.put("page", page);
@@ -58,7 +54,7 @@ public class ReviewBoardController {
 	@RequestMapping("contentreg")
 	public String contentWrite(ReviewBoardDTO dto) {
 		rbs.contentReg(dto);
-		return "redirect:reviewboard?boardnum=1&page=1";
+		return "redirect:reviewboard?page=1";
 	}
 	
 	@RequestMapping("contentview")
@@ -70,7 +66,7 @@ public class ReviewBoardController {
 	@RequestMapping("delete")
 	public String delete(@RequestParam int num) {
 		rbs.delete(num);
-		return "redirect:reviewboard?boardnum=1&page=1";
+		return "redirect:reviewboard?page=1";
 	}
 	
 	@RequestMapping("contentmodify")
@@ -82,7 +78,7 @@ public class ReviewBoardController {
 	@RequestMapping("modify")
 	public String modify(ReviewBoardDTO dto) {
 		rbs.modify(dto);
-		return "redirect:reviewboard?boardnum=1&page=1";
+		return "redirect:reviewboard?page=1";
 	}
 	
 
@@ -102,7 +98,7 @@ public class ReviewBoardController {
 		return json;
 	}
 	
-	@RequestMapping(value="reply", produces = "application/json;charset=utf-8")
+	@RequestMapping(value="commentReply", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String reply(ReviewBoardCommentsDTO dto) {
 		rbs.reply(dto);
@@ -139,6 +135,13 @@ public class ReviewBoardController {
 		return null;
 	}
 	
+	@RequestMapping(value="favoriteDown", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favoriteDown(FavoriteDTO dto) {
+		rbs.favoriteDown(dto);
+		return null;
+	}
+	
 	@RequestMapping(value="favorite", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String favorite(FavoriteDTO dto) throws JsonProcessingException {
@@ -147,5 +150,6 @@ public class ReviewBoardController {
 		String json = mapper.writeValueAsString(cn);
 		return json;
 	}
+
 	
 }

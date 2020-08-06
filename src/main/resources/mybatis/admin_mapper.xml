@@ -4,24 +4,20 @@
 
 <mapper namespace="com.cpkl.admin_mybatis.myMapper">
 	<select id="report_infolist" resultType="reportdto" parameterType="map">
-		select count(num) report,num,title,content,writer
-		from report_post where board='info_board'
-		group by num, title, content,  writer  ORDER BY report desc
+		select num,title,content,writer
+		from report_post where board='info_board' ORDER BY num asc
 	</select>
 	<select id="report_matelist" resultType="reportdto" parameterType="map">
-		select count(num) report,num,title,content,writer
-		from report_post where board='mate_board'
-		group by num, title, content,  writer  ORDER BY report desc
+		select num,title,content,writer
+		from report_post where board='mate_board' ORDER BY num asc
 	</select>
 	<select id="report_reviewlist" resultType="reportdto" parameterType="map">
-		select count(num) report,num,title,content,writer
-		from report_post where board='review_board'
-		group by num, title, content,  writer  ORDER BY report desc
+		select num,title,content,writer
+		from report_post where board='review_board' ORDER BY num asc
 	</select>
 	<select id="report_freelist" resultType="reportdto" parameterType="map">
-		select count(num) report,num,title,content,writer
-		from report_post where board='free_board'
-		group by num, title, content,  writer  ORDER BY report desc
+		select num,title,content,writer
+		from report_post where board='free_board' ORDER BY num asc
 	</select>
 	<delete id="infodelete_chk_board">
 		delete from info_board where num=#{n}
@@ -64,13 +60,13 @@
 		select * from package
 	</select>
 	
-	<insert id="pakage_save" parameterType="packagedto">
+	<!-- <insert id="pakage_save" parameterType="packagedto">
 		insert into package(num,title,pay,theme,term,
 		start_point,start_date,start_plane,end_point,end_date,end_plane,
 		hotel,city,max,cut_line,content)
 		values (info_board_seq.nextval,#{title},#{pay},#{theme},#{term},
 		#{start_point},#{start_date},#{start_plane},#{end_point},#{end_date},#{end_plane},
 		#{hotel},#{city},#{max},#{cut_line},#{content});
-	</insert>
+	</insert> -->
 	
 </mapper>

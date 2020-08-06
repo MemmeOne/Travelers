@@ -34,7 +34,7 @@ public class TravelDiaryController {
 	
 	@RequestMapping("travelDiary")
 	public String travelDiary() {
-		return "travel_diary/travekdiary";
+		return "travel_diary/traveldiary";
 	}
 	
 	@RequestMapping("travelDiaryMod")
@@ -52,7 +52,7 @@ public class TravelDiaryController {
 	@RequestMapping("travelDiaryDel")
 	public String travelDiaryDel(@RequestParam("num") int num) {
 		tds.travelDiaryDel(num);
-		return "travel_diary/travekdiary";
+		return "travel_diary/traveldiary";
 	}
 	
 	
@@ -65,4 +65,9 @@ public class TravelDiaryController {
 		return json;
 	}
 	
+	@RequestMapping("userInfoPop")
+	public String userInfoPop(@RequestParam String nick) {
+		return "travel_diary/traveldairy_pop";
+	}
+		
 }

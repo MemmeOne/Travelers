@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cpkl.dto.MateCalDTO;
+import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.MateReplyDTO;
 import com.cpkl.service.MateReplyService;
@@ -59,7 +61,20 @@ public class MateController {
 		return "defualt/post";
 	}
 
- 
+	@RequestMapping("cal")
+	public String cal() {
+		return "mate_board/cal";
+	}
+	@RequestMapping("cal2")
+	public String cal2(MateDTO dto,Model model )  {
+		//mateSer.mate_cal2(dto,model);
+		return "mate_board/cal2";
+	}
+	@RequestMapping("cals")
+	public String cals() {
+		return "mate_board/cals";
+	}
+
 
 	// 글 전체 목록 보기
 	@RequestMapping("mate_board_list")
@@ -278,7 +293,38 @@ public class MateController {
 //		mateSer.mate_write_save(matedto );
 //		return "redirect:mate_board_list?page=1";
 //	}
-
+//	// 글 쓰기 저장
+//	@RequestMapping(value="mate_cal_save",  produces="application/json;charset=utf-8")
+//	@ResponseBody
+//	public String mate_cal_save(  ) throws JsonProcessingException {
+//	}
+	
+	@RequestMapping(value="mate_cal",  produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_cal( MateCalDTO dto ) throws JsonProcessingException {
+		System.out.println("달력 컨트롤러");
+		ObjectMapper mapper=new ObjectMapper();
+		String s="";
+		String strJson=mapper.writeValueAsString( s);
+		mateSer.mate_cal( dto  );
+		return strJson;
+	}
+	@RequestMapping(value="mate_cal_list",  produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_cal_list( MateDTO dto  ) throws JsonProcessingException {
+		System.out.println("달력 보여주기 =======컨트롤러 ");
+		//mateSer.mate_cal( dto  );
+		List<MateDTO> list=mateSer.mate_cal2(dto );
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+		
+		
+		
+		
+		
+	}
+	 
 
 	// 글 내용 조회 (상세보기?)
 	@RequestMapping("mate_content_view")
@@ -313,7 +359,7 @@ public class MateController {
 	public String mate_content_view(HttpSession session, RedirectAttributes redirect) {
 		MateDTO matedto=new MateDTO();
 		matedto.setNum((Integer)session.getAttribute("bnum"));
-		matedto.setDeadline("완료");
+		matedto.setDeadline("모집완료");
 		mateSer.deadline_finish(matedto);
 		redirect.addAttribute("num", matedto.getNum());
 		return "redirect:mate_content_view";
@@ -526,4 +572,71 @@ public class MateController {
 //	}
 	///--------------------------------
 	
+	
+	//=================== 댓글
+	/* 댓글 기능 */
+	// 댓글 저장 기능
+	@RequestMapping(value="mate_comment_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_comment_save(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.comment_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// 댓글 수정 기능
+	@RequestMapping(value="mate_comment_modify",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_comment_modify(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.comment_modify(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// 댓글 삭제 기능
+	@RequestMapping(value="mate_comment_delete",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_comment_delete(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.comment_delete(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// admin 댓글 삭제 기능
+	@RequestMapping(value="mate_comment_delete_admin",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String comment_delete_admin(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.comment_delete_admin(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// 대댓글 저장 기능
+	@RequestMapping(value="mate_comment_reply_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_comment_reply_save(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.comment_reply_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
+ 

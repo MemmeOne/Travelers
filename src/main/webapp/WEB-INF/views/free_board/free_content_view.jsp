@@ -4,21 +4,69 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>free_content_view</title>
+<title>${lists.title }</title>
 <style type="text/css">
+#box {
+    text-align: center;
+}
+#box div {
+    position: relative;
+    display: inline-block;
+}
+#box div div img {
+    display: block;
+    cursor: pointer;
+}
+.arrow_box {
+  display: none;
+  position: absolute;
+  width: 50px;
+  padding: 8px;
+  left: 0;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;  
+  border-radius: 8px;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+}
+
+.arrow_box:after {
+  position: absolute;
+  bottom: 100%;
+  left: 8%;
+  width: 0;
+  height: 0;
+  margin-top: 20px;
+  border: solid transparent;
+  border-color: rgba(46, 56, 66, 0);
+  border-bottom-color: #333;
+  border-width: 10px;
+  pointer-events: none;
+  content: " ";
+}
+
+div img:hover + p.arrow_box {
+  display: block;
+}
 </style>
 <script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-// 댓글 틀
+function chk_loginUser() {
+	if ('${loginUser}' == "") {
+		alert("로그인 후 사용 가능합니다.")
+		location.href="login"
+	}else {
+		console.log("로그인 확인 성공")
+	}
+}
+//댓글 틀
 var comment_html=""
-comment_html += "<tr><td colspan='4'>"
-comment_html += "<input type='hidden' id='numgroup' value='${lists.num }'>"
-comment_html += "<input type='hidden' id='step' value='0'>"
-comment_html += "<input type='hidden' id='indent' value='0'>"
-comment_html += "<input type='hidden' id='nick' value='${loginUser.nick}'>"
-comment_html += "<input type='text' id='content'></td>"
-//comment_html += "<textarea rows='3' cols='50' id='content'></textarea></td>"
+comment_html += "<tr><input type='hidden' id='numgroup' value='${lists.num }'>"
+comment_html += "<input type='hidden' id='nick' placeholder='닉네임' value='${loginUser.nick}'>"
+comment_html += "<td colspan='3'><textarea rows='3' cols='50' id='content'></textarea></td>"
 comment_html += "<td><input type='button' value='댓글달기' onclick='comment_save()'></td></tr>"
+
 //댓글 보이기
 function comment_table_show() {
 	$("#comment_table").show();
@@ -33,36 +81,74 @@ function comment_table_hide() {
 }
 // 댓글 리스트 틀
 function showComment(list) {
-	let html=comment_html
 	var cnt=1;
+	let html=""
+	html += "<tr><input type='hidden' id='numgroup' value='${lists.num }'>"
+	html += "<input type='hidden' id='nick' placeholder='닉네임' value='${loginUser.nick}'>"
+	html += "<td colspan='3'><textarea rows='3' cols='50' id='content'></textarea></td>"
+	html += "<td><input type='button' value='댓글달기' onclick='comment_save()'></td></tr>"
 	$.each(list, function(index,item) {
 		html += "<tr id='modify"+cnt+"'>"
-		if(item.step>0) {
-			html += "<th> → </th>"
-		}
 		html += "<input type='hidden' id='cnum"+cnt+"' value='"+item.cnum+"'>"
 		html += "<input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
 		html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
 		html += "<input type='hidden' id='numgroup"+cnt+"' value='"+item.numgroup+"'>"
-		html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
 		html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+item.commentgroup+"'>"
-		html += "<input type='hidden' id='savedate"+cnt+"' value='"+item.savedate+"'>"
 		html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
-		html += "<input type='hidden' id='indent"+cnt+"' value='"+item.indent+"'>"
-		//html += "<th id='modify_cnum"+cnt+"'>"+item.cnum+"</th>"
-		html += "<td colspan='2' style='text-align: center;width: 120px' id='modify_nick"+cnt+"'>"+item.nick+"<br>"
-		html += "<span style='font-size: 10pt;' id='modify_savedate"+cnt+"'>"+item.savedate+"</span></td>"
-		html += "<td id='modify_content"+cnt+"'>"+item.content+"</td>"
-		html += "<td>"
-		html += "<input type='button' value='수정' onclick='comment_modify("+cnt+")'>"
-		html += "<input type='button' value='삭제' onclick='comment_delete("+cnt+")'>"
-		html += "</td>"
-		if(item.step==0) {
-			html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'></td>"
-			html += "<tr id='reply"+cnt+"'></tr>"
+		html += "<input type='hidden' id='savedate"+cnt+"' value='"+item.savedate+"'>"
+		if(item.step>0) {
+			html += "<td style='text-align: center; width:18px;'>"
+			html += "<img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'>"
+			html += "</td><td style='text-align: center;' id='modify_nick"+cnt+"'>"
+			html += item.nick+"<br>"
+			html += "<span style='font-size: 10pt;' id='modify_savedate"+cnt+"'>"+item.savedate+"</span></td>"
+			console.log(item.content)
+			if("${loginUser.id}"=="admin"){
+				html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
+				html += "<td><div id='box'><div>"
+				html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>삭제</p></div></div></td>"
+			} else if(item.nick == "${loginUser.nick}") {
+				html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
+				html += "<td><div id='box'><div>"
+				html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>수정</p></div><div>"
+				html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>삭제</p></div></div></td>"
+			} else {
+				html += "<td colspan='2' id='modify_content"+cnt+"' style='width: 890px; text-align: left;'>"+item.content+"</td>"
+			}
+		}else {
+			html += "<td colspan='2' id='modify_nick"+cnt+"' style='text-align: center;'>"+item.nick+"<br>"
+			html += "<span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+			html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
+			if ("${loginUser.id}"=="admin"){
+				html += "<td>"
+				html += "<div id='box'><div>"
+				html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>삭제</p></div></div>"
+				html += "<input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'></td>"
+			} else if(item.nick == "${loginUser.nick}") {
+				html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'>"
+				html += "<div id='box'><div>"
+				html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>수정</p></div><div>"
+				html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
+				html += "<p class='arrow_box'>삭제</p></div></div></td>"
+			} else {
+				html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'>"
+				html += "</td>"
+			}
+			html += "</tr><tr id='reply"+cnt+"'></tr>"
 		}
 		cnt++;
 	})
+	html += "<tr style='border: none;background: white;'>"
+	html += "<td style='width:30px;'></td>"
+	html += "<td style='width:180px;'></td>"
+	html += "<td style='width:680px;'><br>"
+	html += "<a href='#top'><img src='resources/main_image/top.png' style='width:18px; vertical-align: middle;'>&nbsp;TOP</a><br><br></td>"
+	html += "<td style='width:180px;'></td></tr>"
 	$("#comment_table").html(html)
 }
 // 댓글 저장
@@ -71,75 +157,80 @@ function comment_save() {
 	var content = $("#content").val();
 	var numgroup = $("#numgroup").val();
 	var step = $("#step").val();
-	var indent = $("#indent").val();
 	var form = {
 		nick : nick,
 		content : content,
 		numgroup : numgroup,
 		step : step,
-		indent : indent
 	}
-	$.ajax({
-		url : "free_comment_save",
-		type : "POST",
-		data : form,
-		success : function(list) {
-			showComment(list);
-			console.log("성공")
-		},
-		error : function(request, status, error) {
-			console.log("실패")
-			alert("code:" + request.status + "\n" + "message:"
-					+ request.responseText + "\n" + "error:" + error);
-		}
-	})
+	if(content=="") {
+		alert("댓글 내용을 입력하세요.")
+		$("#content").focus()
+	}else{
+		$.ajax({
+			url : "free_comment_save",
+			type : "POST",
+			data : form,
+			success : function(list) {
+				showComment(list);
+				console.log("성공")
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 }
 // 댓글 수정 틀
 function comment_modify(cnt) {
 	let html=""
-	html += "<td colspan='3'><input type='hidden' id='cnum"+cnt+"' value='"+$("#cnum"+cnt).val()+"'>"
-	html += "<td colspan='3'><input type='hidden' id='nick"+cnt+"' value='"+$("#nick"+cnt).val()+"'>"
-	html += "<textarea rows='3' cols='50' id='content"+cnt+"'>"+$("#content"+cnt).val()+"</textarea></td>"
+	html += "<input type='hidden' id='cnum"+cnt+"' value='"+$("#cnum"+cnt).val()+"'>"
+	html += "<input type='hidden' id='nick"+cnt+"' value='"+$("#nick"+cnt).val()+"'>"
+	html += "<td colspan='3'><textarea rows='3' cols='50' id='content"+cnt+"'>"+$("#content"+cnt).val()+"</textarea></td>"
 	html += "<input type='hidden' id='numgroup"+cnt+"' value='"+$("#numgroup"+cnt).val()+"'>"
 	html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+$("#commentgroup"+cnt).val()+"'>"
 	html += "<input type='hidden' id='step"+cnt+"' value='"+$("#step"+cnt).val()+"'>"
-	html += "<input type='hidden' id='indent"+cnt+"' value='"+$("#indent"+cnt).val()+"'>"
 	html += "<td><input type='button' value='수정완료' onclick='comment_modify_save("+cnt+")'><br>"
-	html += "<input type='button' value='취소' onclick='comment_modify_save("+cnt+")'></td>"
+	html += "<input type='button' value='취&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소' onclick='comment_modify_save("+cnt+")'></td>"
 	$("#modify"+cnt).html(html)
 }
 // 수정한 댓글 저장
 function comment_modify_save(cnt) {
 	var cnum = $("#cnum"+cnt).val();
-	var nick = $("#nick" +cnt).val();
-	var content = $("#content" +cnt).val();
-	var numgroup = $("#numgroup" +cnt).val();
+	var nick = $("#nick" + cnt).val();
+	var content = $("#content" + cnt).val();
+	var numgroup = $("#numgroup" + cnt).val();
 	var commentgroup = $("#commentgroup" + cnt).val();
 	var step = $("#step" + cnt).val();
-	var indent = $("#indent" + cnt).val();
 	var form = { 
 		cnum : cnum,
 		numgroup : numgroup, 
 		commentgroup : commentgroup, 
 		nick : nick, 
 		content : content,
-		step : step,
-		indent : indent
+		step : step
 	}
-	$.ajax({
-		url : "free_comment_modify",
-		type : "POST",
-		data : form,
-		success : function(list) {
-			showComment(list);
-			console.log("성공")
-		},
-		error : function(request, status, error) {
-			console.log("실패")
-			alert("code:" + request.status + "\n" + "message:"
-					+ request.responseText + "\n" + "error:" + error);
-		}
-	})
+	if(content=="") {
+		alert("댓글 내용을 입력하세요.")
+		$("#content" + cnt).focus()
+	}else{
+		$.ajax({
+			url : "free_comment_modify",
+			type : "POST",
+			data : form,
+			success : function(list) {
+				showComment(list);
+				console.log("성공")
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 }
 // 댓글 삭제
 function comment_delete(cnt) {
@@ -149,15 +240,13 @@ function comment_delete(cnt) {
 	var numgroup = $("#numgroup" + cnt).val();
 	var commentgroup = $("#commentgroup" + cnt).val();
 	var step = $("#step" + cnt).val();
-	var indent = $("#indent" + cnt).val();
 	var form = { 
 		cnum : cnum,
 		numgroup : numgroup, 
 		commentgroup : commentgroup, 
 		nick : nick, 
 		content : content,
-		step : step,
-		indent : indent
+		step : step
 	}
 	$.ajax({
 		url : "free_comment_delete",
@@ -172,7 +261,38 @@ function comment_delete(cnt) {
 			alert("code:" + request.status + "\n" + "message:"
 					+ request.responseText + "\n" + "error:" + error);
 		}
-	})
+	});
+}
+// 댓글 삭제
+function comment_delete_admin(cnt) {
+	var cnum = $("#cnum"+cnt).val();
+	var nick = $("#nick" + cnt).val();
+	var content = $("#content" + cnt).val();
+	var numgroup = $("#numgroup" + cnt).val();
+	var commentgroup = $("#commentgroup" + cnt).val();
+	var step = $("#step" + cnt).val();
+	var form = { 
+		cnum : cnum,
+		numgroup : numgroup, 
+		commentgroup : commentgroup, 
+		nick : nick, 
+		content : content,
+		step : step
+	}
+	$.ajax({
+		url : "free_comment_delete_admin",
+		type : "POST",
+		data : form,
+		success : function(list) {
+			showComment(list);
+			console.log("성공")
+		},
+		error : function(request, status, error) {
+			console.log("실패")
+			alert("code:" + request.status + "\n" + "message:"
+					+ request.responseText + "\n" + "error:" + error);
+		}
+	});
 }
 // 대댓글 틀
 function comment_reply(cnt) {
@@ -180,21 +300,18 @@ function comment_reply(cnt) {
 	var cnum=$('#cnum'+cnt).val();
 	var commentgroup=$('#commentgroup'+cnt).val();
 	var step=$('#step'+cnt).val() + 1;
-	var indent=$('#indent'+cnt).val();
+	var nick='${loginUser.nick}'
 	let html=""
-	html += "<tr>"
 	html += "<input type='hidden' id='recnum"+cnt+"' value='"+cnum+"'>"
 	html += "<input type='hidden' id='renumgroup"+cnt+"' value='"+num+"'>"
 	html += "<input type='hidden' id='recommentgroup"+cnt+"' value='"+commentgroup+"'>"
 	html += "<input type='hidden' id='restep"+cnt+"' value='"+step+"'>"
-	html += "<input type='hidden' id='reindent"+cnt+"' value='"+indent+"'>"
-	html += "<input type='hidden' id='renick"+cnt+"'  value='${loginUser.nick}'>"
-	//html += "<textarea rows='4' cols='50' id='recontent"+cnt+"'></textarea></td><td>"
-	html += "<td colspan='4'><input type='text' id='recontent"+cnt+"'></td><td>"
-	html += "<input type='button' value='댓글달기' onclick='comment_reply_save("+cnt+")'></td></tr>"
+	html += "<input type='hidden' id='renick"+cnt+"' value='"+nick+"'>"
+	html += "<td colspan='3'><textarea rows='3' cols='50' id='recontent"+cnt+"'></textarea></td><td>"
+	html += "<input type='button' value='댓글달기' onclick='comment_reply_save("+cnt+")'></td>"
 	$("#reply"+cnt).html(html)
 }
-//대댓글 저장
+// 대댓글 저장
 function comment_reply_save(cnt) {
 	var cnum = $("#recnum" + cnt).val();
 	var nick = $("#renick" + cnt).val();
@@ -202,15 +319,13 @@ function comment_reply_save(cnt) {
 	var numgroup = $("#renumgroup" + cnt).val();
 	var commentgroup = $("#recommentgroup" + cnt).val();
 	var step = $("#restep" + cnt).val();
-	var indent = $("#reindent" + cnt).val();
 	var form = { 
 		cnum : cnum,
 		nick : nick, 
 		content : content,
 		numgroup : numgroup, 
 		commentgroup : commentgroup, 
-		step : step,
-		indent : indent
+		step : step
 	}
 	$.ajax({
 		url : "free_comment_reply_save",
@@ -226,127 +341,350 @@ function comment_reply_save(cnt) {
 			alert("code:" + request.status + "\n" + "message:"
 					+ request.responseText + "\n" + "error:" + error);
 		}
-	})
+	});
+}
+	function favoriteUp(){
+		var num = $("#num").val();
+		var userid = '${loginUser.id}';
+		var form = {num:num, userid:userid};
+		if(userid == ""){
+			alert("로그인이 필요합니다")
+		}else{
+			$.ajax({
+				url:"free_favoriteUp",
+				type:"POST",
+				data:form,
+				success:function(data){
+					favorite();
+					$("#heart").attr("src", "resources/main_image/heart-on.png");
+				},error:function(){
+					favoriteDown();
+			}
+		})
+	}
+}
+	function favoriteDown(){
+		var num = $("#num").val();
+		var userid = '${loginUser.id}';
+		var form = {num:num, userid:userid};
+		var check = confirm("추천 취소하시겠습니까?")
+		if(check){
+			$.ajax({
+				url:"free_favoriteDown",
+				type:"POST",
+				data:form,
+				success:function(data){
+					favorite();
+					$("#heart").attr("src", "resources/main_image/heart.png");
+				},error:function(){
+			}
+		})
+	}
+}
+	function favorite(){
+		var num = $("#num").val();
+		var form = {num:num};
+		$.ajax({
+			url:"free_favorite",
+			type:"POST",
+			data:form,
+			success:function(data){
+				if(data != null){
+					$("#favorite").html(data.count);
+				}else{
+					$("#favorite").html("");
+				}
+			},error:function(){
+				alert("favorite loading fail")
+		}
+	});
+} 
+	// 글 신고
+	function report_post() {
+		var content=prompt("신고 사유를 입력해주세요."+"");
+		var board = "free_board";
+		var num = "${lists.num }"
+		var title = "${lists.title }"
+		var writer = "${lists.nick }"
+		var usernick = "${loginUser.nick }"
+		console.log(board)
+		console.log(num)
+		console.log(title)
+		console.log(content)
+		console.log(writer)
+		console.log(usernick)
+		if(content==null) {
+			alert("신고를 취소합니다.")
+		}else if(content=="") {
+			alert("신고 사유를 입력하지 않아 신고를 취소합니다.\n다시 시도해주세요.")
+		}else if(usernick=="") {
+			alert("로그인 후 사용가능합니다.")
+			location.href="login"
+		}else {
+			var form = {
+				board:board,
+				num:num,
+				title:title,
+				content:content,
+				writer:writer,
+				usernick:usernick
+			}
+			$.ajax({
+				url : "report",
+				type : "POST",
+				data : form,
+				dataType: "json",
+				success : function(list) {
+					console.log(list)
+					if(list=="신고 성공") {
+						console.log("성공");
+						alert("해당 게시글을 신고하였습니다.")
+					}else if(list=="신고 실패") {
+						console.log("실패");
+						alert("이미 해당 게시글을 신고하였습니다.")
+					}else {
+						console.log("실패");
+						alert("오류로 인해 신고에 실패하였습니다.")
+					}
+				},
+				error : function(request, status, error) {
+					console.log("실패")
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 }
 </script>
 </head>
-<body class="is-preload">
-<%@ include file="../defualt/header.jsp"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<body class="is-preload" onload="chk_loginUser();favorite();" id="top">
+	<%@ include file="../default/header.jsp"%>
+		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+		<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy-MM-dd"/>
 <input type="hidden" name="page" value="1"/>
-<input type="hidden" name="num" value="${lists.num }">
+<input type="hidden" name="num" id="num" value="${lists.num }">
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
-				<form action="free_modify_view?num=${lists.num }" method="post">
-<table>
-     <tr>
-         <td colspan="4">${lists.title }</td>
-     </tr>
-     <tr>
-         <td colspan="2">${lists.nick }
-         <img src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;">
-							333
+				<!-- <form action="free_modify_view?num=${lists.num }" method="post"> -->
+				<form onsubmit="return false" id="form" method="post">
+				<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>>자유 게시판</h4>
+					<table id="post_table" style="width: 1070px;margin: 0 auto;">
+     					<tr>
+         					<td colspan="4">${lists.title }</td>
+     					</tr>
+     					<tr>
+         					<td colspan="2">
+								<a onclick="window.open('userInfoPop?nick=${lists.nick }','','width=500,height=700')">${lists.nick }</a>
+								<c:set var="i" value="0"/>
+									<c:forEach var="favoriteList" items="${favoriteList }">
+										<c:choose>
+											<c:when test="${favoriteList.userid eq loginUser.id && favoriteList.num eq lists.num }">
+												<c:set var="i" value="1"/>
+											</c:when>	
+										</c:choose>
+									</c:forEach>
+								<c:choose>
+									<c:when test="${i eq 1}">
+										<input id="heart" type="image" src="resources/main_image/heart-on.png" style="width:28px; vertical-align: middle;" onclick="favoriteUp()">
+									</c:when>
+									<c:otherwise>
+										<input id="heart" type="image" src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;" onclick="favoriteUp()">
+									</c:otherwise>
+								</c:choose>
+									<span id="favorite"></span>
 							</td>
-     
-         <td colspan="2" style="text-align: right;"><fmt:formatDate var="date" value="${lists.savedate }" pattern="yyyy-MM-dd"/>
-			<c:choose>
-			<c:when test="${cdate eq date }">
-			<fmt:formatDate var="date" value="${lists.savedate }" pattern="hh:mm"/>
-			${date }
-			</c:when>
-			<c:otherwise>
-			${date }
-			</c:otherwise>
-			</c:choose> |  조회 ${lists.hit }</td>
-     </tr>
-     <tr>
-         <td colspan="4" style="background: white ;">
-         ${lists.content }</td> 
-     </tr>
-     <tr>
-        <th colspan="2" style="text-align: left ;">
-        <input type="button" value="목록보기" onclick="location.href='free_board_list?page=1'">
-        <span id="show_hide">
-				<input type="button" value="댓글보기" onclick="comment_table_show()">
-		</span>
-		</th>
-		<th colspan="2" style="text-align: right;">
-		<c:choose>
-		<c:when test="${loginUser.nick eq lists.nick }">
-		<input type="submit" value="수정">
-        <input type="button" value="삭제" onclick="location.href='free_board_delete?num=${lists.num }'">
-	    </c:when>
-	    <c:when test="${loginUser.nick eq '관리자' }">
-		<input type="button" value="삭제" onclick="location.href='free_board_delete?num=${lists.num }'">
-		</c:when>
-	    </c:choose>
-	    </th>
-   	 </tr>
-</table>
-<table border="1" id="comment_table"  style="display:none;">
-	            <tr>
-					<td colspan="4">
-						<input type="hidden" id="numgroup" value="${lists.num }">
-						<input type="hidden" id="nick" value='${loginUser.nick}'>
-						 <input type='text' id='content'></td>
-					<td>
-						<input type="button" value="댓글달기" onclick="comment_save()">
-						</td>
-				</tr>
-				<c:set var="cnt" value="0" />
-				<c:forEach items="${comment_list}" var="com">
-					<tr id="modify${cnt}">
-					<c:choose>
-						<c:when test="${com.step>0}">
-							<th> -> </th>
-						</c:when>
-					</c:choose>
-					<input type="hidden" id="cnum${cnt}" value="${com.cnum}">
-					<input type="hidden" id="nick${cnt}" value="${com.nick}">
-					<input type="hidden" id="content${cnt}" value="${com.content }">
-					<input type="hidden" id="numgroup${cnt}" value="${com.numgroup }">
-					<input type="hidden" id="commentgroup${cnt}" value="${com.commentgroup }">
-					<input type="hidden" id="step${cnt}" value="${com.step }">
-					<input type="hidden" id="savedate${cnt}" value="${com.savedate}">
-					<fmt:formatDate  var="savedate" value="${com.savedate}" pattern="yyyy-MM-dd HH:mm"/>
-						<!-- <th id="modify_cnum${cnt}">${com.cnum}</th> -->
-						<td colspan="2" style="text-align: center;width: 120px" id="modify_nick${cnt}">${com.nick}<br>
-						<span style="font-size: 10pt;" id="modify_savedate${cnt}">${savedate}</span></td>
-						<td id="modify_content${cnt}">${com.content}</td>
-						<c:choose>
-							<c:when test="${com.step==0}">
-								<th><input type="button" value="댓글달기" onclick="comment_reply(${cnt})"></th>
+        					<td colspan="2" style="text-align: right;"><fmt:formatDate var="date" value="${lists.savedate }" pattern="yyyy-MM-dd"/>
+								<c:choose>
+									<c:when test="${cdate eq date }">
+									<fmt:formatDate var="date" value="${lists.savedate }" pattern="hh:mm"/>
+										${date }
+									</c:when>
+								<c:otherwise>
+										${date }
+								</c:otherwise>
+								</c:choose> |  조회 ${lists.hit }</td>
+     					</tr>
+    					 <tr>
+         					<td colspan="4" style="background: white ;">
+         						<br>
+         							${lists.content }</td> 
+    					 </tr>
+     					<tr>
+        					<th colspan="2" style="text-align: left ;">
+        						<input type="button" value="전체목록보기" onclick="location.href='free_board_list?page=1'">
+        						<input type="button" value="신고" onclick="report_post()">	
+        					<span id="show_hide">
+								<input type="button" value="댓글보기" onclick="comment_table_show()">
+							</span>
+							</th>
+							<th colspan="2" style="text-align: right;">
+							<c:choose>
+							<c:when test="${loginUser.nick eq lists.nick }">
+							<input type="button" value="수정" onclick="location.href='free_modify_view?num=${lists.num }'">
+       						 <input type="button" value="삭제" onclick="location.href='free_board_delete?num=${lists.num }'">
+	   						 </c:when>
+	    					<c:when test="${loginUser.id eq 'admin' }">
+							<input type="button" value="삭제" onclick="location.href='free_board_delete?num=${lists.num }'">
 							</c:when>
-						</c:choose>  
-						<c:choose>
-						<c:when test="${loginUser.nick eq com.nick }">
-						<th>
-						<input type="button" value="수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정" onclick="comment_modify(${cnt})">
-						<input type="button" value="삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제" onclick="comment_delete(${cnt})">
-						</th>
-						</c:when>
-						<c:when test="${loginUser.nick eq '관리자' }">
-						<th>
-						<input type="button" value="삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제" onclick="comment_delete(${cnt})">
-						 </th>
-						</c:when>
-						</c:choose>
-					</tr>
-					<tr id="reply${cnt}"></tr>
-					<c:set var="cnt" value="${cnt+1}" />
-				</c:forEach>
-			</table>
-		</form>
-		</div>
-		</section>
+	    					</c:choose>
+	    					</th>
+   	 					</tr>
+					</table>
+					<!-- 댓글 영역 -->
+						<table id="comment_table" style="display:none;font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
+							<tr>
+								<input type="hidden" id="numgroup" value="${lists.num }">
+								<input type="hidden" id="nick" placeholder="닉네임" value="${loginUser.nick}">
+								<td colspan="3"><textarea rows="3" cols="50" id="content"></textarea></td>
+								<td><input type="button" value="댓글달기" onclick="comment_save()"></td>
+							</tr>
+							<c:set var="cnt" value="0" />
+							<c:forEach items="${comment_list}" var="com">
+								<input type="hidden" id="cnum${cnt}" value="${com.cnum}">
+								<input type="hidden" id="nick${cnt}" value="${com.nick}">
+								<input type="hidden" id="content${cnt}" value="${com.content }">
+								<input type="hidden" id="numgroup${cnt}" value="${com.numgroup }">
+								<input type="hidden" id="commentgroup${cnt}" value="${com.commentgroup }">
+								<input type="hidden" id="step${cnt}" value="${com.step }">
+								<input type="hidden" id="savedate${cnt}" value="${com.savedate}">
+								<fmt:formatDate var="savedate" value="${com.savedate}" pattern="yyyy-MM-dd hh:mm" />
+								<tr id="modify${cnt}">
+									<c:choose>
+										<c:when test="${com.step>0}">
+											<td style="text-align: center; width:18px;">
+												<img src="resources/main_image/reply.png" style="width:18px; vertical-align: middle;">
+											</td>
+											<td style="text-align: center;" id="modify_nick${cnt}">
+												${com.nick}<br>
+												<span style="font-size: 10pt;" id="modify_savedate${cnt}">${savedate}</span>
+											</td>
+											<c:choose>
+												<c:when test="${loginUser.id=='admin'}">
+													<td id="modify_content${cnt}" style="text-align: left;">${com.content}</td>
+													<td>
+														<div id="box">
+															<div>
+																<img src="resources/main_image/delete.png" onclick="comment_delete_admin(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">삭제</p>
+															</div>
+														</div>
+													</td>
+												</c:when>
+												<c:when test="${com.nick == loginUser.nick}">
+													<td id="modify_content${cnt}" style="text-align: left;">${com.content}</td>
+													<td>
+														<div id="box">
+															<div>
+																<img src="resources/main_image/alter.png" onclick="comment_modify(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">수정</p>
+															</div>
+															<div>
+																<img src="resources/main_image/delete.png" onclick="comment_delete(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">삭제</p>
+															</div>
+														</div>
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td colspan="2" id="modify_content${cnt}" style="width: 890px; text-align: left;">${com.content}</td>
+												</c:otherwise>
+											</c:choose>
+										</c:when>
+										<c:otherwise>
+											<td colspan="2" id="modify_nick${cnt}" style="text-align: center;">${com.nick}<br>
+												<span style="font-size: 10pt;">${savedate}</span>
+											</td>
+											<td id="modify_content${cnt}" style="text-align: left;">${com.content}</td>
+											<c:choose>
+												<c:when
+													test="${loginUser.id=='admin'}">
+													<td>
+														<div id="box">
+															<div>
+																<img src="resources/main_image/delete.png" onclick="comment_delete_admin(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">삭제</p>
+															</div>
+														</div>
+														<input type="button" value="댓글달기" onclick="comment_reply(${cnt})">
+													</td>
+												</c:when>
+												<c:when test="${com.nick == loginUser.nick}">
+													<td>
+														<div id="box">
+															<div>
+																<img src="resources/main_image/alter.png" onclick="comment_modify(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">수정</p>
+															</div>
+															<div>
+																<img src="resources/main_image/delete.png" onclick="comment_delete(${cnt})" style="width:18px; vertical-align: middle;">
+																<p class="arrow_box">삭제</p>
+															</div>
+														</div>
+														<input type="button" value="댓글달기" onclick="comment_reply(${cnt})">
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td>
+														<input type="button" value="댓글달기" onclick="comment_reply(${cnt})">
+													</td>
+												</c:otherwise>
+											</c:choose>
+										</c:otherwise>
+									</c:choose>
+								</tr>
+								<tr id="reply${cnt}"></tr>
+								<c:set var="cnt" value="${cnt+1}" />
+							</c:forEach>
+							<tr style="border: none;">
+								<td style="width:30px;"></td>
+								<td style="width:180px;"></td>
+								<td style="width:680px;">
+									<br><a href="#top"><img alt="" src="resources/main_image/top.png" style="width:18px; vertical-align: middle;">&nbsp;TOP</a><br><br>
+								</td>
+								<td style="width:180px;"></td>
+							</tr>
+						</table>		
+					</form>	
+				</div>
+			</section>
 		</article>
-		</div>
-		<%@ include file="../defualt/footer.jsp"%>
+	</div>
+	
+	<%@ include file="../default/footer.jsp"%>
+
+<style>
+#comment_table  {
+    width: 100%;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
+    border-collapse: collapse;
+  }
+#comment_table th, td {
+	background-color: white;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
+  }
+#comment_table td a {
+	text-decoration: none;
+  }
+</style>
+<style>
+table  {
+    width: 100%;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
+    border-collapse: collapse;
+  }
+th, td {
+	background-color: white;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    padding: 10px;
+    margin: 10px;
+  }
+</style>
 </body>
 </html>

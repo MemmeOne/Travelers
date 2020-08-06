@@ -150,13 +150,21 @@ function modify_save() {
 	var mexpenses=$("input[name=mexpenses]:checked").val();
 	var price1=$("input[name=price1]").val();
 	var price2=$("input[name=price2]").val();
+
+	var p1=$("input[name=price1]").val();
+	var p2=$("input[name=price2]").val();
+	console.log("p1="+p1)
+	var price1=p1.replace(/,/gi,"");
+	var price2=p2.replace(/,/gi,"");
+	console.log("price1="+price1)
+	
 	if(price1=="") {
 		price1=0;
 	}
 	if(price2=="") {
 		price2=0;
 	}
-	var deadline="진행중";
+	var deadline="모집중";
 	console.log("mcnt :"+mcnt)
 	console.log("mexpenses :"+mexpenses)
 	console.log("price1 :"+price1)
@@ -172,6 +180,12 @@ function modify_save() {
 	}
 	else if(mthema=="") {
 		alert("원하는 여행 테마를 입력해주세요")
+	}
+	else if(mroom=="") {
+		alert("원하는 숙소 종류를 입력해주세요")
+	}
+	else if(mgender=="") {
+		alert("원하는 동행 성별을 입력해주세요")
 	}
 	else if(mage=="") {
 		alert("원하는 동행 나이를 입력해주세요")
@@ -225,7 +239,7 @@ function modify_save() {
 		sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
 </script>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
  
 <style>
 .checks {position: relative;}
@@ -409,7 +423,8 @@ input[type=checkbox] {
 						<tr style="background-color:rgba(0, 0, 0, 0.0375);">
 						<td colspan="2" style="margin: 0 auto;">
  						<h4>< 여행 정보 ></h4>
-						기간 : <input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" value="${ccc.mtravel_date_s }" max="9999-12-31" style="color: black;">
+						기간 : 
+						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" value="${ccc.mtravel_date_s }" max="9999-12-31" style="color: black;">
 						 ~ 
 						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" value="${ccc.mtravel_date_e }" max="9999-12-31" style="color: black;">
 						<input type="checkbox" id="mtravel_date1" name="mtravel_date" value="예정" <c:out value="${ccc.mtravel_date eq '예정' ? 'checked':'' }"/> onclick="oneChk_date(this)"><label for="mtravel_date1">예정</label>
@@ -422,20 +437,18 @@ input[type=checkbox] {
 						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4" <c:if test="${fn:contains(ccc.mthema,'기타') }"> checked </c:if>> <label for="mthema_chk4">기타</label>
 						<br>
 						숙소 : 
-						<input type="checkbox" name="mroom" value="싱관없음" id="mroom1"  <c:out value="${ccc.mroom eq '상관없음' ? 'checked':'' }"/>  onclick="oneChk_room(this)" > <label for="mroom1">상관없음 </label>
+						<input type="checkbox" name="mroom" value="싱관없음" id="mroom1"  onclick="oneChk_room(this)" <c:out value="${ccc.mroom eq '상관없음' ? 'checked':'' }"/>  > <label for="mroom1">상관없음 </label>
 						<input type="checkbox" name="mroom" value="개인실" id="mroom2"   onclick="oneChk_room(this)" <c:out value="${ccc.mroom eq '개인실' ? 'checked':'' }"/> > <label for="mroom2">개인실 </label>
-						<input type="checkbox" name="mroom" value="다인실" id="mroom3" onclick="oneChk_room(this)" <c:out value="${ccc.mroom eq '다인실' ? 'checked':'' }"/>> <label for="mroom3">다인실</label>
- 
+						<input type="checkbox" name="mroom" value="다인실" id="mroom3"   onclick="oneChk_room(this)" <c:out value="${ccc.mroom eq '다인실' ? 'checked':'' }"/>> <label for="mroom3">다인실</label>
 					
+						<form style="display:flex" >
 						1일경비 
-						<form>
-							<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
-							<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
-							<input type="number"  id="price1" name="price1" min="0" disabled  style = "text-align:right;">
-							~
-							<input type="number" id="price2" name="price2"  disabled  style = "text-align:right;">
-							<div class="placeholder" data-placeholder="New placeholder"></div>
-							<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled(this.form)"><label for="chkNotPirce2">추후결정</label>
+						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)"  <c:out value="${ccc.mexpenses eq '상관' ? 'checked':'' }"/> ><label for="chkNotPirce1">상관없음</label>
+						<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)" <c:out value="${ccc.mexpenses eq '금액' ? 'checked':'' }"/>><label for="chkprice" >금액입력</label>
+						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+						~ &nbsp;&nbsp;
+						<input type="text" numberOnly id="price2" name="price2" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+						<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled2(this.form)" <c:out value="${ccc.mexpenses eq '추후' ? 'checked':'' }"/>><label for="chkNotPirce2">추후결정</label>
 						</form>
 						<h4>< 여행 동행 조건 ></h4>
 						성별 : 
@@ -452,7 +465,7 @@ input[type=checkbox] {
 						<input type="checkbox" name="mage" value="60대이상" id="mage5" <c:if test="${fn:contains(ccc.mage,'6') }"> checked </c:if>> <label for="mage5">60대이상 </label>
 						<br>
 						모집 인원
-						<input type="number" id="mcnt" name="mcnt" value="${ccc.mcnt}" style = "text-align:right; color:black;">명
+						<input type="number" id="mcnt" name="mcnt" value="${ccc.mcnt}" onkeyup="this.value=this.value.replace(/^0-9]/g,'');" style = "text-align:right; color:black; background-color:transparent ;">명
 						<br>
 						<!--  <input type="text" id="title" name="title" size="100" autofocus >
 						<textarea id="content" name="content" rows="10" cols="100"></textarea>-->
@@ -498,6 +511,37 @@ input[type=checkbox] {
 							});
 							</script>
 							
+							
+							
+						<script type="text/javascript">
+						// 1일 경비 숫자만 입력, 3자리마다 콤마
+						$("input:text[numberOnly]").on("focus", function() {
+						    var x = $(this).val();
+						    x = removeCommas(x);
+						    $(this).val(x);
+						}).on("focusout", function() {
+						    var x = $(this).val();
+						    if(x && x.length > 0) {
+						        if(!$.isNumeric(x)) {
+						            x = x.replace(/[^0-9]/g,"");
+						        }
+						        x = addCommas(x);
+						        $(this).val(x);
+						    }
+						}).on("keyup", function() {
+						    $(this).val($(this).val().replace(/[^0-9]/g,""));
+						});
+
+						function addCommas(x) {
+						    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+						}
+						 
+						//모든 콤마 제거
+						function removeCommas(x) {
+						    if(!x || x.length == 0) return "";
+						    else return x.split(",").join("");
+						}
+						</script>							
 						</th>
 						</tr>
 						<tr>
@@ -510,7 +554,6 @@ input[type=checkbox] {
 						</tr>
 					</table>		
 						
-						
 					
 					</div>
 						<!--    </form> -->
@@ -518,7 +561,7 @@ input[type=checkbox] {
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 	<script type="text/javascript">
 	
  
@@ -559,7 +602,7 @@ input[type=checkbox] {
 		}
 	}
 	
-	  <!-- 금액 입력 버튼 활성&비활성화-->
+	   // 금액 입력 버튼 활성&비활성화 
 	 	function chkAbled(form) {
 	 		if(form.chkprice.checked==true) {
 	 			//form.price1.disabled=false;
@@ -571,23 +614,26 @@ input[type=checkbox] {
 	 		}  
 	 	}
 	 	
-		function chkDisabled(form) {
+		function chkDisabled1(form) {
 	 		if(form.chkNotPirce1.checked==true) {
 	 			//form.price1.disabled=false;
 	 			document.getElementById("price1").disabled=true;
 	 			form.price2.disabled=true;
- 
-	 			
- 
+	 			var a=chkNotPirce1
+	 			oneChkeExpenses(a)
 	 		} 
-	 		if(form.chkNotPirce2.checked==true) {
-	 			//form.price1.disabled=false;
-	 			document.getElementById("price1").disabled=true;
-	 			form.price2.disabled=true;
- 
- 
-	 		}  
 	 	}
+		
+		function chkDisabled2(form) {
+ 			if(form.chkNotPirce2.checked==true) {
+ 				//form.price1.disabled=false;
+ 				document.getElementById("price1").disabled=true;
+ 				form.price2.disabled=true;
+ 				var a=chkNotPirce2
+ 				//oneChkeExpenses(a)
+
+ 			}  
+		}
 	</script>
 </body>
 </html>

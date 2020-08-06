@@ -117,8 +117,8 @@ function infodelete_chk(cnt) {
 					html+="<input type='checkbox' class='infochk' name='infochk' value='"+item.num+"' id='infochk"+cnt+"'> <label for='infochk"+cnt+"'></label></td>"
 					html+="<td>"+item.num+"</td>"
 					html+="<td style='text-overflow: ellipsis;text-align: left;'>"+item.title+"</td>"
-					html+="<td>작성자</td><td>"+item.report+""
-					html+=" / <span id='infoshow"+cnt+"'><img src='resources/main_image/more.png' onclick='infoview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
+					html+="<td>작성자</td><td>"
+					html+="<span id='infoshow"+cnt+"'><img src='resources/main_image/more.png' onclick='infoview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
 					html+="</td></tr>"
 					html+="<tr id='infoview"+cnt+"' style='display:none;'><td colspan='7'>"
 					html+="<fieldset style='border: 1px solid rgba(50, 50, 50, 0.3);margin: 10px;padding: 10px;'>"
@@ -194,8 +194,8 @@ function reviewdelete_chk(cnt) {
 					html+="<input type='checkbox' class='reviewchk' name='reviewchk' value='"+item.num+"' id='reviewchk"+cnt+"'> <label for='reviewchk"+cnt+"'></label></td>"
 					html+="<td>"+item.num+"</td>"
 					html+="<td style='text-overflow: ellipsis;text-align: left;'>"+item.title+"</td>"
-					html+="<td>작성자</td><td>"+item.report+""
-					html+=" / <span id='reviewshow"+cnt+"'><img src='resources/main_image/more.png' onclick='reviewview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
+					html+="<td>작성자</td><td>"
+					html+="<span id='reviewshow"+cnt+"'><img src='resources/main_image/more.png' onclick='reviewview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
 					html+="</td></tr>"
 					html+="<tr id='reviewview"+cnt+"' style='display:none;'><td colspan='7'>"
 					html+="<fieldset style='border: 1px solid rgba(50, 50, 50, 0.3);margin: 10px;padding: 10px;'>"
@@ -269,8 +269,8 @@ function freedelete_chk(cnt) {
 					html+="<input type='checkbox' class='freechk' name='freechk' value='"+item.num+"' id='freechk"+cnt+"'> <label for='freechk"+cnt+"'></label></td>"
 					html+="<td>"+item.num+"</td>"
 					html+="<td style='text-overflow: ellipsis;text-align: left;'>"+item.title+"</td>"
-					html+="<td>작성자</td><td>"+item.report+""
-					html+=" / <span id='freeshow"+cnt+"'><img src='resources/main_image/more.png' onclick='freeview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
+					html+="<td>작성자</td><td>"
+					html+="<span id='freeshow"+cnt+"'><img src='resources/main_image/more.png' onclick='freeview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
 					html+="</td></tr>"
 					html+="<tr id='freeview"+cnt+"' style='display:none;'><td colspan='7'>"
 					html+="<fieldset style='border: 1px solid rgba(50, 50, 50, 0.3);margin: 10px;padding: 10px;'>"
@@ -344,8 +344,8 @@ function matedelete_chk(cnt) {
 					html+="<input type='checkbox' class='matechk' name='matechk' value='"+item.num+"' id='matechk"+cnt+"'> <label for='matechk"+cnt+"'></label></td>"
 					html+="<td>"+item.num+"</td>"
 					html+="<td style='text-overflow: ellipsis;text-align: left;'>"+item.title+"</td>"
-					html+="<td>작성자</td><td>"+item.report+""
-					html+=" / <span id='mateshow"+cnt+"'><img src='resources/main_image/more.png' onclick='mateview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
+					html+="<td>작성자</td><td>"
+					html+="<span id='mateshow"+cnt+"'><img src='resources/main_image/more.png' onclick='mateview_show("+cnt+")' style='width:22px; vertical-align: middle;'></span>"
 					html+="</td></tr>"
 					html+="<tr id='mateview"+cnt+"' style='display:none;'><td colspan='7'>"
 					html+="<fieldset style='border: 1px solid rgba(50, 50, 50, 0.3);margin: 10px;padding: 10px;'>"
@@ -368,7 +368,7 @@ function matedelete_chk(cnt) {
 </script>
 </head>
 <body class="is-preload" onload="chk_loginUser()">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -381,7 +381,7 @@ function matedelete_chk(cnt) {
 						<div class="row">
 							<div class="col-6 col-12-medium" style="width:250px;">
 								<ul class="alt">
-									<li><a href="notice_event">Admin 글 관리</a></li>
+									<li><a href="myPost?page=1&nick=${loginUser.nick }">작성한 글 관리</a></li>
 									<li><a href="report_post">신고 글 관리</a></li>
 									<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
 									<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
@@ -412,8 +412,7 @@ function matedelete_chk(cnt) {
 											<td style="text-overflow: ellipsis;text-align: left;">${list.title }</td>
 											<td>작성자</td>
 											<td>
-												${list.report }
-												/ <span id="infoshow${cnt}"><img src="resources/main_image/more.png" onclick="infoview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
+												<span id="infoshow${cnt}"><img src="resources/main_image/more.png" onclick="infoview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
 											</td>
 										</tr>
 										<tr id="infoview${cnt}" style="display:none;">
@@ -454,8 +453,7 @@ function matedelete_chk(cnt) {
 											<td style="text-overflow: ellipsis;text-align: left;">${list.title }</td>
 											<td>작성자</td>
 											<td>
-												${list.report }
-												/ <span id="reviewshow${cnt}"><img src="resources/main_image/more.png" onclick="reviewview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
+												<span id="reviewshow${cnt}"><img src="resources/main_image/more.png" onclick="reviewview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
 											</td>
 										</tr>
 										<tr id="reviewview${cnt}" style="display:none;">
@@ -496,8 +494,7 @@ function matedelete_chk(cnt) {
 											<td style="text-overflow: ellipsis;text-align: left;">${list.title }</td>
 											<td>작성자</td>
 											<td>
-												${list.report }
-												/ <span id="freeshow${cnt}"><img src="resources/main_image/more.png" onclick="freeview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
+												<span id="freeshow${cnt}"><img src="resources/main_image/more.png" onclick="freeview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
 											</td>
 										</tr>
 										<tr id="freeview${cnt}" style="display:none;">
@@ -538,8 +535,7 @@ function matedelete_chk(cnt) {
 											<td style="text-overflow: ellipsis;text-align: left;">${list.title }</td>
 											<td>작성자</td>
 											<td>
-												${list.report }
-												/ <span id="mateshow${cnt}"><img src="resources/main_image/more.png" onclick="mateview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
+												<span id="mateshow${cnt}"><img src="resources/main_image/more.png" onclick="mateview_show(${cnt})" style="width:22px; vertical-align: middle;"></span>
 											</td>
 										</tr>
 										<tr id="mateview${cnt}" style="display:none;">
@@ -570,7 +566,7 @@ function matedelete_chk(cnt) {
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 <style>
 table {
 	width: 100%;

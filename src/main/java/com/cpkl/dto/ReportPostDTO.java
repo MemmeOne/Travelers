@@ -2,7 +2,7 @@ package com.cpkl.dto;
 
 public class ReportPostDTO {
 	private String board;
-	private int num, report;
+	private int num;
 	private String title, content, writer, usernick;
 	public String getBoard() {
 		return board;
@@ -15,12 +15,6 @@ public class ReportPostDTO {
 	}
 	public void setNum(int num) {
 		this.num = num;
-	}
-	public int getReport() {
-		return report;
-	}
-	public void setReport(int report) {
-		this.report = report;
 	}
 	public String getTitle() {
 		return title;

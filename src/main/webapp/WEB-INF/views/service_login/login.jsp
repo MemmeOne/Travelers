@@ -57,7 +57,7 @@
 
 </head>
 <body>
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Main -->
 	<article id="main">
 		<section class="wrapper style5">
@@ -82,6 +82,6 @@
 			</div>
 		</section>
 	</article>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 </body>
 </html>

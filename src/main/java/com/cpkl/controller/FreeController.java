@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cpkl.dto.CommentNumber;
+import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
+import com.cpkl.dto.ReportPostDTO;
 import com.cpkl.service.FreeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,8 +35,10 @@ public class FreeController {
 	public String free_board_list(Model model,@RequestParam int page) {
 		System.out.println(page);
 		service.free_board_list(model, page);
+		service.favoriteList(model);
 		Date cdate = new Date();
 		session.setAttribute("cdate", cdate);
+		System.out.println(model);
 		return "free_board/free_board_list";
 	}
 	// 자유 게시판 글 검색 목록 가져오기 기능
@@ -42,6 +46,7 @@ public class FreeController {
 	public String free_search(Model model,@RequestParam String tag,
 			@RequestParam String word, @RequestParam int page) {
 		service.search(model, tag, word, page);
+		service.favoriteList(model);
 		return "free_board/free_search";
 	}
 	// 자유 게시판 글 작성 페이지
@@ -114,23 +119,58 @@ public class FreeController {
 		return strJson;
 	}
 	// 댓글 삭제 기능
-		@RequestMapping(value="free_comment_delete",method=RequestMethod.POST,
-				produces = "application/json;charset=utf-8")
-		@ResponseBody
-		public String free_comment_delete(FreeCommentDTO dto) throws JsonProcessingException {
-			List<FreeCommentDTO> list=service.comment_delete(dto);
-			ObjectMapper mapper=new ObjectMapper();
-			String strJson=mapper.writeValueAsString(list);
-			return strJson;
-		}
-		// 대댓글 저장 기능
-		@RequestMapping(value="free_comment_reply_save",method=RequestMethod.POST,
-				produces = "application/json;charset=utf-8")
-		@ResponseBody
-		public String free_comment_reply_save(FreeCommentDTO dto) throws JsonProcessingException {
-			List<FreeCommentDTO> list=service.comment_reply_save(dto);
-			ObjectMapper mapper=new ObjectMapper();
-			String strJson=mapper.writeValueAsString(list);
-			return strJson;
-		}
+	@RequestMapping(value="free_comment_delete",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_delete(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_delete(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// admin 댓글 삭제 기능
+	@RequestMapping(value="free_comment_delete_admin",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String comment_delete_admin(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_delete_admin(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	// 대댓글 저장 기능
+	@RequestMapping(value="free_comment_reply_save",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_comment_reply_save(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.comment_reply_save(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	//추천
+	@RequestMapping(value="free_favoriteUp", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favoriteUp(FavoriteDTO dto) {
+		service.favoriteUp(dto);
+		return null;
+	}
+	//추천 취소
+	@RequestMapping(value="free_favoriteDown", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favoriteDown(FavoriteDTO dto) {
+		service.favoriteDown(dto);
+		return null;
+	}
+	//추천 수
+	@RequestMapping(value="free_favorite", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String favorite(FavoriteDTO dto) throws JsonProcessingException {
+		CommentNumber cn = service.favorite(dto);
+		System.out.println("DTO:"+dto);
+		System.out.println(service.favorite(dto));
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(cn);
+		return json;
+	}
 }

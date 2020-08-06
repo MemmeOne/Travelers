@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.cpkl.dao.MateDAO;
+import com.cpkl.dto.MateCalDTO;
 import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.MateReplyDTO;
 @Service
@@ -63,6 +64,25 @@ public class MateService   {
 		matedao.mate_write_save(matedto);
 	}
 	
+
+	public void mate_cal(MateCalDTO dto) {
+		System.out.println("달력 서비스");
+		matedao.mate_cal(dto);
+	}
+	public List<MateDTO> mate_cal2(MateDTO dto  ) {
+		List<MateDTO> list=matedao.mate_list_for_cal(dto);
+		System.out.println("===s서비스ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡdfasdfasdfa sdf asd fasd=adslfksj");
+		System.out.println(list);
+		System.out.println(list.get(0).getContent());
+		//model.addAttribute("mate_list_for_cal", list);
+		//matedao.mate_list_for_cal(dto);
+		return list;
+	} 
+	public void mate_cal_list(MateCalDTO dto) {
+		matedao.mate_cal_list(dto);
+	}
+
+		
 	// 글 내용 조회
 	public void mate_content_viewser(Model model, int num ) {
 		//Map<String, Object> map=model.asMap();
@@ -71,6 +91,8 @@ public class MateService   {
 		System.out.println("service num : "+num);
 		model.addAttribute("ccc", matedao.mate_content_viewdao(num));
 		model.addAttribute("mate_reply_list", matedao.mate_reply_list(num));
+		
+		model.addAttribute("mate_comment_list",matedao.comment_list(num));
 		//model.addAttribute("mate_reply_select", matedao.mate_reply_regi02(num));
 	}
 	public void deadline_finish(MateDTO matedto) {

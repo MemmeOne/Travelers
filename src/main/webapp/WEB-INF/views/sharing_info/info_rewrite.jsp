@@ -23,7 +23,7 @@ function chk_loginUser() {
 </script>
 </head>
 <body onload="chk_loginUser()" class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -134,7 +134,7 @@ function chk_loginUser() {
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 <style>
 table  {
     width: 100%;

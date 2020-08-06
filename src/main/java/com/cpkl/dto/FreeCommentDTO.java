@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FreeCommentDTO {
-	private int cnum, numgroup, commentgroup, step, indent;
+	private int cnum, numgroup, commentgroup, step;
 	private String nick, content;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="GMT+9")
 	private Timestamp savedate;
@@ -32,12 +32,6 @@ public class FreeCommentDTO {
 	}
 	public void setStep(int step) {
 		this.step = step;
-	}
-	public int getIndent() {
-		return indent;
-	}
-	public void setIndent(int indent) {
-		this.indent = indent;
 	}
 	public String getNick() {
 		return nick;

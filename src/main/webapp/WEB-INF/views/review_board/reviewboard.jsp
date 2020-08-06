@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<jsp:useBean id="cdate" class="java.util.Date" />
 	<fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy-MM-dd"/>
 	<!-- Page Wrapper -->
@@ -34,6 +34,7 @@
 							<c:choose>
 								<c:when test="${list.size() ne 0 }">
 									<c:forEach var="dto" items="${list }">
+									<fmt:formatDate var="date" value="${dto.savedate }"	pattern="yyyy-MM-dd"/>
 										<tr>
 											<td>${dto.num }</td>
 											<td style="text-align: left;">
@@ -45,10 +46,14 @@
 													</c:when>
 												</c:choose>
 												</c:forEach>
+												<c:if test="${cdate eq date }">
+													<img src="resources/main_image/new.png">
+												</c:if>
 											</td>
-											<td>${dto.nick }</td>
 											<td>
-											<fmt:formatDate var="date" value="${dto.savedate }"	pattern="yyyy-MM-dd"/>
+												<a onclick="window.open('userInfoPop?nick=${dto.nick }','','width=500,height=700')">${dto.nick }</a>
+											</td>
+											<td>
 											<c:choose>
 												<c:when test="${cdate eq date }">
 													<fmt:formatDate var="date" value="${dto.savedate }"	pattern="hh:mm"/>
@@ -61,13 +66,16 @@
 											</td>
 											<td>${dto.hit }</td>
 											<td>
+												<c:set var="favorite" value="true"/>
 												<c:forEach var="favoriteList" items="${favoriteList }">
-													<c:choose>
-														<c:when test="${dto.num eq favoriteList.num }">
-															${favoriteList.count }
-														</c:when>
-													</c:choose>
+													<c:if test="${dto.num eq favoriteList.num }">
+														${favoriteList.count }
+														<c:set var="favorite" value="false"/>
+													</c:if>
 												</c:forEach>
+												<c:if test="${favorite eq true }">
+													0
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>
@@ -91,12 +99,12 @@
 									<c:when test="${param.page > 1 }">
 										<c:choose>
 											<c:when test="${param.search eq null }">
-												<a href="reviewboard?boardnum=1&page=${param.page-1}" style="vertical-align: middle; border-bottom: 0;">
+												<a href="reviewboard?page=${param.page-1}" style="vertical-align: middle; border-bottom: 0;">
 													<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
 												</a>
 											</c:when>
 											<c:otherwise>
-												<a href="reviewboard?boardnum=1&page=${param.page-1}&searchtype=${param.searchtype }&search=${param.search }" style="vertical-align: middle; border-bottom: 0;">
+												<a href="reviewboard?page=${param.page-1}&searchtype=${param.searchtype }&search=${param.search }" style="vertical-align: middle; border-bottom: 0;">
 													<img alt="" src="resources/main_image/bus_left.png" style="width: 50px; height: 50px;">
 												</a>
 											</c:otherwise>
@@ -111,20 +119,20 @@
 										<c:when test="${param.search eq null }">
 											<c:choose>
 												<c:when test="${param.page eq cnt }">
-													<a style="border-bottom: 0; font-weight: bold;" href="reviewboard?boardnum=1&page=${cnt}">${cnt }</a>
+													<a style="border-bottom: 0; font-weight: bold;" href="reviewboard?page=${cnt}">${cnt }</a>
 												</c:when>
 												<c:otherwise>
-													<a style="border-bottom: 0;" href="reviewboard?boardnum=1&page=${cnt}">${cnt }</a>
+													<a style="border-bottom: 0;" href="reviewboard?page=${cnt}">${cnt }</a>
 												</c:otherwise>
 											</c:choose>
 										</c:when>
 										<c:otherwise>
 											<c:choose>
 												<c:when test="${param.page eq cnt }">
-													<a style="border-bottom: 0; font-weight: bold;" href="reviewboard?boardnum=1&page=${cnt}&searchtype=${param.searchtype }&search=${param.search }">${cnt }</a>
+													<a style="border-bottom: 0; font-weight: bold;" href="reviewboard?page=${cnt}&searchtype=${param.searchtype }&search=${param.search }">${cnt }</a>
 												</c:when>
 												<c:otherwise>
-													<a style="border-bottom: 0;" href="reviewboard?boardnum=1&page=${cnt}&searchtype=${param.searchtype }&search=${param.search }">${cnt }</a>
+													<a style="border-bottom: 0;" href="reviewboard?page=${cnt}&searchtype=${param.searchtype }&search=${param.search }">${cnt }</a>
 												</c:otherwise>
 											</c:choose>
 										</c:otherwise>
@@ -134,12 +142,12 @@
 									<c:when test="${param.page < totalpage }">
 										<c:choose>
 											<c:when test="${param.search eq null }">
-												<a href="reviewboard?boardnum=1&page=${param.page+1}" style="vertical-align: middle; border-bottom: 0;">
+												<a href="reviewboard?page=${param.page+1}" style="vertical-align: middle; border-bottom: 0;">
 													<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
 												</a>
 											</c:when>
 											<c:otherwise>
-												<a href="reviewboard?boardnum=1&page=${param.page+1}&searchtype=${param.searchtype }&search=${param.search }" style="vertical-align: middle; border-bottom: 0;">
+												<a href="reviewboard?page=${param.page+1}&searchtype=${param.searchtype }&search=${param.search }" style="vertical-align: middle; border-bottom: 0;">
 													<img alt="" src="resources/main_image/bus_right.png" style="width: 50px; height: 50px;">
 												</a>
 											</c:otherwise>
@@ -170,6 +178,6 @@
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 </body>
 </html>

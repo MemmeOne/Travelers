@@ -1,6 +1,7 @@
 package com.cpkl.dao;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +12,11 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
+import com.cpkl.dto.MateCalDTO;
+import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.MateReplyCnt;
 import com.cpkl.dto.MateReplyDTO;
@@ -34,6 +39,17 @@ public class MateDAO {
 		return tot;
 	}
 	
+	public List<MateDTO> mate_list_for_cal(MateDTO dto) {
+		//System.out.println("dto.getMtravel_date_s() "+dto.getMtravel_date_s());
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		//map.put
+		List<MateDTO> list=mate_sqlsession.selectList(namespace+".mate_list_for_cal",dto);
+		System.out.println("===================================adslfksj");
+		System.out.println(list);
+		System.out.println(list.get(0).getContent());
+		return list;
+	}
+	
 	// 글 전체 목록
 	public List<MateDTO> mate_listall(int page) {
 		MateDTO dto=new MateDTO();
@@ -42,10 +58,10 @@ public class MateDAO {
 		HashMap<String , Object> map=new HashMap<String, Object>();
 		if(page==1) {
 			map.put("start", 1);
-			map.put("end", 3);
+			map.put("end", 10);
 		} else {
-			map.put("start", page*3-2);
-			map.put("end", page*3);
+			map.put("start", page*10-9);
+			map.put("end", page*10);
 		}
 		return mate_sqlsession.selectList(namespace + ".mate_listAll",map);
 	}
@@ -53,8 +69,10 @@ public class MateDAO {
 //	public List<MateDTO> mate_list_search(int page,String word,String tag) {
 		public List<MateDTO> mate_list_search(MateDTO matedto,int page ) {
 		HashMap<String, Object> map=new HashMap<String, Object>();
-			map.put("start",  page*3-2);
-			map.put("end", page*3);
+ 
+			map.put("start", page*10-9);
+			map.put("end", page*10);
+		 
 			map.put("word", matedto.getWord());
 			map.put("tag", matedto.getTag());
 			//map.put("word2", "목");
@@ -100,7 +118,7 @@ public class MateDAO {
 			// 동행자 나이
 			String[] mage_box =matedto.getMage().split(",");
 			for(int i=0;i<mage_box.length;i++) {
-				map.put("mage"+i,mage_box[i]);
+				map.put("mage"+i,mage_box[i].substring(0,1));
 			}
 			if(mage_box.length!=5) {
 				for(int i=mage_box.length;i<4;i++) {
@@ -164,7 +182,7 @@ public class MateDAO {
 		// 동행자 나이
 		String[] mage_box =matedto.getMage().split(",");
 		for(int i=0;i<mage_box.length;i++) {
-			map.put("mage"+i,mage_box[i]);
+			map.put("mage"+i,mage_box[i].substring(0,1));
 		}
 		if(mage_box.length!=5) {
 			for(int i=mage_box.length;i<4;i++) {
@@ -223,6 +241,16 @@ public class MateDAO {
 //	public void mate_write_save(String title, String content, String nick) {
 		mate_sqlsession.insert(namespace + ".mate_write_save", matedto);
 	}
+	
+	public void mate_cal(MateCalDTO dto) {
+		System.out.println("달력 dao");
+		mate_sqlsession.insert(namespace+".mate_cal",dto);
+	}
+	
+	public void mate_cal_list(MateCalDTO dto) {
+		mate_sqlsession.selectList(namespace+".mate_cal_list");
+	}
+	
 	// 댓글 리스트
 	public List<MateReplyDTO> mate_reply_list_1(int bnum) {
 		List<MateReplyDTO> dto=new ArrayList<MateReplyDTO>();
@@ -288,5 +316,36 @@ public class MateDAO {
 		public List<MateReplyCnt> commentCount() {
 			return mate_sqlsession.selectList(namespace+".commentcount");
 		}
-		
+	
+		///////////////
+		/* 댓글 기능 */
+		// 댓글 리스트 가져오기 기능
+		public List<MateCommentDTO> comment_list(final int num) {
+			List<MateCommentDTO> 	comment_list=mate_sqlsession.selectList(namespace+".comment_list",num);
+						System.out.println("댓글 리스트 가져오기 성공");
+			return comment_list;
+		}
+		// 댓글 저장 기능
+		public void comment_save(final MateCommentDTO dto) {
+			mate_sqlsession.update(namespace+".replyShape",dto);
+			int	result=mate_sqlsession.insert(namespace+".comment_save",dto);
+		}
+		// 댓글 수정 기능
+		public void comment_modify(final MateCommentDTO dto) {
+			int	result=mate_sqlsession.insert(namespace+".comment_modify",dto);
+		}
+		// 댓글 삭제 기능
+		public void comment_delete(final MateCommentDTO dto) {
+			dto.setContent("<b>삭제된 댓글입니다.</b>");
+					int	result=mate_sqlsession.insert(namespace+".comment_delete",dto);
+		}
+		// admin 댓글 삭제 기능
+		public void comment_delete_admin(final MateCommentDTO dto) {
+			dto.setContent("삭제된 댓글입니다.");
+			int	result=mate_sqlsession.insert(namespace+".comment_delete_admin",dto);
+		}
+		// 대댓글 저장 기능
+		public void comment_reply_save(final MateCommentDTO dto) {
+			int result=mate_sqlsession.insert(namespace+".comment_reply_save",dto);
+		}
 }

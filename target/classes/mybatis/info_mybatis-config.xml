@@ -8,5 +8,6 @@
 		<typeAlias alias="infodto" type="com.cpkl.dto.InfoDTO"/>
 		<typeAlias alias="commentdto" type="com.cpkl.dto.InfoCommentDTO"/>
 		<typeAlias alias="map" type="java.util.Map"/>
+		<typeAlias alias="cn" type="com.cpkl.dto.FreeCommentNumber"/>
 	</typeAliases>
 </configuration>

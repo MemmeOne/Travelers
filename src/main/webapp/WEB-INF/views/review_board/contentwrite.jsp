@@ -14,7 +14,7 @@
 </script>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -87,7 +87,7 @@
 							</tr>
 							<tr>
 								<th style="text-align: left;">
-									<input type="button" value="목록" onclick="location.href='reviewboard?boardnum=1&page=1'">
+									<input type="button" value="목록" onclick="location.href='reviewboard?page=1'">
 								</th>
 								<th style="text-align: right;">
 									<input type="button" value="확인" id="contentRegBtn">
@@ -99,6 +99,6 @@
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 </body>
 </html>

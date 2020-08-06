@@ -36,6 +36,7 @@ public class ReviewBoardService {
 	public void contentView(int num,Model model) {
 		dao.upHit(num);
 		model.addAttribute("content", dao.contentView(num));
+		model.addAttribute("favoriteList", dao.postFavoriteList(num));
 	}
 	
 	public void delete(int num) {
@@ -88,11 +89,16 @@ public class ReviewBoardService {
 		dao.favoriteUp(dto);
 	}
 	
-	public void favoriteList(int boardnum, Model model) {
-		model.addAttribute("favoriteList", dao.favoriteList(boardnum));
+	public void favoriteDown(FavoriteDTO dto) {
+		dao.favoriteDown(dto);
+	}
+	
+	public void favoriteList(Model model) {
+		model.addAttribute("favoriteList", dao.favoriteList());
 	}
 	
 	public CommentNumber favorite(FavoriteDTO dto) {
 		return dao.favorite(dto);
 	}
+	
 }

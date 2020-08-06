@@ -7,7 +7,7 @@
 <title>정보 게시판 검색 결과</title>
 </head>
 <body class="is-preload">
-	<%@ include file="../defualt/header.jsp"%>
+	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
 		<!-- Main -->
@@ -45,6 +45,13 @@
 												<c:when test="${savedate==today}">
 													<td style="text-align: left;">
 														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+														<c:forEach var="cnum" items="${commentcount }">
+															<c:choose>
+																<c:when test="${list.num eq cnum.numgroup }">
+																	[${cnum.count }]
+																</c:when>
+															</c:choose>
+														</c:forEach>
 														<img src="resources/main_image/new.png" style="width:25px;">
 													</td>
 													<td>${list.nick }</td>
@@ -56,6 +63,13 @@
 												<c:otherwise>
 													<td style="text-align: left;">
 														<a href="info_post?num=${list.num }">[${list.tag }] ${list.title }</a>
+														<c:forEach var="cnum" items="${commentcount }">
+															<c:choose>
+																<c:when test="${list.num eq cnum.numgroup }">
+																	[${cnum.count }]
+																</c:when>
+															</c:choose>
+														</c:forEach>
 													</td>
 													<td>${list.nick }</td>
 													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="yyyy-MM-dd"/>
@@ -135,7 +149,7 @@
 			</section>
 		</article>
 	</div>
-	<%@ include file="../defualt/footer.jsp"%>
+	<%@ include file="../default/footer.jsp"%>
 <style>
 table  {
     width: 100%;

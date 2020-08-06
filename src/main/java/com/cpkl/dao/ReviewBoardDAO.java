@@ -4,13 +4,17 @@ package com.cpkl.dao;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.FavoriteDTO;
+import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.ReviewBoardCommentsDTO;
 import com.cpkl.dto.ReviewBoardDTO;
 
@@ -21,7 +25,7 @@ public class ReviewBoardDAO {
 	@Qualifier("review_sqlSession")
 	private SqlSession sqlSession;
 	public static final String namespace = "Mapper";
-	
+
 	public List<ReviewBoardDTO> reviewBoard(String page){
 		return sqlSession.selectList(namespace+".reviewboard",page);
 	}
@@ -95,13 +99,20 @@ public class ReviewBoardDAO {
 		sqlSession.insert(namespace+".favoriteUp", dto);
 	}
 	
+	public void favoriteDown(FavoriteDTO dto) {
+		sqlSession.delete(namespace+".favoriteDown", dto);
+	}
 	
-	public List<ReviewBoardDTO> favoriteList(int boardnum) {
-		return sqlSession.selectList(namespace+".favoriteList", boardnum);
+	public List<CommentNumber> favoriteList() {
+		return sqlSession.selectList(namespace+".favoriteList");
 	}
 	
 	public CommentNumber favorite(FavoriteDTO dto) {
 		return sqlSession.selectOne(namespace+".favorite", dto);
+	}
+	
+	public List<FavoriteDTO> postFavoriteList(int num){
+		return sqlSession.selectList(namespace+".postFavoriteList", num);
 	}
 	
 }

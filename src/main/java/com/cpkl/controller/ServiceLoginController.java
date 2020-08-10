@@ -66,7 +66,9 @@ public class ServiceLoginController {
 	// 로그아웃
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("loginUser");
+		TravelersDTO dto = (TravelersDTO) session.getAttribute("loginUser");
+		LoginService.sessions.get(dto.getId()).invalidate();
+		LoginService.sessions.remove(dto.getId());
 		return "home";
 	}
 	

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행 리뷰 게시판 글작성</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <script type="text/javascript" src="resources/smarteditor/js/HuskyEZCreator.js" charset="UTF-8"></script>
 <script type="text/javascript" charset="utf-8">
@@ -25,12 +25,23 @@
 						<input type="hidden" name="nick" value="${loginUser.nick }">
 						<table>
 							<tr>
+								<c:if test="${loginUser.id eq 'admin' }">
+									<th style="width:60px;text-align: center;">태그</th>
+									<th>
+										<select name="tag" >
+											<option value="공지">공지</option>
+											<option value="이벤트">이벤트</option>
+										</select>
+									</th>
+								</c:if>
+							</tr>
+							<tr>
 								<th style="width:60px;text-align: center;">제목</th>
 								<th><input type="text" id="title" name="title" autofocus="autofocus"></th>
 							</tr>
 							<tr>
 								<th colspan="2" style="margin: 0 auto;">
-									<textarea rows="15" cols="50" id="content" name="content"></textarea>
+									<textarea rows="15" cols="50" id="content" name="content" style="height: 500px"></textarea>
 								<script type="text/javascript">
 								$(function() {
 									//전역변수선언
@@ -85,7 +96,7 @@
 								</script>
 								</th>
 							</tr>
-							<tr>
+							<tr style="border-bottom: 0;">
 								<th style="text-align: left;">
 									<input type="button" value="목록" onclick="location.href='reviewboard?page=1'">
 								</th>

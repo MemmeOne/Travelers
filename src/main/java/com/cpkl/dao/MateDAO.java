@@ -19,6 +19,7 @@ import com.cpkl.dto.MateCalDTO;
 import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateDTO;
 import com.cpkl.dto.MateReplyCnt;
+import com.cpkl.dto.MateReplyCnt2;
 import com.cpkl.dto.MateReplyDTO;
 
 @Repository
@@ -107,6 +108,7 @@ public class MateDAO {
 			
 			// 동행자 성별
 			String[] mgender_box =matedto.getMgender().split(",");
+
 				for(int i=0;i<mgender_box.length;i++) {
 					map.put("mgender"+i,mgender_box[i]);
 				}
@@ -117,14 +119,21 @@ public class MateDAO {
 				}
 			// 동행자 나이
 			String[] mage_box =matedto.getMage().split(",");
+//			if(mage_box[0].equals("1")) {
+//				mage_box[0]="";
+//			}
 			for(int i=0;i<mage_box.length;i++) {
-				map.put("mage"+i,mage_box[i].substring(0,1));
+				//map.put("mage"+i,mage_box[i].substring(0,1));
+				map.put("mage"+i,mage_box[i]);
 			}
 			if(mage_box.length!=5) {
 				for(int i=mage_box.length;i<4;i++) {
 					map.put("mage"+i,"-");
 				}
 			}
+			//map.put("mage0","3");
+			//map.put("mage0",matedto.getMage());
+			
 			//-------------------------
 			Iterator<String> keys=map.keySet().iterator();
 			while(keys.hasNext()) {
@@ -171,6 +180,7 @@ public class MateDAO {
 		
 		// 동행자 성별
 		String[] mgender_box =matedto.getMgender().split(",");
+ 
 			for(int i=0;i<mgender_box.length;i++) {
 				map.put("mgender"+i,mgender_box[i]);
 			}
@@ -181,16 +191,20 @@ public class MateDAO {
 			}
 		// 동행자 나이
 		String[] mage_box =matedto.getMage().split(",");
+//		if(mage_box[0].equals("1")) {
+//			mage_box[0]="";
+//		}
 		for(int i=0;i<mage_box.length;i++) {
-			map.put("mage"+i,mage_box[i].substring(0,1));
+			//map.put("mage"+i,mage_box[i].substring(0,1));
+			map.put("mage"+i,mage_box[i]);
 		}
 		if(mage_box.length!=5) {
 			for(int i=mage_box.length;i<4;i++) {
 				map.put("mage"+i,"-");
 			}
 		}
-		
-
+		//map.put("mage0","3");
+		//map.put("mage0",matedto.getMage());
 		//-------------------------
 		System.out.println("안아작스 dao search ");
 		Iterator<String> keys=map.keySet().iterator();
@@ -315,6 +329,9 @@ public class MateDAO {
 		
 		public List<MateReplyCnt> commentCount() {
 			return mate_sqlsession.selectList(namespace+".commentcount");
+		}
+		public List<MateReplyCnt2> commentCount2() {
+			return mate_sqlsession.selectList(namespace+".commentcount2");
 		}
 	
 		///////////////

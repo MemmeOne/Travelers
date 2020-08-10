@@ -14,7 +14,7 @@
 		<!-- Main -->
 		<article id="main">
 			<section class="wrapper style5">
-				<div class="inner" style="height: 600px;">
+				<div class="inner">
 					<section>
 						<c:choose>
 							<c:when test="${loginUser.id=='admin'}">
@@ -90,6 +90,9 @@
 									</c:otherwise>
 									</c:choose>
 								</table>
+								<div>
+									
+								</div>
 							</div>
 						</div>
 						</div>

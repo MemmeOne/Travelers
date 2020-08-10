@@ -6,11 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<c:if test="${content.tag eq null }">
+	<title>${content.title }</title>
+</c:if>
+<c:if test="${content.tag ne null }">
+	<title>[${content.tag}] ${content.title }</title>
+</c:if>
 <script src="resources/jquery-3.5.1.min.js" ></script>
-	
 <script>
-	
 	var commentNumber = 10;
 	var a = 0;
 	
@@ -30,6 +33,8 @@
 					$("#comments").val("");
 					commentList();
 					$("#op").val("댓글닫기");
+					$("#op").css("padding-left","30px");
+					$("#op").css("padding-right","30px");
 				},error:function(){
 					alert("댓글 등록 실패")
 				}
@@ -43,6 +48,7 @@
 		var form={num:num, count:commentNumber};
 		var i = 0;
 		var userNick = '${loginUser.nick}'
+		var writerNick = '${content.nick}'
 		$.ajax({
 			url:"comments",
 			type:"POST",
@@ -54,8 +60,14 @@
 							html += "<tr style='background-color: white;'><input type='hidden' id='cnum"+i+"' value='"+item.cnum+"'>"
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
 							html += "<input type='hidden' id='comments"+i+"' value='"+item.comments+"'>"
-							html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
-							html += "<td style='width: 680px;'>"+item.comments+"</td>"
+							if(writerNick == item.cnick){
+								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick +"<img src='resources/main_image/writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
+							}else if(item.cnick == '관리자'){
+								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick +"<img src='resources/main_image/admin.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
+							}else{
+								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
+							}
+							html += "<td style='width: 680px;'>"+item.comments+"</td>";
 							if(item.cnick == userNick){
 								html += "<td><input type='button' value='댓글달기' onclick='reply("+i+")'><br>"+
 								"<input type='button' value='수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정' onclick='commentModify("+i+")'><br>"+
@@ -69,13 +81,20 @@
 						}else {
 							html += "<tr style='background-color: white;'><input type='hidden' id='cnum"+i+"' value='"+item.cnum+"'>"
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
-							html += "<td style='text-align: center;width: 120px;'>&#10149;</td><td id='cnick"+i+"' style='text-align: center;width: 120px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							if(writerNick == item.cnick){
+								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick +"<img src='resources/main_image/writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							}else if(item.cnick == '관리자'){
+								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick +"<img src='resources/main_image/admin.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							}else{
+								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick+"<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+							}
 							html += "<td style='width: 560px;'>"+item.comments+"</td>"
 							if(item.cnick == userNick){
 								html += "<td><input type='button' value='수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정' onclick='commentModify("+i+")'><br>"+
 								"<input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"' style='background-color: white;'></tr>"
-							}else if(userNick == "관리자")
+							}else if(userNick == "관리자"){
 								html += "<td><input type='button' value='삭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제' onclick='commentDel("+i+")'></td></tr><tr id='cn"+i+"' style='background-color: white;'></tr>"
+							}
 						}
 						i += 1;
 					})
@@ -86,7 +105,7 @@
 							html = "<td colspan='4' align='center'><input type='button' value='댓글 닫기' onclick='commentNumberM()'></td>"
 							$("#viewmore").html(html);
 						}else{
-							html = "<td colspan='4' align='center'><input type='button' value='댓글 더보기' onclick='commentNumberP()'></td>"
+							html = "<td colspan='4' align='center'><input type='button' value='"+(a-i)+"개 댓글 더보기 ' onclick='commentNumberP()'></td>"
 							$("#viewmore").html(html);
 						}
 					}else{
@@ -99,7 +118,7 @@
 	}
 	
 	function reply(i){
-		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"'></td><td><input type='button' id='button' value='등록' onclick='replyReg("+i+")'><input type='button' value='취소' onclick='commentList()'></td>"
+		let html = "<td colspan='3'><input style='width:850px' type='text' id='replycomment"+i+"'></td><td style='width:270px;'><input type='button' id='button' value='등&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;록' onclick='replyReg("+i+")'><input type='button' value='취&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소' onclick='commentList()'></td>"
 		$("#cn"+i).html(html)
 	}	
 	
@@ -126,7 +145,7 @@
 	}
 	
 	function commentModify(i){
-		let html = "<td colspan='3'><input type='text' id='replycomment"+i+"' value='"+$("#comments"+i).val()+"'></td><td><input type='button' id='button' value='확인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취소' onclick='commentList()'></td>"
+		let html = "<td colspan='3'><input style='width:850px' type='text' id='replycomment"+i+"' value='"+$("#comments"+i).val()+"'></td><td style='width:270px;'><input type='button' id='button' value='확&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;인' onclick='commentModifyUpdate("+i+")'><input type='button' value='취&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소' onclick='commentList()'></td>"
 		$("#cn"+i).html(html)
 	}
 	
@@ -154,16 +173,19 @@
 		var indent = $("#indent"+i).val();
 		var cnum = $("#cnum"+i).val();
 		var form={cnum:cnum, indent:indent}
-		$.ajax({
-			url:"commentdelete",
-			type:"POST",
-			data:form,
-			success:function(){
-				commentList();
-			},error:function(){
-				alert("댓글 삭제 실패")
-			}
-		})
+		var check = confirm("글을 삭제하시겠습니까?")
+		if(check){
+			$.ajax({
+				url:"commentdelete",
+				type:"POST",
+				data:form,
+				success:function(){
+					commentList();
+				},error:function(){
+					alert("댓글 삭제 실패")
+				}
+			})
+		}
 	}
 	
 	function totalComment(){
@@ -194,7 +216,9 @@
 	
 	function commentNumberM(){
 		commentNumber = 10;
-		$("#op").val("댓글보기");
+		$("#op").val("댓글보기["+a+"]");
+		$("#op").css("padding-left","20px");
+		$("#op").css("padding-right","20px");
 		$("#viewmore").html("");
 		$("#commentlist").html("");
 	}
@@ -204,16 +228,23 @@
 		document.getElementById("form").submit();
 	}
 	function del(){
-		document.getElementById("form").action = "delete";
-		document.getElementById("form").submit();
+		var check = confirm("글을 삭제하시겠습니까?")
+		if(check){
+			document.getElementById("form").action = "delete";
+			document.getElementById("form").submit();
+		}
 	}
 	
 	function openClose(){
-		if($("#op").val() == "댓글보기"){
+		if($("#op").val().includes("댓글보기")){
 			commentList();
 			$("#op").val("댓글닫기");
-		}else if($("#op").val() == "댓글닫기"){
-			$("#op").val("댓글보기");
+			$("#op").css("padding-left","30px");
+			$("#op").css("padding-right","30px");
+		}else if($("#op").val().includes("댓글닫기")){
+			$("#op").val("댓글보기["+a+"]");
+			$("#op").css("padding-left","20px");
+			$("#op").css("padding-right","20px");
 			$("#commentlist").html("");
 			$("#viewmore").html("");
 		}
@@ -282,11 +313,11 @@
 	// 글 신고
 	function report_post() {
 		var content=prompt("신고 사유를 입력해주세요."+"");
-		var board = "info_board";
-		var num = "${info_post.num }"
-		var title = "[${info_post.tag }] ${info_post.title }"
-		var writer = "${info_post.nick }"
-		var usernick = "${loginUser.nick }"
+		var board = "review_board";
+		var num = "${content.num }"
+		var title = "${content.title }"
+		var writer = "${content.nick }"
+		var usernick = "${content.nick }"
 		console.log(board)
 		console.log(num)
 		console.log(title)
@@ -335,11 +366,34 @@
 		}
 	}
 	
+	$(document).ready(function() {
+		var num = $("#num").val();
+		var form={num:num}
+		$.ajax({
+			url:"totalcomment",
+			type:"POST",
+			data:form,
+			success:function(total){
+				if(total == null){
+					$("#op").attr("disabled",true);
+				}else{
+					$("#op").attr("disabled",false);
+					a = total.count;
+				$("#op").val("댓글보기["+a+"]");
+				$("#op").css("padding-left","20px");
+				$("#op").css("padding-right","20px");
+				}
+			},error:function(){
+				alert("댓글 개수 실패")
+			}
+		})
+    });
+	
 </script>
 </head>
-<body class="is-preload" onload="totalComment();favorite();">
+<body class="is-preload" onload="favorite();">
 <fmt:requestEncoding value="UTF-8"/>
-<jsp:useBean id="cdate" class="java.util.Date" />
+<jsp:useBean id="cdate" class="java.util.Date"/>
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy-MM-dd"/>
 	<%@ include file="../default/header.jsp"%>
 	<!-- Page Wrapper -->
@@ -351,13 +405,24 @@
 				<form onsubmit="return false" id="form" method="post">
 					<input type="hidden" id="num" name="num" value="${content.num }">
 					<input type="hidden" id="cnick" name="cnick" value="${loginUser.nick }">
+					<h4><a href="reviewboard?page=1" style="border-bottom: 0;">>> 여행 리뷰 게시판</a> </h4>
 					<table style="width: 1070px;">
 						<tr>
-							<td colspan="4">${content.title }</td>
+							<c:if test="${content.tag eq null }">
+								<td colspan="4"><br><h2>${content.title }</h2></td>
+							</c:if>
+							<c:if test="${content.tag ne null }">
+								<td colspan="4"><br><h2>[${content.tag}] ${content.title }</h2></td>
+							</c:if>
 						</tr>
 						<tr>
 							<td colspan="2">
-								<a onclick="window.open('userInfoPop?nick=${content.nick }','','width=500,height=700')">${content.nick }</a>
+								<c:if test="${content.nick ne '관리자' }">
+									<a onclick="window.open('userInfoPop?nick=${content.nick }','','width=500,height=700')" style="border-bottom: 0; cursor: pointer;"><b>${content.nick }</b>&nbsp;&nbsp;</a>
+								</c:if>
+								<c:if test="${content.nick eq '관리자' }">
+									<b>${content.nick }</b>&nbsp;&nbsp;
+								</c:if>
 								<c:set var="i" value="0"/>
 								<c:forEach var="favoriteList" items="${favoriteList }">
 									<c:choose>
@@ -389,7 +454,7 @@
 						<tr style="background: white; border-bottom: 0;">
 							<th colspan="2" style="text-align: left ;">
 								<input type="button" value="목록보기" onclick="location.href='reviewboard?page=1'">	
-								<input type="button" value="댓글보기" id="op" onclick="openClose()">
+								<input type="button" value="댓글보기 " id="op" onclick="openClose()">
 							</th>
 							<th colspan="2" style="text-align: right;">
 								<c:if test="${loginUser.nick ne null }">
@@ -407,12 +472,12 @@
 							</th>
 						</tr>
 					</table>
-					<table style="width:1070px;">
+					<table style="width:1070px; margin-top: 50px;">
 						<c:choose>
 							<c:when test="${loginUser.nick ne null }">
 								<tr>
-									<td colspan="3"><input type="text" id="comments" style="width:800px;"></td>
-									<td><input type="button" value="댓글달기" onclick="commentReg()"></td>
+									<td colspan="3"><input style="width:850px;" type="text" id="comments"></td>
+									<td style="width:270px;"><input type="button" value="댓글달기" onclick="commentReg()"></td>
 								</tr>
 							</c:when>				
 						</c:choose>

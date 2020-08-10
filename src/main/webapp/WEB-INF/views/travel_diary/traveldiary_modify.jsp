@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행수첩 수정</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
@@ -34,7 +34,7 @@
 </script>
 </head>
 <body>
-	<div style="margin: 0 auto;padding: 10px;">
+	<div align="center" style="margin: 0 auto;padding: 10px;">
 	<form id="frm" action="travelDiaryModUpdate" method="post">
 	<h3 style="text-align: center;">여행지 등록</h3>
 	<input type="hidden" name="num" value="${diary.num }">
@@ -46,7 +46,7 @@
       		</c:forEach>
 		</select><br>
 	도시 : <input type="text" id="city" name="city" style="width: 252px;" value="${diary.city }"><br>
-	여행 기간 : <br>
+	여행 기간 : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
 	<input type="date" id="startdate" name="startdate" value="${diary.startdate }"> ~ <input type="date" id="enddate" name="enddate" value="${diary.enddate }"><br>
 	메모 : <input type="text" id="memo" name="memo" style="width: 252px;" value="${diary.memo }"><br><br>
 	<input type="button" value="수정" style="margin-left: 250px;" onclick="rsb()">

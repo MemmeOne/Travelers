@@ -26,6 +26,7 @@ public class MateService   {
 		model.addAttribute("mate_list_all", matedao.mate_listall(page));
 		model.addAttribute("totPage", matedao.getTotalPage());
 		model.addAttribute("commentcount", matedao.commentCount());
+		model.addAttribute("commentcount2", matedao.commentCount2());
 		
 	}
 	// 글 전체 목록에서 검색 이거!
@@ -46,6 +47,7 @@ public class MateService   {
 		model.addAttribute("price2",matedto.getPrice2());
 		model.addAttribute("mgender",matedto.getMgender());
 		model.addAttribute("mage",matedto.getMage());
+		model.addAttribute("commentcount2", matedao.commentCount2());
 		
 //		return matedao.mate_listall(page);
 	}
@@ -93,6 +95,7 @@ public class MateService   {
 		model.addAttribute("mate_reply_list", matedao.mate_reply_list(num));
 		
 		model.addAttribute("mate_comment_list",matedao.comment_list(num));
+		model.addAttribute("commentcount2", matedao.commentCount2());
 		//model.addAttribute("mate_reply_select", matedao.mate_reply_regi02(num));
 	}
 	public void deadline_finish(MateDTO matedto) {

@@ -66,11 +66,11 @@
 				<h3>로그인</h3>
 				<hr />
 				<p>
-				<form action="loginup_chk" method="post" class="form">
+				<form onsubmit="return false" method="post" class="form">
 					<input type="text" placeholder="아이디를 입력하세요" name="id"><br>
 					<input type="password" placeholder="비밀번호를 입력하세요" name="pwd"><br>
-					<input type="button" value="로그인" onclick="validation()"> <input
-						type="button" value="회원가입" onclick="location.href='reg'"><br><br>
+					<input type="button" value="로그인" onclick="validation()">
+					<input type="button" value="회원가입" onclick="location.href='reg'"><br><br>
 				</form>
 				</p>
 				</div>

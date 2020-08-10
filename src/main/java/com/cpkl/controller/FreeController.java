@@ -3,6 +3,9 @@ package com.cpkl.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +73,22 @@ public class FreeController {
 	}
 	// 자유 게시판 글 상세보기 기능
 	@RequestMapping("free_content_view")
-	public String free_content_view(Model model,@RequestParam int num) {
+	public String free_content_view(Model model,@RequestParam int num, HttpServletRequest request, HttpServletResponse response) {
+		 Cookie[] cookies = request.getCookies();
+	      Cookie uphit = null;
+	      if(cookies != null && cookies.length > 0) {
+	         for(Cookie cookie : cookies) {
+	            if(cookie.getName().equals("free"+num)) {
+	               uphit = cookie;
+	            }
+	         }
+	      }
+	      if(uphit == null) {
+	         Cookie cookie = new Cookie("free"+num, "uphit");
+	         cookie.setMaxAge(60*60*24);
+	         response.addCookie(cookie);
+	         service.uphit(num);
+	      }
 	    service.free_content_view(model,num);
 		return "free_board/free_content_view";
 	}
@@ -173,4 +191,16 @@ public class FreeController {
 		String json = mapper.writeValueAsString(cn);
 		return json;
 	}
+	/*
+	 * @RequestMapping("free_content_view") public String
+	 * free_content_view(@RequestParam int num, Model model, HttpServletRequest
+	 * request, HttpServletResponse response) { Cookie[] cookies =
+	 * request.getCookies(); Cookie uphit = null; if(cookies != null &&
+	 * cookies.length > 0) { for(Cookie cookie : cookies) {
+	 * if(cookie.getName().equals("free"+num)) { uphit = cookie; } } } if(uphit ==
+	 * null) { Cookie cookie = new Cookie("free"+num, "uphit");
+	 * cookie.setMaxAge(60*60*24); response.addCookie(cookie); service.uphit(num); }
+	 * service.free_content_view(model, num); return "free_board/free_content_view";
+	 * }
+	 */
 }

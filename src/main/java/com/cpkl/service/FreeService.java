@@ -22,6 +22,7 @@ public class FreeService {
 	public void free_board_list(Model model,int page) {
 		model.addAttribute("lists",dao.freeboard(page));
 		model.addAttribute("totPage",dao.totPage());
+		model.addAttribute("notis_list",dao.notis_list());
 		model.addAttribute("commentcount",dao.commentCount());
 		System.out.println(dao.commentCount());
 	}
@@ -29,6 +30,7 @@ public class FreeService {
 	public void search(Model model, String tag, String word, int page) {
 		model.addAttribute("lists", dao.search(tag, word, page));
 		model.addAttribute("totPage",dao.totPageSearch(tag, word));
+		model.addAttribute("notis_list",dao.notis_list());
 		model.addAttribute("commentcount",dao.commentCount());
 		model.addAttribute("tag",tag);
 		model.addAttribute("word",word);
@@ -43,10 +45,13 @@ public class FreeService {
 	}
 	// 자유 게시판 글 상세보기 기능
 	public void free_content_view(Model model,int num) {
-		dao.uphit(num);
 	   model.addAttribute("lists",dao.free_content_view(num));
 	   model.addAttribute("comment_list",dao.comment_list(num));
 	   model.addAttribute("favoriteList", dao.postFavoriteList(num));
+	   model.addAttribute("commentcount",dao.commentCount());
+	}
+	public void uphit(int num) {
+		dao.uphit(num);
 	}
 	// 자유 게시판 글 삭제 기능
 	public void free_board_delete(Model model,int num) {

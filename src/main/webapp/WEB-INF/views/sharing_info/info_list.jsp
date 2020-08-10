@@ -5,6 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>정보 공유 게시판</title>
+<script type="text/javascript">
+	function loginConfirm(){
+		var check = confirm("글 작성은 로그인이 필요합니다")
+		if(check){
+			location.href="login";
+		}
+	}
+</script>
 </head>
 <body class="is-preload">
 	<%@ include file="../default/header.jsp"%>
@@ -17,7 +25,7 @@
 					<form action="info_search">
 						<input type="hidden" name="page" value="1">
 						<h2 style="text-align: center;">정보 공유 게시판</h2>
-						<hr style="width: 1070px;">
+						<hr style="width: 1070px; margin: 0 auto;">
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px;">
 							<tr style="vertical-align: middle;" >
 								<td style="width:100px;text-align: center;">번호</td>
@@ -41,7 +49,7 @@
 												<img src="resources/main_image/new.png" style="width:25px;">
 											</th>
 											<th style="text-align: center;">${notis.nick }</th>
-											<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="hh:mm"/>
+											<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="HH:mm"/>
 											<th style="text-align: center;">
 												${savedate2}
 											</th>
@@ -103,7 +111,7 @@
 														<img src="resources/main_image/new.png" style="width:25px;">
 													</td>
 													<td><a onclick="window.open('userInfoPop?nick=${list.nick }','','width=500,height=700')">${list.nick }</a></td>
-													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="hh:mm"/>
+													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="HH:mm"/>
 													<td>
 														${savedate}
 													</td>
@@ -146,12 +154,17 @@
 								</c:otherwise>
 							</c:choose>
 							<tr style="border-bottom:0;">
-								<c:if test="${loginUser!=null }">
-									<td colspan="4"></td>
-									<td colspan="4">
-										<input type="button" value="글작성" onclick="location.href='info_write'">
-									</td>
-								</c:if>
+								<td colspan="4"></td>
+								<td colspan="4">
+									<c:choose>
+										<c:when test="${loginUser.nick ne null }">
+											<input type="button" value="글작성" onclick="location.href='info_write'">
+										</c:when>
+										<c:otherwise>
+											<input type="button" value="글작성" onclick="loginConfirm()">
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 						</table><br>
 						<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
@@ -214,27 +227,6 @@
 		</article>
 	</div>
 	<%@ include file="../default/footer.jsp"%>
-<!-- <style>
-table  {
-    width: 100%;
-    border-top: 1px solid rgba(50, 50, 50, 0.2);
-    border-collapse: collapse;
-  }
-td {
-	background-color: white;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    padding: 10px;
-    margin: 10px;
-  }
-th {
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    padding: 10px;
-    margin: 10px;
-}
-a {
-	text-decoration: none;
-}
-</style> -->
 <style>
 a{
 border-bottom:0;

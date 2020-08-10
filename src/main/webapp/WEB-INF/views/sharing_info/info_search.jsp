@@ -17,7 +17,7 @@
 					<form action="info_search">
 						<input type="hidden" name="page" value="1">
 						<h2 style="text-align: center;">정보 공유 게시판</h2>
-						<hr>
+						<hr style="width: 1070px;">
 						<form action="info_search"><input type="hidden" name="page" value="1">
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 							<tr style="vertical-align: middle;" >
@@ -82,7 +82,7 @@
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
-							<tr>
+							<tr style="border-bottom:0;">
 								<td colspan="4"></td>
 								<td colspan="4">
 									<input type="button" value="글작성" onclick="location.href='info_write'">
@@ -91,17 +91,17 @@
 						</table><br>
 						
 						<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
-							<tr style="width: 60px;" >
+							<tr style="width: 60px;border-bottom:0;border-top:0;" >
 								<td colspan="6" style="font-size:2em;">
 									<c:choose>
 										<c:when test="${param.page > 1 }">
 											<a href="info_search?page=${param.page-1}&tag=${param.tag}&word=${param.word}" style="vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_left.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_left.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:when>
 										<c:otherwise>
 											<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_left.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_left.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:otherwise>
 									</c:choose>
@@ -113,19 +113,19 @@
 									<c:choose>
 										<c:when test="${param.page < num }">
 											<a href="info_search?page=${param.page+1}&tag=${param.tag}&word=${param.word}" style="vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_right.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_right.png" style="width: 40px; height: 40px;">
 											</a>
 										</c:when>
 										<c:otherwise>
 											<a href="" style="pointer-events: none;cursor: default;opacity: 0.5; vertical-align: middle;">
-												<img alt="" src="resources/main_image/ship_right.png" style="width: 50px; height: 50px;">
+												<img alt="" src="resources/main_image/ship_right.png" style="width: 40px; height: 4s0px;">
 											</a>
 										</c:otherwise>
 									</c:choose>
 									<br>
 								</td>
 							</tr>
-							<tr style="border-bottom: 0px;">
+							<tr style="border-top:0; border-bottom:	0; ">
 								<td style="width: 85px;"></td>
 								<td style="width: 200px;">
 									<select name="tag" style="width: 200px;">
@@ -151,17 +151,12 @@
 	</div>
 	<%@ include file="../default/footer.jsp"%>
 <style>
-table  {
-    width: 100%;
-    border-top: 1px solid rgba(50, 50, 50, 0.2);
-    border-collapse: collapse;
-  }
-th, td {
-	background-color: white;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    padding: 10px;
-    margin: 10px;
-  }
+a{
+border-bottom:0;
+}
+td  {
+background-color: white;
+}
 </style>
 </body>
 </html>

@@ -8,7 +8,8 @@ savedate date default sysdate,
 hit number(4) default 0,
 numgroup number(4),
 step number(4),
-indent number(4)
+indent number(4),
+tag varchar2(30)
 );
 
 create sequence review_board_seq;
@@ -22,11 +23,12 @@ indent number(4),
 cnick varchar2(30),
 comments varchar2(300),
 savedate date default sysdate,
+step number(4),
 constraint cid foreign key(num) references review_board(num) on delete cascade
 );
 
-
 create sequence review_board_comment_seq;
+create sequence review_board_comment_step_seq;
 
 --여행수첩 나라 Table
 create table nation(

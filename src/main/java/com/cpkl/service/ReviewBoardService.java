@@ -22,6 +22,8 @@ public class ReviewBoardService {
 	public void reviewBoard(String page, Model model) {
 		model.addAttribute("list", dao.reviewBoard(page));
 		model.addAttribute("commentcount", dao.commentCount());
+		model.addAttribute("noticeList", dao.noticeList());
+		model.addAttribute("favoriteList", dao.favoriteList());
 		int totalpage = (dao.totalContent()/10);
 		if(dao.totalContent()%10 != 0) {
 			totalpage = (dao.totalContent()/10)+1;
@@ -34,9 +36,12 @@ public class ReviewBoardService {
 	}
 	
 	public void contentView(int num,Model model) {
-		dao.upHit(num);
 		model.addAttribute("content", dao.contentView(num));
 		model.addAttribute("favoriteList", dao.postFavoriteList(num));
+	}
+	
+	public void upHit(int num) {
+		dao.upHit(num);
 	}
 	
 	public void delete(int num) {
@@ -58,6 +63,8 @@ public class ReviewBoardService {
 	public void reviewBoard(Map<String,	Object> map, Model model) {
 		model.addAttribute("list", dao.search(map));
 		model.addAttribute("commentcount", dao.commentCount());
+		model.addAttribute("noticeList", dao.noticeList());
+		model.addAttribute("favoriteList", dao.favoriteList());
 		int totalpage = (dao.totalSearch(map)/10);
 		if(dao.totalContent()%10 != 0) {
 			totalpage = (dao.totalSearch(map)/10)+1;
@@ -92,11 +99,7 @@ public class ReviewBoardService {
 	public void favoriteDown(FavoriteDTO dto) {
 		dao.favoriteDown(dto);
 	}
-	
-	public void favoriteList(Model model) {
-		model.addAttribute("favoriteList", dao.favoriteList());
-	}
-	
+			
 	public CommentNumber favorite(FavoriteDTO dto) {
 		return dao.favorite(dto);
 	}

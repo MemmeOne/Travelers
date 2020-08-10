@@ -12,8 +12,9 @@ public class ReviewBoardCommentsDTO {
 	private int indent;
 	private String cnick;
 	private String comments;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT+9")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm", timezone="GMT+9")
 	private Timestamp savedate;
+	private int step;
 	
 	public int getNum() {
 		return num;
@@ -57,8 +58,11 @@ public class ReviewBoardCommentsDTO {
 	public void setSavedate(Timestamp savedate) {
 		this.savedate = savedate;
 	}
-	
-	
-	
+	public int getStep() {
+		return step;
+	}
+	public void setStep(int step) {
+		this.step = step;
+	}
 	
 }

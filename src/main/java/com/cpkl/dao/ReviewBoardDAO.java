@@ -38,6 +38,7 @@ public class ReviewBoardDAO {
 		return sqlSession.selectOne(namespace+".contentview", num);
 	}
 	
+	//조회수 
 	public void upHit(int num) {
 		sqlSession.update(namespace+".uphit", num);
 	}
@@ -60,6 +61,10 @@ public class ReviewBoardDAO {
 	
 	public int totalContent() {
 		return sqlSession.selectOne(namespace+".totalcontent");
+	}
+	
+	public List<ReviewBoardDTO> noticeList() {
+		return sqlSession.selectList(namespace+".noticeList");
 	}
 	
 	public List<ReviewBoardDTO> search(Map<String, Object> map){

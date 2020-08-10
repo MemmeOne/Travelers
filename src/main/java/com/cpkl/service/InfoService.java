@@ -39,11 +39,13 @@ public class InfoService {
 	}
 	// 정보 게시판 글 상세보기 기능
 	public void info_post(int num,Model model) {
-		dao.info_uphit(num);
 		model.addAttribute("info_post",dao.info_post(num));
 		model.addAttribute("comment_list",dao.comment_list(num));
 		model.addAttribute("favoriteList",dao.postFavoriteList(num));
 		model.addAttribute("commentcount",dao.commentCount());
+	}
+	public void upHit(int num) {
+		dao.info_uphit(num);
 	}
 	// 정보 게시판 글 수정 기능
 	public int info_modify(InfoDTO dto) {
@@ -54,6 +56,10 @@ public class InfoService {
 		return dao.info_delete(num);
 	}
 	/* 댓글 기능 */
+	// 댓글 전체 목록 가져오기
+	public List<InfoCommentDTO> info_getCommentList(InfoCommentDTO dto) {
+		return dao.comment_list(dto.getNumgroup());
+	}
 	// 댓글 저장 기능
 	public List<InfoCommentDTO> comment_save(InfoCommentDTO dto) {
 		dao.comment_save(dto);

@@ -30,7 +30,6 @@
   color: #fff;
   font-size: 12px;
 }
-
 .arrow_box:after {
   position: absolute;
   bottom: 100%;
@@ -45,7 +44,6 @@
   pointer-events: none;
   content: " ";
 }
-
 div img:hover + p.arrow_box {
   display: block;
 }
@@ -79,7 +77,8 @@ function comment_table_hide() {
 	html="<input type='button' value='댓글보기' onclick='comment_table_show()'>"
 	$("#show_hide").html(html)
 }
-// 댓글 리스트 틀
+
+//댓글 리스트 틀
 function showComment(list) {
 	var cnt=1;
 	let html=""
@@ -153,6 +152,7 @@ function showComment(list) {
 }
 // 댓글 저장
 function comment_save() {
+	chk_loginUser();
 	var nick = $("#nick").val();
 	var content = $("#content").val();
 	var numgroup = $("#numgroup").val();
@@ -198,6 +198,7 @@ function comment_modify(cnt) {
 }
 // 수정한 댓글 저장
 function comment_modify_save(cnt) {
+	chk_loginUser();
 	var cnum = $("#cnum"+cnt).val();
 	var nick = $("#nick" + cnt).val();
 	var content = $("#content" + cnt).val();
@@ -234,6 +235,7 @@ function comment_modify_save(cnt) {
 }
 // 댓글 삭제
 function comment_delete(cnt) {
+	chk_loginUser();
 	var cnum = $("#cnum"+cnt).val();
 	var nick = $("#nick" + cnt).val();
 	var content = $("#content" + cnt).val();
@@ -265,6 +267,7 @@ function comment_delete(cnt) {
 }
 // 댓글 삭제
 function comment_delete_admin(cnt) {
+	chk_loginUser();
 	var cnum = $("#cnum"+cnt).val();
 	var nick = $("#nick" + cnt).val();
 	var content = $("#content" + cnt).val();
@@ -313,6 +316,7 @@ function comment_reply(cnt) {
 }
 // 대댓글 저장
 function comment_reply_save(cnt) {
+	chk_loginUser();
 	var cnum = $("#recnum" + cnt).val();
 	var nick = $("#renick" + cnt).val();
 	var content = $("#recontent" + cnt).val();
@@ -344,6 +348,7 @@ function comment_reply_save(cnt) {
 	});
 }
 	function favoriteUp(){
+		chk_loginUser();
 		var num = $("#num").val();
 		var userid = '${loginUser.id}';
 		var form = {num:num, userid:userid};
@@ -364,6 +369,7 @@ function comment_reply_save(cnt) {
 	}
 }
 	function favoriteDown(){
+		chk_loginUser();
 		var num = $("#num").val();
 		var userid = '${loginUser.id}';
 		var form = {num:num, userid:userid};
@@ -457,7 +463,7 @@ function comment_reply_save(cnt) {
 }
 </script>
 </head>
-<body class="is-preload" onload="chk_loginUser();favorite();" id="top">
+<body class="is-preload" onload="favorite();" id="top">
 	<%@ include file="../default/header.jsp"%>
 		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -472,10 +478,19 @@ function comment_reply_save(cnt) {
 				<div class="inner">
 				<!-- <form action="free_modify_view?num=${lists.num }" method="post"> -->
 				<form onsubmit="return false" id="form" method="post">
-				<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>>자유 게시판</h4>
+				<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="free_board_list?page=1">>>자유 게시판</a></h4>
 					<table id="post_table" style="width: 1070px;margin: 0 auto;">
      					<tr>
+     					<c:choose>
+     					<c:when test="${lists.nick eq '관리자' }">
+     					<td colspan="4">
+									[공지]&nbsp;${lists.title }
+								</td>
+						</c:when>
+     					<c:otherwise>
          					<td colspan="4">${lists.title }</td>
+         					</c:otherwise>
+         					</c:choose>
      					</tr>
      					<tr>
          					<td colspan="2">
@@ -517,10 +532,17 @@ function comment_reply_save(cnt) {
      					<tr>
         					<th colspan="2" style="text-align: left ;">
         						<input type="button" value="전체목록보기" onclick="location.href='free_board_list?page=1'">
-        						<input type="button" value="신고" onclick="report_post()">	
+        					    <c:forEach var="cc" items="${commentcount }">
+										<c:choose>
+											<c:when test="${param.num eq cc.numgroup }">
+												<c:set var="ccc" value="[${cc.count }]" />
+											</c:when>
+										</c:choose>
+									</c:forEach>	
         					<span id="show_hide">
-								<input type="button" value="댓글보기" onclick="comment_table_show()">
+								<input type="button" value="댓글보기${ccc }" onclick="comment_table_show()">
 							</span>
+							<input type="button" value="신고" onclick="report_post()">
 							</th>
 							<th colspan="2" style="text-align: right;">
 							<c:choose>
@@ -560,7 +582,17 @@ function comment_reply_save(cnt) {
 												<img src="resources/main_image/reply.png" style="width:18px; vertical-align: middle;">
 											</td>
 											<td style="text-align: center;" id="modify_nick${cnt}">
-												${com.nick}<br>
+												<c:choose>
+													<c:when test="${com.nick == lists.nick}">
+														${com.nick}<img src='resources/main_image/writer.png' style='vertical-align: middle;'><br>
+													</c:when>
+													<c:when test="${com.nick == '관리자' }">
+														${com.nick}<img src='resources/main_image/admin.png' style='vertical-align: middle;'><br>
+													</c:when>
+													<c:otherwise>
+														${com.nick }<br>
+													</c:otherwise>
+												</c:choose>
 												<span style="font-size: 10pt;" id="modify_savedate${cnt}">${savedate}</span>
 											</td>
 											<c:choose>
@@ -658,6 +690,12 @@ function comment_reply_save(cnt) {
 	<%@ include file="../default/footer.jsp"%>
 
 <style>
+a{
+border-bottom:0;
+}
+td  {
+background-color: white;
+}
 #comment_table  {
     width: 100%;
     border-top: 1px solid rgba(50, 50, 50, 0.2);
@@ -672,19 +710,6 @@ function comment_reply_save(cnt) {
 #comment_table td a {
 	text-decoration: none;
   }
-</style>
-<style>
-table  {
-    width: 100%;
-    border-top: 1px solid rgba(50, 50, 50, 0.2);
-    border-collapse: collapse;
-  }
-th, td {
-	background-color: white;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    padding: 10px;
-    margin: 10px;
-  }
-</style>
+  </style>
 </body>
 </html>

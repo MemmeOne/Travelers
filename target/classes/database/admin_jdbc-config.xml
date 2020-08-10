@@ -10,7 +10,11 @@
 	<!-- mybatis -->
 	<bean name="admin_dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	   <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />  <!-- 자기DB아이피 -->
+	   <!-- 자기DB아이피 -->
+	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />  
+	 	   <!-- 지원 집 아이피  
+	   <property name="url" value="jdbc:oracle:thin:@192.168.44.128:1521:xe" /> -->
+	 
 	   <property name="username" value="travelers" />
 	   <property name="password" value="1234" />
 	</bean>

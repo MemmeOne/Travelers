@@ -72,7 +72,7 @@ public class AdminController {
 	/* 여행패키지 */
 	// 여행패키지 리스트
 	@RequestMapping("package_list")
-	public String package_list(HttpSession session) {
+	public String package_list(HttpSession session ) {
 		service.package_list(session);
 		return "package/package_list";
 	}
@@ -90,14 +90,31 @@ public class AdminController {
 	// 여행패키지 글 쓰기
 	@RequestMapping("package_save")
 	public String package_save(PackageDTO dto) {
+		System.out.println("컨트롤러");
 		System.out.println(dto.getTitle());
-		int result=service.package_save(dto);
-		if(result==1) {
-			return "redirect:package_list?page=1";
-		}else {
-			return "redirect:package_write";
-		}
+		//int result=service.package_save(dto);
+		service.package_save(dto);
+		return "redirect:package_list";
+//		if(result==1) {
+//			//return "redirect:package_list";
+//		}else {
+//			//return "redirect:package_write";
+//		}
 	}
+	@RequestMapping("p_write")
+	public String p_write(PackageDTO dto) {
+		return "package/p_write";
+	}
+	
+	@RequestMapping("p_save") 
+	public String p_save(PackageDTO dto) {
+		System.out.println("컨트롤러");
+		System.out.println("title="+dto.getTitle());
+		service.package_save(dto);
+		return "package/package_list"; 
+	}
+
+
 	// 결제 페이지
 	@RequestMapping("payment")
 	public String payment(HttpSession session) {

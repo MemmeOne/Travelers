@@ -32,7 +32,7 @@
 					<form action="savedata" id="frm">
 						<input type="hidden" name="nick" value="${loginUser.nick }">
 					<table>
- 						<tr  style="background: white;">
+						<tr>
     						<th style="width:60px;text-align: center;">제목</th>
    								 <th><input type="text" name="title" id="title" autofocus></th>
  						</tr>
@@ -65,6 +65,11 @@
 			       						editor_object.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 			        					var title =  document.getElementById("title").value
 			        					var content =  document.getElementById("content").value
+			        					content = content.replace(/<p>/gi,"");
+								        content = content.replace(/<\/p>/gi,"");
+								        content = content.replace(/<br>/gi,"");
+								        content = content.replace(/&nbsp;/gi,"");
+								        content = content.replace(/ /gi,"");
 			               				if(title == ""  || title == null || title == '&nbsp;' || title == '<p>&nbsp;</p>'){
 			                    		alert("제목을 입력하세요.");
 			                    		document.getElementById("title").focus(); //포커싱

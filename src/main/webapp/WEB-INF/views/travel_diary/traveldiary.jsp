@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행수첩</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <script type="text/javascript">
 	var rn = 0;
@@ -46,7 +46,7 @@
 						html +=	'<br><br>';
 						html +=	'<input type="button" value="수정" onclick="travelDiaryMod()" >';
 						html +=	'<input type="button" value="삭제" onclick="travelDiaryDel()" >';
-						html +=	'<input type="button" value="닫기" style="margin-right: 50px;" onclick="window.location.reload()" >';
+						html +=	'<input type="button" value="닫기" onclick="window.location.reload()" >';
 					$("#view").html(html);
 				}
 			},error:function(){
@@ -71,7 +71,7 @@
 		}
 	}
 	function travelDiaryMod(){
-		window.open('','travelDairy_Modify','width=355,height=280');
+		window.open('','travelDairy_Modify','width=500,height=300');
 		$("#frm").attr("target","travelDairy_Modify");
 		$("#frm").attr("action","travelDiaryMod");
 		$("#frm").submit();
@@ -113,7 +113,7 @@
 								</div>
 								<br><br>
 								<input type="button" value="열기" onclick="travelDiaryList()">
-								<input type="button" value="추가" onclick="window.open('form','','width=355,height=280')">
+								<input type="button" value="추가" onclick="window.open('form','','width=500,height=300')">
 							</div>
 							</form>
 						</div>

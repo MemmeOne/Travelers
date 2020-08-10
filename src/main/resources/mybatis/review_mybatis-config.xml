@@ -4,6 +4,7 @@
     PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	
 	<typeAliases>
 		<typeAlias alias="dto" type="com.cpkl.dto.ReviewBoardDTO"/>
 		<typeAlias alias="cdto" type="com.cpkl.dto.ReviewBoardCommentsDTO"/>
@@ -11,4 +12,5 @@
 		<typeAlias alias="td" type="com.cpkl.dto.TravelDiaryDTO"/>
 		<typeAlias alias="favorite" type="com.cpkl.dto.FavoriteDTO"/>
 	</typeAliases>
+	
 </configuration>

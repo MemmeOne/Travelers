@@ -30,7 +30,64 @@
 																			<th style="width:80px;text-align: center;">조회</th>
 																			<th style="width:80px;text-align: center;">추천</th>
 																</tr>
-																<c:choose>
+																	<c:forEach var="notis" items="${notis_list }">
+																		<c:if test="${notis.nick=='관리자'}">
+																			<tr id="notis" style="font-weight:bold; background: rgba(50, 50, 50, 0.05);font-size: 1.1em;">
+																				<fmt:formatDate var="date2" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
+																					<th style="text-align: center;color:red;">공지</th>
+																						<c:choose>
+																							<c:when test="${cdate eq date2 }">
+																								<fmt:formatDate var="date2" value="${notis.savedate }" pattern="hh:mm"/>
+																									<th style="text-align: left;color:red;">
+																										<a href="free_content_view?num=${notis.num }"> ${notis.title }</a>
+																											<c:forEach var="cnum" items="${commentcount }">
+																												<c:choose>
+																													<c:when test="${notis.num eq cnum.numgroup }">[${cnum.count }]
+																													</c:when>
+																												</c:choose>
+																											</c:forEach>
+																										<img src="resources/main_image/new.png" style="width:25px;"></th>
+																									<th style="text-align: center;">${notis.nick }</th>
+																										<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="hh:mm"/>
+																											<th style="text-align: center;">
+																												${date2}</th>
+																							</c:when>
+																							<c:otherwise>
+																								<th style="text-align: left;color:red;">
+																									<a href="free_content_view?num=${notis.num }"> ${notis.title }</a>
+																										<c:forEach var="cnum" items="${commentcount }">
+																											<c:choose>
+																												<c:when test="${notis.num eq cnum.numgroup }">[${cnum.count }]
+																												</c:when>
+																											</c:choose>
+																										</c:forEach>
+																									</th>
+																									<th style="text-align: center;">${notis.nick }</th>
+																										<fmt:formatDate var="date2" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
+																								<th style="text-align: center;">${date2}</th>
+																									</c:otherwise>
+																								</c:choose>
+																							<th style="text-align: center;">${notis.hit }</th>
+																							<th style="text-align: center;">
+			                            														<c:set var="zero2" value="true" />
+																									<c:forEach var="favoriteList2" items="${favoriteList }">
+																										<c:choose>
+																											<c:when test="${notis.num eq favoriteList2.num }">
+				                                   																${favoriteList2.count }
+				                                   																	<c:set var="zero2" value="false" />
+		                                     																</c:when>
+																										</c:choose>
+																										</c:forEach>
+																											<c:choose>
+																												<c:when test="${zero2==true}">
+	                                 	      																		0
+                                     	  																		</c:when>
+																											</c:choose>
+																								</th>
+																							</tr>
+																						</c:if>
+																				</c:forEach>
+																			<c:choose>
 																		<c:when test="${lists.size() != 0 }">
 																		<c:forEach items="${ lists }" var="dto">
 																					<tr>
@@ -60,7 +117,7 @@
 																			</c:choose>
 																		</c:forEach>
 																	</td>
-																	<td>${dto.nick }</td>
+																	<td><a onclick="window.open('userInfoPop?nick=${dto.nick }','','width=500,height=700')">${dto.nick }</a></td>
 																	<td>${date }</td>
 																</c:otherwise>
 																</c:choose>
@@ -88,16 +145,17 @@
 					</tr>
 				</c:otherwise>
 			</c:choose>
-			<tr>
-							<td colspan="4"></td>
+			<tr style="border-bottom:0;">
+				<c:if test="${loginUser!=null }">
+								<td colspan="4"></td>
 							<td colspan="4">
 								<input type="button" value="글작성" onclick="location.href='free_write_list'">
 							</td>
+							</c:if>
 						</tr>
-						</table>
-						<br>
+						</table><br>
 						<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">
-			<tr style="width: 60px; ">
+			<tr style="width: 60px;border-bottom:0;border-top:0;">
 				<td colspan="6" style="font-size:2em;"><c:choose>
 						<c:when test="${param.page > 1 }">
 						<a href="free_board_list?page=${param.page-1}" style="vertical-align: middle;">
@@ -125,7 +183,7 @@
 						</c:otherwise>
 					</c:choose><br></td>
 			</tr>
-			<tr style="border-bottom: 0px;">
+			<tr style="background-color: white; border-top:0; border-bottom: 0px;">
 				<td style="width: 85px;"></td>
 				<td style="width: 200px;">
 				<select style="width: 200px;" name="tag">
@@ -149,8 +207,8 @@
 		</div>
 		</form>
 		<%@ include file="../default/footer.jsp"%>
-		<style>
-table  {
+		<!--  <style>
+<!--table  {
     width: 100%;
     border-top: 1px solid rgba(50, 50, 50, 0.2);
     border-collapse: collapse;
@@ -160,7 +218,14 @@ th, td {
     border-bottom: 1px solid rgba(50, 50, 50, 0.2);
     padding: 10px;
     margin: 10px;
-  }
+  }-->
+ <style>
+a{
+border-bottom:0;
+}
+td  {
+background-color: white;
+}
 </style>
 </body>
 </html>

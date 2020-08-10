@@ -18,6 +18,7 @@ import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
+import com.cpkl.dto.InfoDTO;
 /* 자유 게시판 DAO */
 import com.cpkl.dto.ReportPostDTO;
 @Repository
@@ -45,6 +46,11 @@ public class FreeDAO {
 		list=free_sqlSession.selectList(namespace+".freeboard",map);
 		//System.out.println("freeboard : "+list.get(0).getNum());
 		return list;
+	}
+	//공지 글 가져오기
+	public List<FreeDTO> notis_list() {
+		list=free_sqlSession.selectList(namespace+".notis_list");
+				return list;
 	}
 	// 자유 게시판 전체 글 수 가져오기 기능
 	public int totPage() {

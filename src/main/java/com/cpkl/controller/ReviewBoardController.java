@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,6 @@ public class ReviewBoardController {
 		String search = (String) request.getParameter("search");
 		if(search == null) {
 			rbs.reviewBoard(page, model);
-			rbs.favoriteList(model);
 		}else {
 			Map<String,	Object> map = new HashMap<String, Object>();
 			map.put("page", page);
@@ -58,7 +59,22 @@ public class ReviewBoardController {
 	}
 	
 	@RequestMapping("contentview")
-	public String contentView(@RequestParam int num, Model model) {
+	public String contentView(@RequestParam int num, Model model, HttpServletRequest request, HttpServletResponse response) {
+		Cookie[] cookies = request.getCookies();
+		Cookie upHit = null;
+		if(cookies != null && cookies.length > 0) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals("review"+num)) {
+					upHit = cookie;
+				}
+			}
+		}
+		if(upHit == null) {
+			Cookie cookie = new Cookie("review"+num, "upHit");
+			cookie.setMaxAge(60*60*24);
+			response.addCookie(cookie);
+			rbs.upHit(num);
+		}
 		rbs.contentView(num, model);
 		return "review_board/contentview";
 	}
@@ -150,6 +166,6 @@ public class ReviewBoardController {
 		String json = mapper.writeValueAsString(cn);
 		return json;
 	}
-
+	
 	
 }

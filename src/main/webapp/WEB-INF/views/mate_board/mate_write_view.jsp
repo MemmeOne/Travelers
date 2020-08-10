@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행 동행 찾기 글 작성 중</title>
 <style type="text/css">
 #list{border-collapse:collapse;}
 #write {border-collapse:collapse; }
@@ -36,7 +36,7 @@ function cal_save(mtravel_date_s,mtravel_date_3,wnick) {
 function write_save() {
 	var title =$("#title").val();
 	var content=$("#content").val();
-	
+
 	var mtravel_date=$("input[name=mtravel_date]:checked").val();
 	var mtravel_date_s=$("input[name=mtravel_date_s]").val();
 	var mtravel_date_e=$("input[name=mtravel_date_e]").val();
@@ -67,11 +67,30 @@ function write_save() {
 	console.log(date_s[1])
 	console.log(date_s[2])
 	
-	
+	var wnick="${loginUser.nick}"
+	console.log("wnick="+wnick)
+	var wgender="${loginUser.gender}"
+	console.log("wgender="+wgender)
+	var age="${loginUser.birth}"
+	console.log("age="+ age)	
+	//let age_date=new Date(2019,1,3)
+	let age_date=new Date(age.substring(0,4),age.substring(5,6),age.substring(8,9))
+	console.log(age_date)
+	console.log(age_date.getFullYear());
+	var age_year=age_date.getFullYear()
 	var t1=today.getFullYear();
 	var t2=today.getMonth()+1;
 	var t3=today.getDate();
 
+	var myage=t1-age_year+1
+	var wage
+	if(20<=myage||myage<30) {wage=20} 
+	else if(30<=myage||myage<40) {wage=30} 
+	else if(40<=myage||myage<50) {wage=40} 
+	else if(50<=myage||myage<60) {wage=50} 
+	else if(60<=myage) {wage=60} 
+	
+	console.log("wage="+wage)
 	console.log("date_s[0]"+date_s[0])
 	console.log("t1"+t1)
 	var chk=0;
@@ -217,7 +236,7 @@ function write_save() {
 
 	var total={title:title ,content:content,mtravel_date:mtravel_date,mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,
 		mthema:mthema,mroom:mroom,mgender:mgender,mage:mage, mcnt:mcnt, mexpenses:mexpenses, price1:price1,price2:price2,deadline:deadline,
-		write_save_ok:write_save_ok}
+		write_save_ok:write_save_ok, wnick:wnick,wgender:wgender,wage:wage}
 	console.log("여기부터");
 	console.log("title :"+title);
 	console.log("content :"+content);
@@ -261,7 +280,7 @@ function write_save() {
 <script type="text/javascript" charset="utf-8">
 		sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
 </script>
-<body class="is-preload">
+<body class="is-preload"> 
 	<%@ include file="../default/header.jsp"%>
  
 <style>
@@ -471,7 +490,7 @@ input[type=checkbox] {
 						1일경비 
 						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
 						<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
-						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
+						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:rgba(0, 0, 0, 0.1); border:2.5px solid black ">&nbsp;원
 						~ &nbsp;&nbsp;
 						<input type="text" numberOnly id="price2" name="price2" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
 							<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled2(this.form)"><label for="chkNotPirce2">추후결정</label>
@@ -540,11 +559,44 @@ input[type=checkbox] {
 							});
 							</script>
 							
+					<script type="text/javascript">
+						// 1일 경비 숫자만 입력, 3자리마다 콤마
+						$("input:text[numberOnly]").on("focus", function() {
+						    var x = $(this).val();
+						    x = removeCommas(x);
+						    $(this).val(x);
+						}).on("focusout", function() {
+						    var x = $(this).val();
+						    if(x && x.length > 0) {
+						        if(!$.isNumeric(x)) {
+						            x = x.replace(/[^0-9]/g,"");
+						        }
+						        x = addCommas(x);
+						        $(this).val(x);
+						    }
+						}).on("keyup", function() {
+						    $(this).val($(this).val().replace(/[^0-9]/g,""));
+						});
+
+						function addCommas(x) {
+						    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+						}
+						 
+						//모든 콤마 제거
+						function removeCommas(x) {
+						    if(!x || x.length == 0) return "";
+						    else return x.split(",").join("");
+						}
+						</script>
+							
+							
+							
+							
 						</th>
 						</tr>
 						<tr>
 						<th style="text-align: left: ;">
-						<input type="button" value="목록보기" onclick="location.href='mate_board_list?page=1'">	
+						<input type="button" value="전체목록보기" onclick="location.href='mate_board_list?page=1'">	
 						</th>
 						<th style="text-align: right;">
 						<input type="button"  id="contentRegBtn" value="완료">

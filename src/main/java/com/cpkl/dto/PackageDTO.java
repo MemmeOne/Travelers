@@ -1,8 +1,12 @@
 package com.cpkl.dto;
 
-import java.sql.Timestamp;
+
+
+import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import oracle.sql.TIMESTAMP;
 
 public class PackageDTO {
 	private int num; //패키지 글 번호
@@ -12,11 +16,14 @@ public class PackageDTO {
 	private int term; //여행기간
 	private String start_point; //출발지 ex) 인천=>괌
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
-	private Timestamp start_date; //여행 출발날짜 ex)2020년 9월 23일 22:05
+	private TIMESTAMP start_date;
+	//private Date start_date; //여행 출발날짜 ex)2020년 9월 23일 22:05
 	private String start_plane; //출발항공편[에어부산 BX797편]
 	private String end_point; //도착지 ex) 괌=>인천
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
-	private Timestamp end; //도착날짜 ex)2020년 9월 26일 06:35
+	private TIMESTAMP end_date;
+	//yyyy-MM-dd HH:mm
+	//private Date end_date; //도착날짜 ex)2020년 9월 26일 06:35
 	private String end_plane; //도착항공편[에어부산 BX798편]
 	private String hotel; //호텔 : 1인실(+100000원) / 2인실
 	private String city; //부산-타이페이(3일)-부산
@@ -24,6 +31,40 @@ public class PackageDTO {
 	private int max; //최대 예약 가능한 인원
 	private int cut_line; //패키지 최소 인원
 	private String content; // 상세내용
+	
+	
+	
+	
+	
+//	public Date getStart_date() {
+//		return start_date;
+//	}
+//	public void setStart_date(Date start_date) {
+//		this.start_date = start_date;
+//	}
+//	public Date getEnd_date() {
+//		return end_date;
+//	}
+//	public void setEnd_date(Date end_date) {
+//		this.end_date = end_date;
+//	}
+	
+	
+	public TIMESTAMP getStart_date() {
+		return start_date;
+	}
+	public void setStart_date(TIMESTAMP start_date) {
+		this.start_date = start_date;
+	}
+	public TIMESTAMP getEnd_date() {
+		return end_date;
+	}
+	public void setEnd_date(TIMESTAMP end_date) {
+		this.end_date = end_date;
+	}
+	
+	
+	
 	public int getNum() {
 		return num;
 	}
@@ -60,12 +101,9 @@ public class PackageDTO {
 	public void setStart_point(String start_point) {
 		this.start_point = start_point;
 	}
-	public Timestamp getStart_date() {
-		return start_date;
-	}
-	public void setStart_date(Timestamp start_date) {
-		this.start_date = start_date;
-	}
+
+	
+	
 	public String getStart_plane() {
 		return start_plane;
 	}
@@ -78,12 +116,7 @@ public class PackageDTO {
 	public void setEnd_point(String end_point) {
 		this.end_point = end_point;
 	}
-	public Timestamp getEnd() {
-		return end;
-	}
-	public void setEnd(Timestamp end) {
-		this.end = end;
-	}
+
 	public String getEnd_plane() {
 		return end_plane;
 	}
@@ -126,4 +159,6 @@ public class PackageDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	
 }

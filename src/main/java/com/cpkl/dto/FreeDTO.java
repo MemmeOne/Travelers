@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class FreeDTO {
 	private int num;
-	private String nick, title, content;
+	private String nick, title, content, tag;
 	private Timestamp savedate;
 	private int hit, numgroup, step, indent;
 	public int getNum() {
@@ -30,6 +30,12 @@ public class FreeDTO {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 	public Timestamp getSavedate() {
 		return savedate;
@@ -61,4 +67,5 @@ public class FreeDTO {
 	public void setIndent(int indent) {
 		this.indent = indent;
 	}
+	
 }

@@ -5,7 +5,7 @@
 <mapper namespace="Mapper">
 	<!-- 게시글 불러오기 -->
 	<select id="reviewboard" resultType="dto">
-		select B.*from(select rownum rn, A.*from(select*from review_board order by numgroup desc, step asc)A)B where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+		select B.*from(select rownum rn, A.*from(select*from review_board  where tag is null order by numgroup desc, step asc)A)B where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
 	</select>
 	
 	<!-- 게시글수 카운트 -->
@@ -35,12 +35,17 @@
 	
 	<!-- 게시글 등록 -->
 	<insert id="contentreg">
-		insert into review_board(num,nick,title,content,hit,numgroup,step,indent) values(review_board_seq.nextval,#{nick},#{title},#{content},0,review_board_seq.currval,0,0)
+		insert into review_board(num,nick,title,content,hit,numgroup,step,indent,tag) values(review_board_seq.nextval,#{nick},#{title},#{content},0,review_board_seq.currval,0,0,#{tag, jdbcType=VARCHAR})
 	</insert>
+
+	<!-- 공지 글 목록 가져오기 기능 -->
+	<select id="noticeList" resultType="dto">
+		select * from review_board where tag is not null order by num desc
+	</select>	
 	
 	<!-- 게시글 검색 -->
 	<select id="search" resultType="dto">
-		select C.*from(select rownum rn, B.*from(select A.*from(select*from review_board where ${searchtype} like '%${search}%')A  order by numgroup desc, step asc)B)C where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
+		select C.*from(select rownum rn, B.*from(select A.*from(select*from review_board where ${searchtype} like '%${search}%' and tag is null)A  order by numgroup desc, step asc)B)C where rn between (1+(#{page}-1)*10) and (1+(#{page}-1)*10)+9
 	</select>
 	
 	<!-- 검색 게시글 수 -->
@@ -50,12 +55,12 @@
 	
 	<!-- 댓글 불러오기 -->
 	<select id="comments" resultType="cdto">
-		select B.*from(select rownum rn, A.*from(select*from review_board_comment where num=#{num} order by numgroup asc, indent asc, cnum asc)A)B where rn between 1 and #{count}
+		select B.*from(select rownum rn, A.*from(select*from review_board_comment where num=#{num} order by numgroup desc, step asc, indent asc, cnum desc)A)B where rn between 1 and #{count}
 	</select>
 	
 	<!-- 댓글 등록 -->
 	<insert id="comment">
-		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments) values(#{num},review_board_comment_seq.nextval,review_board_comment_seq.currval,0,#{cnick},#{comments})
+		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments,step) values(#{num},review_board_comment_seq.nextval,review_board_comment_seq.currval,0,#{cnick},#{comments},0)
 	</insert>
 	
 	
@@ -66,7 +71,7 @@
 	
 	<!-- 대댓글 등록 -->
 	<insert id="reply">
-		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments) values(#{num},review_board_comment_seq.nextval,#{numgroup},1,#{cnick},#{comments})
+		insert into review_board_comment(num,cnum,numgroup,indent,cnick,comments,step) values(#{num},review_board_comment_seq.nextval,#{numgroup},1,#{cnick},#{comments},review_board_comment_step_seq.nextval)
 	</insert>
 	
 	<!-- 댓글 수정 -->

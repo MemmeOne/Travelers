@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${param.nick }님의 여행 수첩</title>
 <script src="resources/jquery-3.5.1.min.js" ></script>
 <script type="text/javascript">
 	var rn = 0;
@@ -27,19 +27,19 @@
 						html += '<input type="hidden" name="num" value="'+list[rn].num+'">';
 						html +=	'<h2>여행 수첩</h2>';
 						html += '<div style="display: flex;">';
-						html += '<input type="button" value="<" onclick="pre()" style="margin-top: 200px;">';
+						html += '<input type="button" value="<" onclick="pre()" style="margin-top: 200px; margin-right: 10px; height: 30px;">';
 						html +=	'<div style="outline:1;width: 88mm; height: 125mm; background: url('+inside+') no-repeat; background-size: cover;">';
 						html +=	'<div style="vertical-align: middle;text-align: center;">';
 						html +=	'<br>'+list[rn].city+'<br>';
 						html +=	'<img src="resources/national flag/'+list[rn].nation+'.png" style="width: 60px; height: 30px; margin: 0 auto;"><br>';
 						html +=	'<img src="'+stamp+'" style="width: 70%; margin: 0 auto;"><br>';
 						html +=	'<span style="position: relative; bottom: 150px; display:inline-block; width:110px; height: 33px; line-height:1em; font-size: 10pt;">'+list[rn].nation+'</span><br>';
-						html +=	'<span style="position: relative; bottom: 110px; font-size: 10pt;">'+list[rn].startdate+'</span><br>';
-						html +=	'<span style="position: relative; bottom: 80px;">'+list[rn].startdate+' ~ '+list[rn].enddate+'</span><br>'
-						html +=	'<span style="position: relative; bottom: 70px; display:inline-block; width:300px; word-break:break-all;">'+list[rn].memo+'</span>';
+						html +=	'<span style="position: relative; bottom: 85px; font-size: 10pt;">'+list[rn].startdate+'</span><br>';
+						html +=	'<span style="position: relative; bottom: 55px;">'+list[rn].startdate+' ~ '+list[rn].enddate+'</span><br>'
+						html +=	'<span style="position: relative; bottom: 35px; display:inline-block; width:300px; word-break:break-all;">'+list[rn].memo+'</span>';
 						html += '</div>';
 						html +=	'</div>';
-						html +=	'<input type="button" value=">" onclick="next()" style="margin-top: 200px;">';
+						html +=	'<input type="button" value=">" onclick="next()" style="margin-top: 200px; margin-left: 10px; height: 30px;">';
 						html +=	'</div>';
 						html +=	'<br><br>';
 						html +=	'<input type="button" value="닫기" style="margin-right: 50px;" onclick="window.close()" >';
@@ -89,7 +89,7 @@
 			</div>
 				<br><br>
 				<input type="button" value="열기" onclick="travelDiaryList()">
-				<input type="button" value="닫기" onclick="window.close()" >
+				<input type="button" value="닫기" onclick="window.close()">
 			</div>
 		</form>
 	</div>

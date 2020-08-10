@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행 동행 찾기 글 작성 중</title>
 <style type="text/css">
 #list{border-collapse:collapse;}
 #write {border-collapse:collapse; }
@@ -424,9 +424,9 @@ input[type=checkbox] {
 						<td colspan="2" style="margin: 0 auto;">
  						<h4>< 여행 정보 ></h4>
 						기간 : 
-						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" value="${ccc.mtravel_date_s }" max="9999-12-31" style="color: black;">
+						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s" value="${ccc.mtravel_date_s }" max="9999-12-31" style="color: black; background-color:transparent;">
 						 ~ 
-						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" value="${ccc.mtravel_date_e }" max="9999-12-31" style="color: black;">
+						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" value="${ccc.mtravel_date_e }" max="9999-12-31" style="color: black; background-color:transparent;">
 						<input type="checkbox" id="mtravel_date1" name="mtravel_date" value="예정" <c:out value="${ccc.mtravel_date eq '예정' ? 'checked':'' }"/> onclick="oneChk_date(this)"><label for="mtravel_date1">예정</label>
 						<input type="checkbox" id="mtravel_date2" name="mtravel_date" value="확정"<c:out value="${ccc.mtravel_date eq '확정' ? 'checked':'' }"/> onclick="oneChk_date(this)"><label for="mtravel_date2">확정</label>
 						<br>
@@ -546,7 +546,7 @@ input[type=checkbox] {
 						</tr>
 						<tr>
 						<th style="text-align: left: ;">
-						<input type="button" value="목록보기" onclick="location.href='mate_board_list?page=1'">
+						<input type="button" value="전체목록보기" onclick="location.href='mate_board_list?page=1'">
 						</th>
 						<th style="text-align: right;">
 						<input type="button"  id="contentRegBtn" value="완료">

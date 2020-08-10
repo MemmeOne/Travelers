@@ -11,6 +11,7 @@ public class ReviewBoardDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT+9")
 	private Timestamp savedate;
 	private int hit, idgroup, step, indent;
+	private String tag;
 	
 	public int getNum() {
 		return num;
@@ -65,6 +66,12 @@ public class ReviewBoardDTO {
 	}
 	public void setIndent(int indent) {
 		this.indent = indent;
+	}
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 	
 }

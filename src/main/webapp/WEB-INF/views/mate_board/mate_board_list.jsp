@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행 동행 찾기</title>
 <style type="text/css">
 #list{border-collapse:collapse;}
 #hidden{display:none;}
@@ -137,14 +137,15 @@ var frm=document.getElementById("s")
 		var mage="";
 		mage_arr.forEach(function(item, index){
 			console.log(item,index);
-			if(item!="") {
+			if(item!=""&&item!="1") {
+				 
 			mage+=item
 			if(index!=mage_arr.length-2){
 				mage+=","
 			}
 			}
 		})
-
+ 
 
 		var p1=$("input[name=price1]").val();
 		var p2=$("input[name=price2]").val();
@@ -239,7 +240,7 @@ var frm=document.getElementById("s")
 		<!-- Main -->
 		<article id="main">
 			<section class="wrapper style5">
-				<div class="inner" style="width: 1000px;">
+				<div class="inner" style="width: 1200px;">
 <style>
 .checks {position: relative;}
 
@@ -337,12 +338,28 @@ input[type=checkbox] {
 	display:none;
 }
 </style>
+<script type="text/javascript">
+	function chk_loginUser() {
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
+			location.href="login"
+		}else {
+			console.log("로그인 확인 성공")
+			location.href='mate_write_view'
+		}
+	}
+	</script>
+
+
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 	
-					<div class="checks etrans" style="margin: 0 auto;">
-					
+	<br>
+					<div class="checks etrans" style="  align: center;width: 1070px; margin: 0 auto; ">
+						<%@ include file="cal2.jsp"%>
+						<Br>
+						<Br>
 						<h4>< 여행 정보 ></h4>
 						<div id="hidden">
 							<input type="date" name="mtravel_date_s" value="0001-01-01">
@@ -467,7 +484,7 @@ input[type=checkbox] {
 						<input type="checkbox" name="mage" value="50대" id="mage4">   <label for="mage4">50대  </label>
 						<input type="checkbox" name="mage" value="60대이상" id="mage5"> <label for="mage5">60대이상 </label>
 						<div id="hidden">
-							<input type="checkbox" name="mage" value="" checked>
+							<input type="checkbox" name="mage" value="1" checked>
 						</div>
 						<br> 
 						
@@ -538,18 +555,26 @@ input[type=checkbox] {
 						<h2 style="text-align: center;width: 1070px; margin: 0 auto;">여행 동행 찾기</h2><Br>
 							<table  id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
 								<c:forEach items="${mate_list_all}" var="mate_dto">
+								<c:set var="cdate" value="${cdate }"/>
+								<c:set var="today" value="${cdate_today }"/>
+								<fmt:formatDate var="savedate" value="${mate_dto.savedate }"	pattern="yyyy-MM-dd"/>
 								<tr id="link" style="margin : 5px;padding: 5px;" onclick="location.href='mate_content_view?num=${mate_dto.num }'">
 									<th>
 										[${mate_dto.mthema}/${mate_dto.mroom}] 
-										${mate_dto.title}
+										${mate_dto.title} 
 										<!-- 각 개시글 별 댓글 수 -->
-										<c:forEach var="cnum" items="${commentcount }">
+										<c:forEach var="cnum" items="${commentcount2 }">
 												<c:choose>
-													<c:when test="${mate_dto.num eq cnum.bnum }">
-														[${cnum.count }]
+													<c:when test="${mate_dto.num eq cnum.numgroup }">
+														[${cnum.count }] 
 													</c:when>
 												</c:choose>
 										</c:forEach>
+										<c:choose>
+											<c:when test="${savedate eq cdate }">
+												<img src="resources/main_image/new.png" style="width:25px;">
+											</c:when>
+										</c:choose>
 										<br>
 										여행기간 : ${mate_dto.mtravel_date_s } ~ ${mate_dto.mtravel_date_e }<br>
 										동행조건 : ${mate_dto.mgender}, ${mate_dto.mage}<br>
@@ -564,16 +589,13 @@ input[type=checkbox] {
 										</c:otherwise>
 									</c:choose>
 										<br>작성자 : ${mate_dto.wnick}<br>작성일 : 
- 
-										<c:set var="cdate" value="${cdate }"/>
-										<c:set var="today" value="${cdate_today }"/>
-										<fmt:formatDate var="savedate" value="${mate_dto.savedate }"	pattern="yyyy-MM-dd"/>
+
 										<c:choose>
 											<c:when test="${savedate eq cdate }">
 												${today }
 											</c:when>
 											<c:otherwise>
-												${cdate }
+												${savedate }
 											</c:otherwise>
 											
 										</c:choose>
@@ -582,12 +604,12 @@ input[type=checkbox] {
 								</c:forEach>
 								<tr>
 								<td style="text-align: left;">
-								<input type="button" onclick="location.href='mate_board_list?page=1'" value="목록보기">
+								<input type="button" onclick="location.href='mate_board_list?page=1'" value="전체목록보기">
 								<input type="button" onclick="location.href='cal'" value="달력">
 									
 								</td>
 								<td  style="text-align: right;">
-								<button onclick="location.href='mate_write_view'">글작성</button>
+								<button onclick="chk_loginUser()">글작성</button>
 								</td>
 								</tr>
 							</table>

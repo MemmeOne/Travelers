@@ -6,7 +6,7 @@
 	
 	<!-- 전체 글 목록 가져오기 기능 -->
 	<select id="listAll" resultType="infodto" parameterType="map">
-		select B.* from(select rownum rn, A.* from(select * from info_board order by num desc)A)B
+		select B.* from(select rownum rn, A.* from(select * from info_board where nick!='관리자' order by num desc)A)B
 		where rn between #{str} and #{end}
 	</select>
 	

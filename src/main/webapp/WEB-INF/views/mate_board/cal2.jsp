@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%><!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
     <title>달력</title>
     <style type="text/css">
         td{
@@ -15,7 +16,9 @@
         }
         #calendar{ border-collapse:collapse}
         #hidden{display:none;}
+        #s{display:none;}
     </style>
+<script src="resources/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
         var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
         var date = new Date();//today의 Date를 세어주는 역할
@@ -54,6 +57,7 @@
              tbCalendarYM.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월"; 
  
              /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
+             console.log(tbCalendar.rows.length)
             while (tbCalendar.rows.length > 2) {
             //열을 지워줌
             //기본 열 크기는 body 부분에서 2로 고정되어 있다.
@@ -251,25 +255,41 @@
             })
         }
         
-         
+        function show() {
+        	$("#s").show();
+        	$("#h").hide();
+        }
+
+        function hide() {
+        	$("#h").show();
+        	$("#s").hide();
+        }
+          
         
     </script>
 </head>
 <body onload="db()">
-	<%@ include file="../default/header.jsp"%>
-	<!-- Page Wrapper -->
-	<div id="page-wrapper">
-		<!-- Main -->
-		<article id="main">
-			<section class="wrapper style5">
-				<div class="inner" style="width: 70%;">
+	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+		<fmt:requestEncoding value="utf-8" />
+	
+	
+	
     <p></p>
     <input type="hidden"   value="${mate_list_for_cal}">
  	<!--<c:forEach items="${mate_list_for_cal}" var="mate_dto">
 		${mate_dto.mtravel_date_s }  
-	</c:forEach>-->
+	</c:forEach>--><span id="h">
+					<input type="button" value="달력보기"  onclick="show()" style="width:1070px" >
+					</span>
+					<span id="s">
+					<input type="button" value="달력숨기기" onclick="hide()"  style="width:1070px">
+					여기~~~~~~~~~
+				
+ 
+	
     <h3 align="center">여행 동행 게시판 달력</h3>
-<table id="calendar" border="3" align="center" style="border-color:black ">
+<table id="calendar" border="3" align="center" style="border-color:black; width:1070px; ">
     <tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
         <td><label onclick="dbprev()"> < </label></td>
         <td align="center" id="tbCalendarYM" colspan="5">
@@ -286,11 +306,7 @@
         <td align="center"><font color ="skyblue">토</td>
     </tr> 
 </table>
-				</div>
-			</section>
-		</article>
-	</div>
-	<%@ include file="../default/footer.jsp"%>
+</span>
 	<script type="text/javascript">
 
     //buildCalendar( );//

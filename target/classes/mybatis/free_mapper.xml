@@ -11,16 +11,20 @@
 	</select>
 	<!-- 전체 글 목록 가져오기 기능 -->
 	<select id="freeboard" resultType="dto">
-		select B.* from(select rownum rn, A.* from(select * from free_board order by num desc)A)B
+		select B.* from(select rownum rn, A.* from(select * from free_board where nick!='관리자' order by num desc)A)B
 		where rn between #{str} and #{end} and step=0
     </select>
+    <!-- 공지 글 목록 가져오기 기능 -->
+	<select id="notis_list" resultType="infodto" parameterType="map">
+		select * from free_board where nick='관리자' order by num desc
+	</select>
     <!-- 글 전체 수 -->
     <select id="totPage" resultType="int">
     select count(*) from free_board where step=0
     </select>
     <!-- 검색 글 목록 가져오기 기능 -->
     <select id="search" resultType="dto" parameterType="map">
-		select C.* from(select rownum rn, B.* from(select A.* from (select*from free_board where step=0 and ${tag} like '%${word}%' order by num desc)A) B)C
+		select C.* from(select rownum rn, B.* from(select A.* from (select*from free_board where step=0 and ${tag} like '%${word}%' and nick!='관리자' order by num desc)A) B)C
 		where rn between #{str} and #{end} 
     </select>
     <!-- 검색 글 전체 수 -->

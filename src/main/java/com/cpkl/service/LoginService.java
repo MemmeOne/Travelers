@@ -21,7 +21,7 @@ public class LoginService {
 	@Inject
 	PasswordEncoder passwordEncoder;
 	
-	private Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
+	public static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
 
 	// 로그인
 	public String login_chk(TravelersDTO dto, HttpSession session) {
@@ -33,12 +33,11 @@ public class LoginService {
 					session.setAttribute("loginUser", dtoresult);
 					sessions.put(dto.getId(), session);
 				}else {
-					if(sessions.get(dto.getId())!=null){
-						sessions.get(dto.getId()).invalidate();
-					}
+					sessions.get(dto.getId()).invalidate();
 					sessions.remove(dto.getId());
 					result=dto.getId();
 					session.setAttribute("loginUser", dtoresult);
+					sessions.put(dto.getId(), session);
 				}
 			}else {
 				result="비밀번호가 틀렸습니다!";
@@ -116,6 +115,7 @@ public class LoginService {
 				dto.setPwd(security(dto.getPwd()));
 	        	result="비밀번호를 변경했습니다.";
 	        	dao.change_pwd_save(dto);
+	        	
 				session.removeAttribute("loginUser");
 	        }
 		} catch (Exception e) {

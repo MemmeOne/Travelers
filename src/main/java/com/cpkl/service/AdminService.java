@@ -43,9 +43,13 @@ public class AdminService {
 		session.setAttribute("package_list", list);
 	}
 
-	public int package_save(PackageDTO dto) {
-		int result=dao.package_save(dto);
-		return result;
+//	public int package_save(PackageDTO dto) {
+//		int result=dao.package_save(dto);
+//		return result;
+//	}
+	public void package_save(PackageDTO dto) {
+		System.out.println("서비스");
+		 dao.package_save(dto);
 	}
 
 }

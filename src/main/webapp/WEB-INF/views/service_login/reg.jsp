@@ -292,7 +292,7 @@
 					<table class="form" border="1">
 						<tr>
 							<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:130px;">아이디</td>
-							<td>&nbsp;&nbsp;5 ~ 20자의 영어 소문자와 숫자만 사용하세요.</td>
+							<td>&nbsp;&nbsp;5자 이상의 영어 소문자나 숫자를 사용하세요.</td>
 						</tr>
 						<tr>
 							<td style="display: flex;">
@@ -304,7 +304,7 @@
 						</tr>
 						<tr>
 							<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:130px;">비밀번호</td>
-							<td>&nbsp;&nbsp;8~20자의 영문 대소문자, 숫자, 특수기호를 사용하세요.</td>
+							<td>&nbsp;&nbsp;8자 이상 20자 이하의 영어 대문자, 소문자, 숫자, 특수문자를 사용하세요.</td>
 						</tr>
 						<tr>
 							<td>
@@ -314,10 +314,10 @@
 						</tr>
 						<tr>
 							<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:130px;">닉네임</td>
-							<td>&nbsp;&nbsp;2자 이상의 영어와 한글, 숫자를 사용하세요.</td>
+							<td style="border-bottom: 0;">&nbsp;&nbsp;2자 이상의 영어나 한글, 숫자를 사용하세요.</td>
 						</tr>
 						<tr>
-							<td>
+							<td style="border-top: 0;">
 								<div style="display: flex;margin: 10px;"><input type="text" name="nick" placeholder="닉네임" style="width:350px;">
 									<span id="input_nick">&nbsp;&nbsp;<input type="button" value="중복확인" onclick="nick_chk()"></span>
 								</div>
@@ -358,9 +358,9 @@
 								&nbsp;&nbsp;<input type="button" value="인증코드확인" onclick="code_chk()"><span id="code_chk_ok"></span></div>
 							</td>
 						</tr>
-						<tr style="background: white;">
-							<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">성별</td>
-							<td style="display: flex;">
+						<tr style="background: white;border-bottom: 0;">
+							<td style="text-align: center;vertical-align: middle;width:130px;">성별</td>
+							<td style="display: flex;border-bottom: 0;padding-top: 15px;">
 								<label class="box-radio-input">
 									<input type="radio" name="gender" value="여자" checked="checked"><span>여자</span>
 								</label>
@@ -373,6 +373,7 @@
 							<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">생년월일</td>
 							<td style="height:100px; vertical-align: middle;">
 								<input type="date" name="birth" max="2001-12-31" min="1940-01-01" style="color:black; width:200px;text-align: center;">
+								<br>*각종 안정성 문제로 미성년자는 사용 불가하며, 2001년 이전의 출생자인 성인만 가입 가능합니다.
 							</td>
 						</tr>
 						<tr>
@@ -391,7 +392,7 @@
 							var msg = '', val = this.value;
 							var id = '${loginUser.id}';
 							var pwd = $('input[name=pwd]').val()
-							var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,20}$/;
+							var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
 							var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 							if (false === reg.test(pwd)) {
 								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;유효하지 않는 비밀번호입니다."
@@ -439,17 +440,9 @@
 	</div>
 	<%@ include file="../default/footer.jsp"%>
 <style>
-table  {
-    width: 100%;
-    border-top: 1px solid rgba(50, 50, 50, 0.2);
-    border-collapse: collapse;
-  }
-th, td {
-	background-color: white;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    padding: 10px;
-    margin: 10px;
-  }
+td  {
+background-color: white;
+}
 </style>
 </body>
 </html>

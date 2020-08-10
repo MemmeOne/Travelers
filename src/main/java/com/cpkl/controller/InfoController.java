@@ -1,5 +1,10 @@
 package com.cpkl.controller;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,10 +59,27 @@ public class InfoController {
 	}
 	// 정보 게시판 글 상세보기 기능
 	@RequestMapping("info_post")
-	public String save(@RequestParam int num,Model model) {
+	public String save(@RequestParam int num,Model model, HttpServletRequest request, HttpServletResponse response) {
 		service.info_post(num,model);
+		Cookie[] cookies = request.getCookies();
+		Cookie upHit = null;
+		if(cookies != null && cookies.length > 0) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals("info"+num)) {
+					upHit = cookie;
+				}
+			}
+		}
+		if(upHit == null) {
+			Cookie cookie = new Cookie("info"+num, "upHit");
+			cookie.setMaxAge(60*60*24);
+			response.addCookie(cookie);
+			service.upHit(num);
+		}
+		service.info_post(num, model);
 		return "sharing_info/info_post";
 	}
+	
 	// 정보 게시판 글 수정 페이지
 	@RequestMapping("info_rewrite")
 	public String info_rewrite(@RequestParam int num, Model model) {
@@ -86,6 +108,15 @@ public class InfoController {
 	}
 	/* 댓글 기능 */
 	// 댓글 저장 기능
+	@RequestMapping(value="info_getCommentList",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String info_getCommentList(InfoCommentDTO dto) throws JsonProcessingException {
+		List<InfoCommentDTO> list=service.info_getCommentList(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
 	@RequestMapping(value="info_comment_save",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody
@@ -145,14 +176,15 @@ public class InfoController {
 		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
-	
+	/* 추천 */
+	// 추천하기
 	@RequestMapping(value="info_favoriteUp", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String favoriteUp(FavoriteDTO dto) {
        service.favoriteUp(dto);
        return null;
     }
-    
+    // 추천취소
     @RequestMapping(value="info_favoriteDown", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String favoriteDown(FavoriteDTO dto) {
@@ -160,7 +192,7 @@ public class InfoController {
        service.favoriteDown(dto);
        return null;
     }
-    
+    // 추천수 가져오기
     @RequestMapping(value="info_favorite", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String favorite(FavoriteDTO dto) throws JsonProcessingException {

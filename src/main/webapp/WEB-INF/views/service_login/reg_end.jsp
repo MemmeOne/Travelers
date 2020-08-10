@@ -27,6 +27,7 @@
 					<button onclick="location.href='login'">로그인하러 가기</button>
 					</div>
 					<br><br><br>
+					<img src="resources/main_image/password.png" style="text-align: center;">
 				</div>
 			</section>
 		</article>

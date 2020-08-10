@@ -60,13 +60,15 @@
 		select * from package
 	</select>
 	
-	<!-- <insert id="pakage_save" parameterType="packagedto">
-		insert into package(num,title,pay,theme,term,
+	 <insert id="package_save" parameterType="packagedao">
+		insert into package
+		(num,title,pay,theme,term,
 		start_point,start_date,start_plane,end_point,end_date,end_plane,
-		hotel,city,max,cut_line,content)
-		values (info_board_seq.nextval,#{title},#{pay},#{theme},#{term},
+		hotel,city,max,count,cut_line,content)
+		values 
+		(package_seq.nextval,#{title},#{pay},#{theme},#{term},
 		#{start_point},#{start_date},#{start_plane},#{end_point},#{end_date},#{end_plane},
-		#{hotel},#{city},#{max},#{cut_line},#{content});
-	</insert> -->
+		#{hotel},#{city},#{max},#{count},#{cut_line},#{content}) 
+	</insert>
 	
 </mapper>

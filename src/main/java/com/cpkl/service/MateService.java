@@ -98,6 +98,9 @@ public class MateService   {
 		model.addAttribute("commentcount2", matedao.commentCount2());
 		//model.addAttribute("mate_reply_select", matedao.mate_reply_regi02(num));
 	}
+	public void upHit(int num) {
+		matedao.upHit(num);
+	}
 	public void deadline_finish(MateDTO matedto) {
 		matedao.deadline_finish(matedto);
 		

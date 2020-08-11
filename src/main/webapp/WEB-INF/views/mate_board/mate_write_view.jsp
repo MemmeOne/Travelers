@@ -36,8 +36,11 @@ function cal_save(mtravel_date_s,mtravel_date_3,wnick) {
 function write_save() {
 	var title =$("#title").val();
 	var content=$("#content").val();
-	var mtravel_date=$("input[name=mtravel_date]:checked").val();
-	//mtravel_date+=mdate
+	var mtravel_date="";
+	if($("input:checkbox[name=mtravel_date]").is(":checked") == true) {
+		  console.log("여행 기간 종류 예정/확정 체크됨")
+		  mtravel_date=$("input[name=mtravel_date]:checked").val();
+		}
 	var mtravel_date_s=$("input[name=mtravel_date_s]").val();
 	var mtravel_date_e=$("input[name=mtravel_date_e]").val();
 	console.log(mtravel_date_s)
@@ -179,18 +182,23 @@ function write_save() {
 	
 	//if(mage=="") {
 	//	alert("    sdas  원하는 동행 나이를 입력해주세요")
-	//}  
-	var room=$("input[name=mroom]").val();
-	console.log("룸루무룸"+room)
-	var mroom=$("input[name=mroom]:checked").val();
-	var mgender=$("input[name=mgender]:checked").val();
+	//}
+	var mroom=""
+	if($("input:checkbox[name=mroom]").is(":checked") == true) {
+	  	mroom=$("input[name=mroom]:checked").val();
+	}
+	var mgender=""
+	if($("input:checkbox[name=mgender]").is(":checked") == true) {
+		mgender=$("input[name=mgender]:checked").val();
+	}
 	var mcnt=$("input[name=mcnt]").val();
 	if(mcnt=="") {
 		mcnt=0;
 	}
-	var mexpenses=$("input[name=mexpenses]:checked").val();
-	var price1=$("input[name=price1]").val();
-	var price2=$("input[name=price2]").val();
+	var mexpenses=""
+	if($("input:checkbox[name=mexpenses]").is(":checked") == true) {
+		mexpenses=$("input[name=mexpenses]:checked").val();
+	}
 
 	var p1=$("input[name=price1]").val();
 	var p2=$("input[name=price2]").val();
@@ -199,10 +207,10 @@ function write_save() {
 	var price2=p2.replace(/,/gi,"");
 	console.log("price1="+price1)
 	
-	if(price1=="") {
+	if(price1==""||mexpenses!="금액") {
 		price1=0;
 	}
-	if(price2=="") {
+	if(price2==""||mexpenses!="금액") {
 		price2=0;
 	}
 	var deadline="모집중";
@@ -211,7 +219,10 @@ function write_save() {
 	
 	if (title=="") {
 		alert("제목을 입력해주세요")
-	} else if(mtravel_date_s>mtravel_date_e||mtravel_date_s=="2000-01-01"||mtravel_date_e=="2000-01-01") {
+	} else if(content="") {
+		alert("내용을 입력해주세요")
+	}
+	else if(mtravel_date_s>mtravel_date_e||mtravel_date_s=="2000-01-01"||mtravel_date_e=="2000-01-01") {
 		// 날짜가 오늘 이전, 여행 시작날보다 끝날이 더 이전, 여행 날짜를 입력하지 않은 경우
 		alert("여행 기간을 제대로 입력해주세요!");
 	} else if(chk==1) {
@@ -463,7 +474,6 @@ input[type=checkbox] {
 						</table> --> 
 						<a href="mate_board_list?page=1"><h4> >> 여행 동행 찾기 </h4></a>
 						<br>
-ㄴ						
 						<span  style="color:red">* 모집 인원을 제외한 모든 항목은 필수 입력 사항입니다.</span>
 						<br>
 						<br>
@@ -483,9 +493,9 @@ input[type=checkbox] {
 						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" max="9999-12-31" style="color: black;background-color:transparent; ">
 						<input type="checkbox" id="mtravel_date1" name="mtravel_date" value="예정" checked onclick="oneChk_date(this)"><label for="mtravel_date1">예정</label>
 						<input type="checkbox" id="mtravel_date2" name="mtravel_date" value="확정" onclick="oneChk_date(this)"><label for="mtravel_date2">확정</label>
-						<label id="hidden">
-							<input type="checkbox" name="mtravel_date" value="">
-						</label>
+						<span id="hidden">
+							<input type="checkbox" id="mtravel_date3" name="mtravel_date" value="히든" checked><label for="mtravel_date3">히든</label>
+						</span>
 						<br>
 						테마 : 
 						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
@@ -512,7 +522,7 @@ input[type=checkbox] {
 						<input type="checkbox" name="mgender" value="여자" id="mgender2"  onclick="oneChk_gender(this)">  <label for="mgender2">여자</label>
 						<input type="checkbox" name="mgender" value="남자" id="mgender3"  onclick="oneChk_gender(this)"> <label for="mgender3">남자</label>
 						<label id="hidden">
-							<input type="checkbox" name="mgender" value="">
+							<input type="checkbox" name="mgender" value="히든" checked>
 						</label>
  
 						<br>

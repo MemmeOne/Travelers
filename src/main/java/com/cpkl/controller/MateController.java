@@ -12,7 +12,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.taglibs.standard.tag.el.sql.DateParamTag;
@@ -332,8 +334,24 @@ public class MateController {
 	// 글 내용 조회 (상세보기?)
 	@RequestMapping("mate_content_view")
 //	public String mate_content_viewc(Model model,@RequestParam int num, MateReplyDTO mreplydto ) {
-	public String mate_content_viewc(Model model,@RequestParam int num, HttpServletRequest request) {
+	public String mate_content_viewc(Model model,@RequestParam int num, HttpServletRequest request,HttpServletResponse response) {
 //		public String mate_content_view(Model model,@RequestParam String num ) {
+	      Cookie[] cookies = request.getCookies();
+	      Cookie upHit = null;
+	      if(cookies != null && cookies.length > 0) {
+	         for(Cookie cookie : cookies) {
+	            if(cookie.getName().equals("review"+num)) {
+	               upHit = cookie;
+	            }
+	         }
+	      }
+	      if(upHit == null) {
+	          Cookie cookie = new Cookie("review"+num, "upHit");
+	          cookie.setMaxAge(60*60*24);
+	          response.addCookie(cookie);
+	          mateSer.upHit(num);
+	       }
+		
 		System.out.println("컨트롤러 mate_content_view NUM : "+num);
 		//model.addAttribute("paramnum", num);
 		HttpSession session=request.getSession();

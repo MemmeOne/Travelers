@@ -16,8 +16,11 @@
 function modify_save() {
 	var title=$("#title").val();
 	var content=$("#content").val();
-	
-	var mtravel_date=$("input[name=mtravel_date]:checked").val();
+	var mtravel_date="";
+	if($("input:checkbox[name=mtravel_date]").is(":checked") == true) {
+		  console.log("여행 기간 종류 예정/확정 체크됨")
+		  mtravel_date=$("input[name=mtravel_date]:checked").val();
+		}
 	var mtravel_date_s=$("input[name=mtravel_date_s]").val();
 	var mtravel_date_e=$("input[name=mtravel_date_e]").val();
 	console.log(mtravel_date_s)
@@ -141,16 +144,23 @@ function modify_save() {
 	//if(mage=="") {
 	//	alert("    sdas  원하는 동행 나이를 입력해주세요")
 	//}  
-	var mroom=$("input[name=mroom]:checked").val();
-	var mgender=$("input[name=mgender]:checked").val();
+	var mroom=""
+	if($("input:checkbox[name=mroom]").is(":checked") == true) {
+		 mroom=$("input[name=mroom]:checked").val();
+	}
+	var mgender=""
+	if($("input:checkbox[name=mgender]").is(":checked") == true) {
+		mgender=$("input[name=mgender]:checked").val();
+	}
 	var mcnt=$("input[name=mcnt]").val();
 	if(mcnt=="") {
 		mcnt=0;
 	}
-	var mexpenses=$("input[name=mexpenses]:checked").val();
-	var price1=$("input[name=price1]").val();
-	var price2=$("input[name=price2]").val();
-
+	var mexpenses=""
+	if($("input:checkbox[name=mexpenses]").is(":checked") == true) {
+		mexpenses=$("input[name=mexpenses]:checked").val();
+	}
+	
 	var p1=$("input[name=price1]").val();
 	var p2=$("input[name=price2]").val();
 	console.log("p1="+p1)
@@ -158,10 +168,10 @@ function modify_save() {
 	var price2=p2.replace(/,/gi,"");
 	console.log("price1="+price1)
 	
-	if(price1=="") {
+	if(price1==""||mexpenses!="금액") {
 		price1=0;
 	}
-	if(price2=="") {
+	if(price2==""||mexpenses!="금액") {
 		price2=0;
 	}
 	var deadline="모집중";
@@ -172,7 +182,10 @@ function modify_save() {
 	var write_save_ok=0;
 	if (title=="") {
 		alert("제목을 입력해주세요")
-	} else if(mtravel_date_s>mtravel_date_e||mtravel_date_s=="2000-01-01"||mtravel_date_e=="2000-01-01") {
+	} else if(content="") {
+		alert("내용을 입력해주세요")
+	}
+	else if(mtravel_date_s>mtravel_date_e||mtravel_date_s=="2000-01-01"||mtravel_date_e=="2000-01-01") {
 		// 날짜가 오늘 이전, 여행 시작날보다 끝날이 더 이전, 여행 날짜를 입력하지 않은 경우
 		alert("여행 기간을 제대로 입력해주세요!");
 	} else if(chk==1) {

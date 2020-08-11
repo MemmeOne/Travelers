@@ -245,10 +245,12 @@ public class MateDAO {
 //	public List<MateDTO> mate_content_view(String num) {
 	public MateDTO mate_content_viewdao(int num) {
 	System.out.println("mate_content_viewdao dao ");
-	mate_sqlsession.update(namespace+".mate_board_uphit", num);
 	return mate_sqlsession.selectOne(namespace + ".mate_content_view", num);
 }
 
+	public void upHit(int num) {
+		mate_sqlsession.update(namespace+".mate_board_uphit", num);
+	}
 
 //	public void mate_write_save(String title, String content, String nick,Timestamp savedate) {
 	public void mate_write_save(MateDTO matedto) {

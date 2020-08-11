@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
     <title>달력</title>
     <style type="text/css">
-        td{
+        #calendar td{
             width: 200px;
             height: 100px;
             text-align: center;
@@ -103,7 +103,7 @@
                 			  if(date_s[2]==i) {
                 				  //console.log("a;lksdjflaskdjf")
                 				  cell.innerHTML+="<br>"
-                				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.title
+                				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.wnick
                 					//cell.innerHTML+=" <a href='mate_content_view?num=10'> 링크"
                 					  //cell.innerHTML+=item.title
                 					  //cell.innerHTML+=item.num
@@ -137,7 +137,7 @@
               			  if(date_s[2]==i) {
               				  //console.log("a;lksdjflaskdjf")
               				  cell.innerHTML+="<br>"
-              				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.title
+              				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.wnick
               					//cell.innerHTML+=" <a href='mate_content_view?num=10'> 링크"
               					  //cell.innerHTML+=item.title
               					  //cell.innerHTML+=item.num
@@ -170,7 +170,7 @@
                 			  if(date_s[2]==i) {
                 				  //console.log("a;lksdjflaskdjf")
                 				  cell.innerHTML+="<br>"
-                				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.title
+                				 cell.innerHTML+="<a href='mate_content_view?num="+item.num+"'>"+item.wnick
                 					//cell.innerHTML+=" <a href='mate_content_view?num=10'> 링크"
                 					  //cell.innerHTML+=item.title
                 					  //cell.innerHTML+=item.num

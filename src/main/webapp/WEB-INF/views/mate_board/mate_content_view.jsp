@@ -292,7 +292,7 @@ function hide() {
 						</tr>
 						<table class="all_white" style=" width: 1070px; margin: 0 auto;font-size:0.8em;">
 						<tr>
-							<td colspan="2">
+							<td colspan="2" style="width:50%" >
 							<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
 							 모집자 
 							<img alt="" src="resources/main_image/writer.jpg" style=" height: 30px; vertical-align: middle;">

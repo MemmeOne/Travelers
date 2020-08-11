@@ -361,6 +361,7 @@ input[type=checkbox] {
 						<Br>
 						<Br>
 						<h2 style="text-align: center;width: 1070px; margin: 0 auto;"><a href="mate_board_list?page=1">여행 동행 찾기</a></h2><Br>
+						<label id="search_tool" style="background-color:#dfdfdf; padding:3em">
 						<h4> < 여행 정보 ></h4>
 						<div id="hidden">
 							<input type="date" name="mtravel_date_s" value="0001-01-01">
@@ -520,8 +521,9 @@ input[type=checkbox] {
 						}
 						</script>
 <input type="hidden" name="page" value="1">
- <table style="text-align: center;width: 1070px; margin: 0 auto; ">
- <tr>
+<!-- width:1070px에서 수정함 -->
+ <table style="text-align: center;width: 100%; margin: 0 auto; ">
+ <tr style="">
  <form id="s"> 
  <td style="width:20%">
  	<select name="tag">
@@ -529,7 +531,7 @@ input[type=checkbox] {
 		<option value="nick">닉네임</option>
 	</select>
 </td>
-<td style="width:60%">
+<td style="width:60%;  ">
 	<input type="text" id="word" name="word" placeholder="검색할 키워드를 입력하세요"  value="">
 </td>
 <!--  <input type="submit" value="검색 non ajax"  >-->
@@ -537,6 +539,8 @@ input[type=checkbox] {
 </tr>
  </FORM> 
  </table>
+ </label>
+ <br>
  <br>
  <!-- 동행 게시판 버튼 형태로 만들고 싶음 
  <table id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
@@ -562,7 +566,17 @@ input[type=checkbox] {
 								<fmt:formatDate var="savedate" value="${mate_dto.savedate }"	pattern="yyyy-MM-dd"/>
 								<tr id="link" style="margin : 5px;padding: 5px;" onclick="location.href='mate_content_view?num=${mate_dto.num }'">
 									<th>
-										[${mate_dto.mthema}/${mate_dto.mroom}] 
+										
+										[${mate_dto.mthema}/
+										<c:choose>
+											<c:when test="${mate_dto.mroom eq '상관없음' }">
+												개인실, 다인실
+											</c:when>
+											<c:otherwise>
+												${mate_dto.mroom}
+											</c:otherwise>
+										</c:choose>
+										] 
 										${mate_dto.title} 
 										<!-- 각 개시글 별 댓글 수 -->
 										<c:forEach var="cnum" items="${commentcount2 }">
@@ -579,7 +593,19 @@ input[type=checkbox] {
 										</c:choose>
 										<br>
 										여행기간 : ${mate_dto.mtravel_date_s } ~ ${mate_dto.mtravel_date_e }<br>
-										동행조건 : ${mate_dto.mgender}, ${mate_dto.mage}<br>
+										동행조건 : 
+										
+										
+										<c:choose>
+											<c:when test="${mate_dto.mgender eq '상관없음'}">
+												여자, 남자,
+											</c:when>
+											<c:otherwise>
+												${mate_dto.mgender},
+											</c:otherwise>
+										</c:choose>
+										 
+										${mate_dto.mage}<br>
 									</th>
 									<th style="text-align: right;vertical-align: middle;">
 									<c:choose>
@@ -607,7 +633,6 @@ input[type=checkbox] {
 								<tr>
 								<td style="text-align: left;">
 								<input type="button" onclick="location.href='mate_board_list?page=1'" value="전체목록보기">
-								<input type="button" onclick="location.href='cal'" value="달력">
 									
 								</td>
 								<td  style="text-align: right;">

@@ -342,7 +342,10 @@ input[type=checkbox] {
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 					<div class="checks etrans" style="  align: center;width: 1070px; margin: 0 auto; ">
-					
+											<%@ include file="cal2.jsp"%>
+						<Br>
+						<Br>
+						<h2 style="text-align: center;width: 1070px; margin: 0 auto;"><a href="mate_board_list?page=1">여행 동행 찾기</a></h2><Br>
 	
 						
 						<!--  <table style=" font-size:0.9em;">
@@ -421,6 +424,7 @@ input[type=checkbox] {
 						
 						==========표 아닌 것=================
 						-->
+						<label id="search_tool" style="background-color:#dfdfdf; padding:3em">
 						<h4> < 여행 정보 ></h4>
 						<div id="hidden">
 							<input type="date" name="mtravel_date_s" value="0001-01-01">
@@ -519,6 +523,7 @@ input[type=checkbox] {
 </tr>
  </FORM> 
  </table>
+ </label>
  <br>
  <!-- 동행 게시판 버튼 형태로 만들고 싶음 
  <table id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">

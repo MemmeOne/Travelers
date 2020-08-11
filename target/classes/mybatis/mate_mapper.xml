@@ -199,11 +199,16 @@
 	<!-- 글 수정 -->
 	<update id="mate_content_modify">
 		update mate_board set title=#{title}, content=#{content},
-		wgender=#{wgender},wage=#{wage},
 		mtravel_date=#{mtravel_date},mtravel_date_s=#{mtravel_date_s},mtravel_date_e=#{mtravel_date_e},
-		mthema=#{mthema},mroom=#{mroom},mgender=#{mgender},
-		mage=#{mage}, mcnt=#{mcnt}, mexpense=#{mexpenses},price1=#{price1},price2=#{price2} 
+		mthema=#{mthema},mroom=#{mroom},
+		mgender=#{mgender},mage=#{mage},
+		mcnt=#{mcnt}, mexpenses=#{mexpenses},
+		price1=#{price1},price2=#{price2} 
 		where num=#{num}
+		
+		
+		
+		
 	</update>
 	
 	<!-- 글 삭제  -->

@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>자유 게시판 검색 결과</title>
+<script type="text/javascript">
+	function loginConfirm(){
+		var check = confirm("글 작성은 로그인이 필요합니다")
+		if(check){
+			location.href="login";
+		}
+	}
+</script>
 </head>
 <body class="is-preload">
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy-MM-dd"/>
@@ -146,9 +154,15 @@
 														</c:otherwise>
 													</c:choose>
 												<tr style="border-bottom:0;">
-													<td colspan="4"></td>
-													<td colspan="4">
-													<input type="button" value="글작성" onclick="location.href='free_write_list'">
+													<td align="right" colspan="6" >
+														<c:choose>
+															<c:when test="${loginUser.nick ne null }">
+																<input type="button" value="글작성" onclick="location.href='free_write_list'">
+																	</c:when>
+																		<c:otherwise>
+																			<input type="button" value="글작성" onclick="loginConfirm()">
+																		</c:otherwise>
+																	</c:choose>
 													</td>
 												</tr>
 											</table>

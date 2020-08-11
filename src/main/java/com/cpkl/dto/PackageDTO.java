@@ -15,15 +15,9 @@ public class PackageDTO {
 	private String theme; //여행테마
 	private int term; //여행기간
 	private String start_point; //출발지 ex) 인천=>괌
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
-	private TIMESTAMP start_date;
 	//private Date start_date; //여행 출발날짜 ex)2020년 9월 23일 22:05
 	private String start_plane; //출발항공편[에어부산 BX797편]
 	private String end_point; //도착지 ex) 괌=>인천
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
-	private TIMESTAMP end_date;
-	//yyyy-MM-dd HH:mm
-	//private Date end_date; //도착날짜 ex)2020년 9월 26일 06:35
 	private String end_plane; //도착항공편[에어부산 BX798편]
 	private String hotel; //호텔 : 1인실(+100000원) / 2인실
 	private String city; //부산-타이페이(3일)-부산
@@ -34,7 +28,15 @@ public class PackageDTO {
 	
 	
 	
+//	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
+//	private TIMESTAMP start_date;
+//	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm",timezone="GMT+9")
+//	private TIMESTAMP end_date;
+//	//yyyy-MM-dd HH:mm
+//	//private Date end_date; //도착날짜 ex)2020년 9월 26일 06:35
 	
+	private String start_date;
+	private String end_date;
 	
 //	public Date getStart_date() {
 //		return start_date;
@@ -50,21 +52,33 @@ public class PackageDTO {
 //	}
 	
 	
-	public TIMESTAMP getStart_date() {
+//	public TIMESTAMP getStart_date() {
+//		return start_date;
+//	}
+//	public void setStart_date(TIMESTAMP start_date) {
+//		this.start_date = start_date;
+//	}
+//	public TIMESTAMP getEnd_date() {
+//		return end_date;
+//	}
+//	public void setEnd_date(TIMESTAMP end_date) {
+//		this.end_date = end_date;
+//	}
+	
+	
+	
+	public String getStart_date() {
 		return start_date;
 	}
-	public void setStart_date(TIMESTAMP start_date) {
+	public void setStart_date(String start_date) {
 		this.start_date = start_date;
 	}
-	public TIMESTAMP getEnd_date() {
+	public String getEnd_date() {
 		return end_date;
 	}
-	public void setEnd_date(TIMESTAMP end_date) {
+	public void setEnd_date(String end_date) {
 		this.end_date = end_date;
 	}
-	
-	
-	
 	public int getNum() {
 		return num;
 	}

@@ -11,6 +11,7 @@ import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
+import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.ReportPostDTO;
 /* 자유 게시판 서비스 */
 @Service
@@ -68,6 +69,10 @@ public class FreeService {
 	}
 	/* 댓글 기능 */
 	// 댓글 저장 기능
+	// 댓글 전체 목록 가져오기
+		public List<FreeCommentDTO> free_getCommentList(FreeCommentDTO dto) {
+			return dao.comment_list(dto.getNumgroup());
+		}
 	public List<FreeCommentDTO> comment_save(FreeCommentDTO dto) {
 		dao.comment_save(dto);
 		return dao.comment_list(dto.getNumgroup());

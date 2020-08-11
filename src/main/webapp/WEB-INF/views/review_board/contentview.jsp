@@ -405,7 +405,7 @@
 				<form onsubmit="return false" id="form" method="post">
 					<input type="hidden" id="num" name="num" value="${content.num }">
 					<input type="hidden" id="cnick" name="cnick" value="${loginUser.nick }">
-					<h4><a href="reviewboard?page=1" style="border-bottom: 0;">>> 여행 리뷰 게시판</a> </h4>
+					<h4><a href="reviewboard?page=1" style="border-bottom: 0;">>> 여행 리뷰 게시판</a></h4>
 					<table style="width: 1070px;">
 						<tr>
 							<c:if test="${content.tag eq null }">

@@ -360,7 +360,8 @@ input[type=checkbox] {
 						<%@ include file="cal2.jsp"%>
 						<Br>
 						<Br>
-						<h4>< 여행 정보 ></h4>
+						<h2 style="text-align: center;width: 1070px; margin: 0 auto;"><a href="mate_board_list?page=1">여행 동행 찾기</a></h2><Br>
+						<h4> < 여행 정보 ></h4>
 						<div id="hidden">
 							<input type="date" name="mtravel_date_s" value="0001-01-01">
 							~ 
@@ -447,7 +448,8 @@ input[type=checkbox] {
 						<input type="date" id="mtravel_date_s_chk" name="mtravel_date_s_chk" max="9999-12-31" style="color: black;">
 						 ~ 
 						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e_chk" max="9999-12-31" style="color: black;">
-							<br>입력하는 날짜 범위 안에 들어가는 경우에만 출력됨<br>
+							<!--  <br>입력하는 날짜 범위 안에 들어가는 경우에만 출력됨<br>-->
+						<br>
 						<br>
 						테마 : 
 						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1">  <label for="mthema_chk1">관광</label>
@@ -552,7 +554,7 @@ input[type=checkbox] {
 		
  					
 						
-						<h2 style="text-align: center;width: 1070px; margin: 0 auto;">여행 동행 찾기</h2><Br>
+						
 							<table  id="box" style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.9em;">
 								<c:forEach items="${mate_list_all}" var="mate_dto">
 								<c:set var="cdate" value="${cdate }"/>

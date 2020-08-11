@@ -31,6 +31,7 @@
 				<div class="inner">
 					<form action="savedata" id="frm">
 						<input type="hidden" name="nick" value="${loginUser.nick }">
+						<h4><a href="free_board_list?page=1">>> 자유 게시판</a></h4>
 					<table>
 						<tr>
     						<th style="width:60px;text-align: center;">제목</th>

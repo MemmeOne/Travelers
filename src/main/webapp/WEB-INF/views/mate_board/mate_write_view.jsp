@@ -36,8 +36,8 @@ function cal_save(mtravel_date_s,mtravel_date_3,wnick) {
 function write_save() {
 	var title =$("#title").val();
 	var content=$("#content").val();
-
 	var mtravel_date=$("input[name=mtravel_date]:checked").val();
+	//mtravel_date+=mdate
 	var mtravel_date_s=$("input[name=mtravel_date_s]").val();
 	var mtravel_date_e=$("input[name=mtravel_date_e]").val();
 	console.log(mtravel_date_s)
@@ -180,6 +180,8 @@ function write_save() {
 	//if(mage=="") {
 	//	alert("    sdas  원하는 동행 나이를 입력해주세요")
 	//}  
+	var room=$("input[name=mroom]").val();
+	console.log("룸루무룸"+room)
 	var mroom=$("input[name=mroom]:checked").val();
 	var mgender=$("input[name=mgender]:checked").val();
 	var mcnt=$("input[name=mcnt]").val();
@@ -204,11 +206,7 @@ function write_save() {
 		price2=0;
 	}
 	var deadline="모집중";
-	console.log("mcnt :"+mcnt)
-	console.log("mexpenses :"+mexpenses)
-	console.log("price1 :"+price1)
-	console.log("price2 :"+price2)
-	
+ 
 	var write_save_ok=0;
 	
 	if (title=="") {
@@ -219,11 +217,17 @@ function write_save() {
 	} else if(chk==1) {
 		alert("여행 기간을 제대로 입력해주세요!");
 	}
+	else if(mtravel_date=="") {
+		alert("여행 기간 종류를 입력해주세요")
+	}
 	else if(mthema=="") {
 		alert("원하는 여행 테마를 입력해주세요")
 	}
 	else if(mroom=="") {
 		alert("원하는 숙소 종류를 입력해주세요")
+	}
+	else if(mexpenses=="") {
+		alert("1일 경비 조건을 입력해주세요")
 	}
 	else if(mgender=="") {
 		alert("원하는 동행 성별을 입력해주세요")
@@ -425,8 +429,9 @@ input[type=checkbox] {
 								<td>1일 경비</td>
 								<td  >
 								<form>
+								
 									<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
-									<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
+									<input type="checkbox" id="chkprice" name="mexpenses" value="금액"   onclick="chkAbled(this.form)"><label for="chkprice">금액</label>
 									<input type="number"  id="price1" name="price1" min="0" disabled  style = "text-align:right;">
 									~
 									<input type="number" id="price2" name="price2"  disabled  style = "text-align:right;">
@@ -456,7 +461,12 @@ input[type=checkbox] {
 								<td></td>
 							</tr>
 						</table> --> 
-						
+						<a href="mate_board_list?page=1"><h4> >> 여행 동행 찾기 </h4></a>
+						<br>
+ㄴ						
+						<span  style="color:red">* 모집 인원을 제외한 모든 항목은 필수 입력 사항입니다.</span>
+						<br>
+						<br>
 					<table>
 						<tr>
 						<th style="width:60px;text-align: center;">제목</th>
@@ -473,6 +483,9 @@ input[type=checkbox] {
 						<input type="date" id="mtravel_date_e_chk" name="mtravel_date_e" max="9999-12-31" style="color: black;background-color:transparent; ">
 						<input type="checkbox" id="mtravel_date1" name="mtravel_date" value="예정" checked onclick="oneChk_date(this)"><label for="mtravel_date1">예정</label>
 						<input type="checkbox" id="mtravel_date2" name="mtravel_date" value="확정" onclick="oneChk_date(this)"><label for="mtravel_date2">확정</label>
+						<label id="hidden">
+							<input type="checkbox" name="mtravel_date" value="">
+						</label>
 						<br>
 						테마 : 
 						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1"> <label for="mthema_chk1">관광</label>
@@ -484,12 +497,10 @@ input[type=checkbox] {
 						<input type="checkbox" name="mroom" value="상관없음" id="mroom1" checked="checked" onclick="oneChk_room(this)" > <label for="mroom1">상관없음 </label>
 						<input type="checkbox" name="mroom" value="개인실" id="mroom2"   onclick="oneChk_room(this)" > <label for="mroom2">개인실 </label>
 						<input type="checkbox" name="mroom" value="다인실" id="mroom3" onclick="oneChk_room(this)"> <label for="mroom3">다인실</label>
- 
-						<br>
 						<form style="display:flex" >
-						1일경비 
+						1일 경비 
 						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
-						<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
+						<input type="checkbox" id="chkprice" name="mexpenses" value="금액"   onclick="chkAbled(this.form)"><label for="chkprice">금액</label>
 						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:rgba(0, 0, 0, 0.1); border:2.5px solid black ">&nbsp;원
 						~ &nbsp;&nbsp;
 						<input type="text" numberOnly id="price2" name="price2" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
@@ -500,6 +511,9 @@ input[type=checkbox] {
 						<input type="checkbox" name="mgender" value="상관없음" id="mgender1" checked="checked"  onclick="oneChk_gender(this)">  <label for="mgender1">상관없음</label>
 						<input type="checkbox" name="mgender" value="여자" id="mgender2"  onclick="oneChk_gender(this)">  <label for="mgender2">여자</label>
 						<input type="checkbox" name="mgender" value="남자" id="mgender3"  onclick="oneChk_gender(this)"> <label for="mgender3">남자</label>
+						<label id="hidden">
+							<input type="checkbox" name="mgender" value="">
+						</label>
  
 						<br>
 						나이 : 
@@ -656,7 +670,7 @@ input[type=checkbox] {
 	
 	   // 금액 입력 버튼 활성&비활성화 
 	   // 상관없음 chkNotPirce1
-	   // 금액입력 chkprice
+	   // 금액 chkprice
 	   // 추후결정 chkNotPirce2
 	   
 	 	function chkAbled(form) {

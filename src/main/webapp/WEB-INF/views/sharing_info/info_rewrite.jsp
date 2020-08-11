@@ -33,6 +33,7 @@ function chk_loginUser() {
 					<form action="info_modify" id="frm">
 						<input type="hidden" name="nick" value="${loginUser.nick }" >
 						<input type="hidden" name="num" value="${info_post.num }" >
+						<h4><a href="info_list?page=1" style="border-bottom: 0;">>> 정보 공유 게시판</a></h4><br>
 					<table>
 						<tr style="background: white;">
 							<td style="width:60px;text-align: center;">닉네임</td>
@@ -122,7 +123,7 @@ function chk_loginUser() {
 						</tr>
 						<tr>
 						<td style="text-align: left: ;">
-						<input type="button" value="목록보기" onclick="location.href('info_list?page=1')">	
+						<input type="button" value="전체목록보기" onclick="location.href='info_list?page=1'">	
 						</td>
 						<td style="text-align: right;">
 						<input type="button" value="수정완료" id="contentRegBtn">

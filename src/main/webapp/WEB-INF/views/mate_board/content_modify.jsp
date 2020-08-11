@@ -196,6 +196,8 @@ function modify_save() {
 
  <c:set value="${mate_dao.mate_content_viewdao() }" var="mmm"/>
  	<!--  <form action="mate_content_modify_update?num=${ccc.num }">-->
+						<a href="mate_board_list?page=1"><h4> >> 여행 동행 찾기 </h4></a>
+						<br>
  	<table border="1">
  		<tr> <td colspan="2"> < 여행 정보  > </td></tr>
 				<tr> <td colspan="2"> 기간 

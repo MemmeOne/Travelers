@@ -253,7 +253,7 @@ function hide() {
 	
 				<table class="all_white" id="whiteline" border="0">
 					<tr>
-						<td><h4> >> 여행 동행 찾기 </h4></td>
+						<td><a href="mate_board_list?page=1"><h4> >> 여행 동행 찾기 </h4></a></td>
 						<td>
 						<c:choose>
 							<c:when test="${ccc.deadline  eq '모집중' }">
@@ -296,7 +296,8 @@ function hide() {
 							<img alt="" src="resources/main_image/chk2.jpg" style="width: 30px; height: 20px;">
 							 모집자 
 							<img alt="" src="resources/main_image/writer.jpg" style=" height: 30px; vertical-align: middle;">
-							 ${ccc.wnick}, ${ccc.wage }대, ${ccc.wgender }
+							  <a onclick="window.open('userInfoPop?nick=${ccc.wnick}','','width=500,height=700')" style="border-bottom: 0; cursor: pointer;">${ccc.wnick}</a>
+							, ${ccc.wage }대, ${ccc.wgender }
 								<!-- <img src="resources/main_image/heart.png" style="width:28px; vertical-align: middle;"> -->
 							</td><!-- style="text-align: right;" -->
 								<td colspan="2" >

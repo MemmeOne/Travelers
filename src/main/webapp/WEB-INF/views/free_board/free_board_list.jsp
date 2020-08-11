@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>자유 게시판</title>
+<script type="text/javascript">
+	function loginConfirm(){
+		var check = confirm("글 작성은 로그인이 필요합니다")
+		if(check){
+			location.href="login";
+		}
+	}
+</script>
 </head>
 <body class="is-preload">
 <fmt:formatDate var="cdate" value="${cdate }" pattern="yyyy-MM-dd"/>
@@ -34,7 +42,7 @@
 																		<c:if test="${notis.nick=='관리자'}">
 																			<tr id="notis" style="font-weight:bold; background: rgba(50, 50, 50, 0.05);font-size: 1.1em;">
 																				<fmt:formatDate var="date2" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
-																					<th style="text-align: center;color:red;">공지</th>
+																					<th style="text-align: center;color:red;">[공지]</th>
 																						<c:choose>
 																							<c:when test="${cdate eq date2 }">
 																								<fmt:formatDate var="date2" value="${notis.savedate }" pattern="hh:mm"/>
@@ -146,12 +154,16 @@
 				</c:otherwise>
 			</c:choose>
 			<tr style="border-bottom:0;">
-				<c:if test="${loginUser!=null }">
-								<td colspan="4"></td>
-							<td colspan="4">
-								<input type="button" value="글작성" onclick="location.href='free_write_list'">
+								<td align="right" colspan="6" >
+								<c:choose>
+									<c:when test="${loginUser.nick ne null }">
+										<input type="button" value="글작성" onclick="location.href='free_write_list'">
+									</c:when>
+									<c:otherwise>
+										<input type="button" value="글작성" onclick="loginConfirm()">
+									</c:otherwise>
+								</c:choose>
 							</td>
-							</c:if>
 						</tr>
 						</table><br>
 						<table style="text-align: center;width: 1070px; margin: 0 auto;font-size:0.7em;">

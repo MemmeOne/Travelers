@@ -313,6 +313,8 @@ public class MateDAO {
 		
 		// 글 수정
 		public void mate_content_modify_update(MateDTO dto, int num) {
+			System.out.println("내용 수정 dao");
+			dto.setNum(num);
 			mate_sqlsession.update(namespace+".mate_content_modify", dto);
 		}
 		//--------글 삭제

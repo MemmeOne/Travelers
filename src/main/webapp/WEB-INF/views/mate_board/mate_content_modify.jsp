@@ -193,8 +193,12 @@ function modify_save() {
 		write_save_ok=1;
 	}
 
-	var total={title:title,content:content,mtravel_date:mtravel_date,mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,
-		mthema:mthema,mroom:mroom,mgender:mgender,mage:mage, mcnt:mcnt, mexpenses:mexpenses, price1:price1,price2:price2,deadline:deadline,
+	var total={title:title,content:content,
+		mtravel_date:mtravel_date,mtravel_date_s:mtravel_date_s,mtravel_date_e:mtravel_date_e,
+		mthema:mthema,mroom:mroom,
+		mgender:mgender,mage:mage, 
+		mcnt:mcnt, mexpenses:mexpenses, 
+		price1:price1,price2:price2,
 		write_save_ok:write_save_ok}
 	console.log("여기부터");
 	console.log("title :"+title);
@@ -214,7 +218,7 @@ function modify_save() {
 	//write_save(total)
 	
 		$.ajax({
-			url:"mate_write_save",
+			url:"mate_content_modify_update",
 			type:"POST",
 			data:total,
 			success:function(data) {
@@ -383,7 +387,7 @@ input[type=checkbox] {
 								<td  >
 								<form>
 									<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled(this.form)" checked="checked"><label for="chkNotPirce1">상관없음</label>
-									<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)"><label for="chkprice">금액입력</label>
+									<input type="checkbox" id="chkprice" name="mexpenses" value="금액"   onclick="chkAbled(this.form)"><label for="chkprice">금액</label>
 									<input type="number"  id="price1" name="price1" min="0" disabled  style = "text-align:right;">
 									~
 									<input type="number" id="price2" name="price2"  disabled  style = "text-align:right;">
@@ -414,7 +418,12 @@ input[type=checkbox] {
 							</tr>
 						
 						</table> -->   
-					* 모집 인원, 글 내용을 제외한 모든 조건을 입력하셔야 합니다.<br>
+						<a href="mate_board_list?page=1"><h4> >> 여행 동행 찾기 </h4></a>
+						<br>
+ 						
+						<span  style="color:red">* 모집 인원을 제외한 모든 항목은 필수 입력 사항입니다.</span>
+						<br>
+						<br>
  					<table>
 						<tr>
 						<th style="width:60px;text-align: center;">제목</th>
@@ -433,7 +442,7 @@ input[type=checkbox] {
 						테마 : 
 						<input type="checkbox" class="mthema_chk" name="mthema" value="관광" id="mthema_chk1" <c:if test="${fn:contains(ccc.mthema,'관광') }"> checked </c:if>  > <label for="mthema_chk1">관광</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="휴양" id="mthema_chk2" <c:if test="${fn:contains(ccc.mthema,'휴양') }"> checked </c:if>> <label for="mthema_chk2">휴양</label>
-						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3" <c:if test="${fn:contains(ccc.mthema,'식도락 ') }"> checked </c:if> > <label for="mthema_chk3">식도락</label>
+						<input type="checkbox" class="mthema_chk" name="mthema" value="식도락" id="mthema_chk3" <c:if test="${fn:contains(ccc.mthema,'식도락') }"> checked </c:if> > <label for="mthema_chk3">식도락</label>
 						<input type="checkbox" class="mthema_chk" name="mthema" value="기타" id="mthema_chk4" <c:if test="${fn:contains(ccc.mthema,'기타') }"> checked </c:if>> <label for="mthema_chk4">기타</label>
 						<br>
 						숙소 : 
@@ -443,12 +452,12 @@ input[type=checkbox] {
 					
 						<form style="display:flex" >
 						1일경비 
-						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)"  <c:out value="${ccc.mexpenses eq '상관' ? 'checked':'' }"/> ><label for="chkNotPirce1">상관없음</label>
-						<input type="checkbox" id="chkprice" name="mexpenses" value="금액입력"   onclick="chkAbled(this.form)" <c:out value="${ccc.mexpenses eq '금액' ? 'checked':'' }"/>><label for="chkprice" >금액입력</label>
+						<input type="checkbox" id="chkNotPirce1" name="mexpenses" value="상관없음"  onclick="chkDisabled1(this.form)"  <c:out value="${ccc.mexpenses eq '상관없음' ? 'checked':'' }"/> ><label for="chkNotPirce1">상관없음</label>
+						<input type="checkbox" id="chkprice" name="mexpenses" value="금액"   onclick="chkAbled(this.form)" <c:out value="${ccc.mexpenses eq '금액' ? 'checked':'' }"/>><label for="chkprice" >금액</label>
 						<input type="text" numberOnly id="price1" name="price1" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
 						~ &nbsp;&nbsp;
 						<input type="text" numberOnly id="price2" name="price2" disabled style="text-align: right;color:black; width:200px; height:33px; background-color:transparent; border:2.5px solid black ">&nbsp;원
-						<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled2(this.form)" <c:out value="${ccc.mexpenses eq '추후' ? 'checked':'' }"/>><label for="chkNotPirce2">추후결정</label>
+						<input type="checkbox" id="chkNotPirce2" name="mexpenses" value="추후결정"  onclick="chkDisabled2(this.form)" <c:out value="${ccc.mexpenses eq '추후결정' ? 'checked':'' }"/>><label for="chkNotPirce2">추후결정</label>
 						</form>
 						<h4>< 여행 동행 조건 ></h4>
 						성별 : 

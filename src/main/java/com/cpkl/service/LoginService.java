@@ -103,7 +103,8 @@ public class LoginService {
 	// 회원 탈퇴
 	public void delete_User(TravelersDTO dto, HttpSession session) {
 		dao.delete_User(dto);
-		session.removeAttribute("loginUser");
+		sessions.get(dto.getId()).invalidate();
+		sessions.remove(dto.getId());
 	}
 	// 비밀번호 변경 및 로그아웃
 	public String change_pwd_save(TravelersDTO dto, HttpSession session) {
@@ -116,7 +117,8 @@ public class LoginService {
 	        	result="비밀번호를 변경했습니다.";
 	        	dao.change_pwd_save(dto);
 	        	
-				session.removeAttribute("loginUser");
+	        	sessions.get(dto.getId()).invalidate();
+				sessions.remove(dto.getId());
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();

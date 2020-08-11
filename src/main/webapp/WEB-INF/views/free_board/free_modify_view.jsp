@@ -32,6 +32,7 @@ function chk_loginUser() {
 				<div class="inner">
 					<form action="updatedata" id="frm">
 						<input type="hidden" value="${lists.num }" name="num">
+						<h4><a href="free_board_list?page=1">>> 자유 게시판</a></h4>
 					<table>
     					<tr style="background: white;">
         					<th style="width:60px;text-align: center;">제목</th>

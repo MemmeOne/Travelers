@@ -23,6 +23,7 @@
 				<div class="inner">
 					<form action="contentreg" method="post" id="frm">
 						<input type="hidden" name="nick" value="${loginUser.nick }">
+						<h4><a href="reviewboard?page=1" style="border-bottom: 0;">>> 여행 리뷰 게시판</a></h4>
 						<table>
 							<tr>
 								<c:if test="${loginUser.id eq 'admin' }">

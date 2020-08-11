@@ -107,7 +107,7 @@
             <c:choose>
             <c:when test="${loginUser.id eq null }">
                  <li><a href="login" class="button fit primary">로그인</a></li>
-               <li><a href="reg" class="button fit">회원가입</a></li>
+               <li><a href="reg_tos" class="button fit">회원가입</a></li>
                </c:when>
                <c:otherwise>
                  <li></li>

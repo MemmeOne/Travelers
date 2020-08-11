@@ -30,47 +30,70 @@
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
-					<form action="package_save" id="frm">
-					<table>
+					<form action="package_save" id="fff">
+							
+					
+					
+					
+					  <table>
 						<tr>
 							<td style="width:150px;text-align: center;">제목</td>
-							<td><input type="text" placeholder="제목을 입력하세요." name="title" autofocus="autofocus"></td>
+							<td><input type="text" placeholder="제목을 입력하세요." value="제목" name="title" autofocus="autofocus"></td>
 						</tr>
 						<tr>
 							<td>가격</td>
 							<td style="text-align:left;">
-								<input type="number" name="pay" placeholder="가격을 입력하세요." style="color:black;width:40%;">
+								<input type="number" name="pay" value="10" placeholder="가격을 입력하세요." style="color:black;width:40%;">
 							</td>
 						</tr>
 						<tr>
 							<td>테마</td>
 							<td>
-								<input type="text" name="theme" placeholder="여행 테마를 입력하세요.">
+								<input type="text" name="theme" value="테마" placeholder="여행 테마를 입력하세요.">
 							</td>
 						</tr>
 						<tr>
 							<td>기간</td>
 							<td style="text-align:left;">
-								<input type="number" name="term" placeholder="여행 일수를 입력하세요." style="color:black;width:40%;">
+								<input type="number" name="term" value="3" placeholder="여행 일수를 입력하세요." style="color:black;width:40%;">
 							</td>
 						</tr>
 						<tr>
-							<td>출발지</td>
+							<td>출발지/도착지</td>
 							<td>
-								<input type="text" name="start_point" placeholder="출발지를 입력하세요. ex) 인천  - 괌">
+								<input type="text" name="start_point" value="인천" placeholder="출발지를 입력하세요. ex) 인천  - 괌">
+								<input type="text" name="end_point" value="괌" placeholder="도착지를 입력하세요. ex) 인천  - 괌">
 							</td>
 						</tr>
 						<tr>
-							<td>출발날짜</td>
+							<td>출발날짜/도착날짜</td>
 							<td style="text-align:left;">
-								<input type="datetime" name="start_date" placeholder="2020-08-01 09:00" style="color:black;width:40%;">
+								<input type="datetime-local" name="start_date" value="2020-08-01"  placeholder="2020-08-01 09:00" style="color:black;width:40%;">
+								<input type="datetime-local" name="end_date" value="2020-08-01" placeholder="2020-08-01 09:00" style="color:black;width:40%;">
 							</td>
 						</tr>
 						<tr>
-							<td>출발항공편</td>
+							<td>출발/도착항공편</td>
 							<td>
-								<input type="text" name="start_plane" placeholder="출발항공편을 입력하세요. ex) 에어부산 BX797편">
+								<input type="text" name="start_plane" value="에어부산 BX797편" placeholder="출발항공편을 입력하세요. ex) 에어부산 BX797편">
+								<input type="text" name="end_plane" value="에어부산 BX797편" placeholder="도착항공편을 입력하세요. ex) 에어부산 BX797편">
 							</td>
+						</tr>
+						<tr>
+							<td>호텔/도시</td>
+							<td>
+								<input type="text" name="hotel" value="호텔" placeholder=" ">
+								<input type="text" name="city" value="도시" placeholder=" ">
+							</td>
+						</tr>
+						<tr>
+							<td>현재예약한인원/최대예약가능인원/패키지최소인원</td>
+							<td>
+								<input type="number" name="count" value="3">
+								<input type="number" name="max" value="10">
+								<input type="number" name="cut_line" value="4">
+							</td>
+							
 						</tr>
 						
 						<tr>
@@ -101,6 +124,27 @@
 							    
 							  //전송버튼 클릭이벤트
 							    $("#contentRegBtn").click(function(){
+							    	var title =$("input[name=title]").val();
+							    	var pay =$("input[name=pay]").val();
+							    	var theme =$("input[name=theme]").val();
+							    	var term =$("input[name=term]").val();
+							    	var start_point =$("input[name=start_point]").val();
+							    	var start_plane =$("input[name=start_plane]").val();
+							    	var start_date =$("input[name=start_date]").val();
+							    	var end_date =$("input[name=end_date]").val();
+							    	start_date=start_date.replace("T"," ");
+							    	end_date=end_date.replace("T"," ");
+							    	
+							    	
+							    	console.log("title="+title)
+							    	console.log("pay="+pay)
+							    	console.log("theme="+theme)
+							    	console.log("term="+term)
+							    	console.log("start_point="+start_point)
+							    	console.log("start_date="+start_date)
+							    	console.log("start_date="+start_date)
+							    	console.log("start_plane="+start_plane)
+							    	
 								    editor_object.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 							        var content =  document.getElementById("content").value
 							        content = content.replace(/<p>/gi,"");
@@ -116,7 +160,7 @@
 							    		$('input[name=content]').focus()
 							    	}else {
 								        //id가 smarteditor인 textarea에 에디터에서 대입
-								        $("#frm").submit();
+								        $("#fff").submit();
 							    	}
 							    });
 							    
@@ -132,7 +176,8 @@
 						<input type="button" value="완료" id="contentRegBtn">
 						</td>
 						</tr>
-					</table>
+					</table> 
+					<input type="button" value="완료" id="contentRegBtn">
 					</form>
 				</div>
 			</section>

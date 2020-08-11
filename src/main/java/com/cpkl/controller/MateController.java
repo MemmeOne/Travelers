@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.MateCalDTO;
 import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateDTO;
@@ -103,7 +104,7 @@ public class MateController {
 		java.util.Date today=new java.util.Date();
 		String t=format.format(today);
 		session.setAttribute("cdate", t);
-		SimpleDateFormat format2=new SimpleDateFormat("hh:mm");
+		SimpleDateFormat format2=new SimpleDateFormat("HH:mm");
 		String t2=format2.format(today);
 		session.setAttribute("cdate_today", t2);
 		System.out.println("cdate="+t);
@@ -201,14 +202,14 @@ public class MateController {
 	// 글 쓰기 창 띄워주기
 	@RequestMapping("mate_write_view")
 	public String mate_write_view(HttpSession session) {
-		String n=(String)session.getAttribute("loginNick");
-		System.out.println("로그인 닉 : "+n);
-		ArrayList<String> test=new ArrayList<String>();
-		test.add("가");
-		test.add("나");
-		for(int i=0;i<test.size();i++) {
-			System.out.println(test.get(i));
-		}
+		//String n=(String)session.getAttribute("loginNick");
+//		System.out.println("로그인 닉 : "+n);
+//		ArrayList<String> test=new ArrayList<String>();
+//		test.add("가");
+//		test.add("나");
+//		for(int i=0;i<test.size();i++) {
+//			System.out.println(test.get(i));
+//		}
 		return "mate_board/mate_write_view";
 	}
 	
@@ -270,9 +271,11 @@ public class MateController {
 //		System.out.println("step : "+dto.getStep());
 //		System.out.println("indent : "+dto.getIndent());
 	
-		matedto.setWnick((String)session.getAttribute("loginNick"));
-		matedto.setWgender((String)session.getAttribute("loginGender"));
-		matedto.setWage((Integer)session.getAttribute("loginAge"));
+		//matedto.setWnick((String)session.getAttribute("loginNick"));
+		//matedto.setWgender((String)session.getAttribute("loginGender"));
+		//matedto.setWage((Integer)session.getAttribute("loginAge"));
+		
+		//matedto.setWgender((String)session.getAttribute("loginUser.gender"));
 		ObjectMapper mapper=new ObjectMapper();
 		String strJson=mapper.writeValueAsString(matedto);
 		if(matedto.getWrite_save_ok()==1) {
@@ -370,6 +373,7 @@ public class MateController {
 	public String mate_content_modify(Model model,HttpSession session ) {
 		MateDTO dto=new MateDTO();
 		int num=((Integer)session.getAttribute("bnum"));
+		System.out.println("수정 컨트롤러 bnum "+num);
 		mateSer.mate_content_viewser( model, num  );
 		return "mate_board/mate_content_modify";
 	}
@@ -382,6 +386,7 @@ public class MateController {
 		@ResponseBody
 		public String mate_content_modify_update(MateDTO dto,HttpSession session) throws JsonProcessingException {
 		dto.setNum((Integer)session.getAttribute("bnum"));
+		System.out.println("내용 수정 컨트롤러");
 		mateSer.mate_content_modify_update(dto,dto.getNum() ); 
 		System.out.println("c mate content modify update num getNum : "+dto.getNum());
 		System.out.println("mtravel_date_s "+dto.getMtravel_date_s());
@@ -576,6 +581,16 @@ public class MateController {
 	//=================== 댓글
 	/* 댓글 기능 */
 	// 댓글 저장 기능
+	@RequestMapping(value="mate_getCommentList",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mate_getCommentList(MateCommentDTO dto) throws JsonProcessingException {
+		List<MateCommentDTO> list=mateReplySer.mate_getCommentList(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
+	
 	@RequestMapping(value="mate_comment_save",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody

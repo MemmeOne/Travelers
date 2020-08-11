@@ -532,10 +532,11 @@ div img:hover + p.arrow_box {
 				<div class="inner">
 					<form onsubmit="return false" id="form" method="post">
 						<input type="hidden" value="${info_post.num }" name="num">
+						<h4><a href="info_list?page=1" style="border-bottom: 0;margin-left:70px;">>> 정보 공유 게시판</a></h4><br>
 						<table id="post_table" style="width: 1070px;margin: 0 auto;">
 							<tr>
-								<td colspan="4">
-									[${info_post.tag }] ${info_post.title }
+								<td colspan="4"><Br>
+									<h2>[${info_post.tag }] ${info_post.title }</h2>
 								</td>
 							</tr>
 							<tr>
@@ -571,7 +572,7 @@ div img:hover + p.arrow_box {
 							</tr>
 							<tr>
 								<td colspan="2" style="text-align: left ;">
-									<input type="button" value="목록보기" onclick="location.href='info_list?page=1'">
+									<input type="button" value="전체목록보기" onclick="location.href='info_list?page=1'">
 									<c:forEach var="cc" items="${commentcount }">
 										<c:choose>
 											<c:when test="${param.num eq cc.numgroup }">

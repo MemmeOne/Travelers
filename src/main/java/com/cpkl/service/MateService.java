@@ -105,6 +105,7 @@ public class MateService   {
 	
 	// 글 수정
 	public void mate_content_modify_update(MateDTO dto, int num) {
+		System.out.println("내용 수정 서비스");
 		matedao.mate_content_modify_update( dto, num);
 	}
 	

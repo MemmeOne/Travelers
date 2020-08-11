@@ -14,6 +14,10 @@
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
+				<a href="package_write">패키지글쓰기</a>
+				
+				<a href="pay_popup">결제</a>
+				<a onclick="window.open('userInfoPop?nick=${ccc.wnick}','','width=500,height=700')" style="border-bottom: 0; cursor: pointer;">${ccc.wnick}</a>
 					<h2 style="text-align: center;">동행 패키지</h2>
 					<hr>
 					<button style="width: 100%;height : 300px;" onclick="location.href='package_post?num=1'">

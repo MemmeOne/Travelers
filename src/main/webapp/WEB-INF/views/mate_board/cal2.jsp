@@ -284,7 +284,6 @@
 					</span>
 					<span id="s">
 					<input type="button" value="달력숨기기" onclick="hide()"  style="width:1070px">
-					여기~~~~~~~~~
 				
  
 	

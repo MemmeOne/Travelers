@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.cpkl.dao.MateDAO;
+import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateCommentDTO;
 import com.cpkl.dto.MateReplyDTO;
@@ -67,6 +68,10 @@ public class MateReplyService {
 	
 	
 	/* 댓글 기능 */
+	// 댓글 전체 목록 가져오기
+	public List<MateCommentDTO> mate_getCommentList(MateCommentDTO dto) {
+		return matedao.comment_list(dto.getNumgroup());
+	}
 	// 댓글 저장 기능
 	public List<MateCommentDTO> comment_save(MateCommentDTO dto) {
 		matedao.comment_save(dto);

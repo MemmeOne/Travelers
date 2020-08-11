@@ -21,6 +21,7 @@ import com.cpkl.dto.CommentNumber;
 import com.cpkl.dto.FavoriteDTO;
 import com.cpkl.dto.FreeCommentDTO;
 import com.cpkl.dto.FreeDTO;
+import com.cpkl.dto.InfoCommentDTO;
 import com.cpkl.dto.ReportPostDTO;
 import com.cpkl.service.FreeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -117,6 +118,15 @@ public class FreeController {
 	}
 	/* 댓글 기능 */
 	// 댓글 저장 기능
+	@RequestMapping(value="free_getCommentList",method=RequestMethod.POST,
+			produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String free_getCommentList(FreeCommentDTO dto) throws JsonProcessingException {
+		List<FreeCommentDTO> list=service.free_getCommentList(dto);
+		ObjectMapper mapper=new ObjectMapper();
+		String strJson=mapper.writeValueAsString(list);
+		return strJson;
+	}
 	@RequestMapping(value="free_comment_save",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody

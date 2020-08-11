@@ -29,36 +29,33 @@
 								<c:choose>
 									<c:when test="${loginUser.id == 'admin' }">
 										<li><a href="/Travelers/">Home</a></li>
+										<li><a href="about">About</a></li>
 										<li><a href="logout">로그아웃</a></li>
 										<li><a href="admin_page">관리자 페이지</a></li>
-										<li><a href="package_list">동행 패키지</a></li>
 										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
 										<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
-										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
+										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
-										<li><a href="about">About</a></li>
 									</c:when>
 									<c:when test="${loginUser!=null }">
 										<li><a href="/Travelers/">Home</a></li>
+										<li><a href="about">About</a></li>
 										<li><a href="logout">로그아웃</a></li>
 										<li><a href="mypage">마이페이지</a></li>
-										<li><a href="package_list">동행 패키지</a></li>
 										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
 										<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
-										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
+										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
-										<li><a href="about">About</a></li>
 									</c:when>
 									<c:otherwise>
 										<li><a href="/Travelers/">Home</a></li>
 										<li><a href="login">로그인</a></li>
+										<li><a href="about">About</a></li>
 										<li><a href="reg_tos">회원가입</a></li>
-										<li><a href="package_list">동행 패키지</a></li>
 										<li><a href="mate_board_list?page=1">여행 동행 찾기</a></li>
 										<li><a href="reviewboard?page=1">여행 리뷰 게시판</a></li>
-										<li><a href="info_list?page=1">여행 정보 공유 게시판</a></li>
+										<li><a href="info_list?page=1">정보 공유 게시판</a></li>
 										<li><a href="free_board_list?page=1">자유 게시판</a></li>
-										<li><a href="about">About</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ul>
@@ -137,7 +134,7 @@
 					2. 게시판 웹 에디터 적용 (Smart Editor)<br>
 					3. 게시판 추천 기능 구현<br>
 					4. 마이페이지 - 여행 수첩 (다녀온 여행지 목록 띄우기, 추가, 삭제, 수정)<br>
-					5. 중복 로그인 방지
+					5. 중복 로그인 방지<br>
 					6. 담당 페이지 CSS 템플릿 적용<br>
                   </p>
                </li>

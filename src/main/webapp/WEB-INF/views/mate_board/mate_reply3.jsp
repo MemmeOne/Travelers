@@ -61,9 +61,11 @@ div img:hover + p.arrow_box {
 			return 1;
 		}
 	}
+	var comment_more_num=11;
+	var comment_more_list=Array();
 	// 댓글 틀
 	var comment_html=""
-	comment_html += "<tr><input type='hidden' name='num'  id='numgroup' value='${ccc.num }'>"
+	comment_html += "<tr><input type='hidden' id='numgroup' value='${ccc.num }'>"
 	comment_html += "<input type='hidden' id='nick' placeholder='닉네임' value='${loginUser.nick}'>"
 	comment_html += "<td colspan='3'><textarea rows='3' cols='50' id='content'></textarea></td>"
 	comment_html += "<td><input type='button' value='댓글달기' onclick='comment_save()'></td></tr>"
@@ -76,74 +78,91 @@ div img:hover + p.arrow_box {
 	}
 	// 댓글 숨기기
 	function comment_table_hide() {
+		var comment_more_num=10;
 		$("#comment_table").hide();
 		html="<input type='button' value='댓글보기' onclick='comment_table_show()'>"
 		$("#show_hide").html(html)
 	}
 	// 댓글 리스트 틀
 	function showComment(list) {
+		comment_more_list=list;
 		var cnt=1;
 		let html=""
-		html += "<tr><input type='hidden' id='numgroup' name='num' value='${ccc.num }'>"
+		html += "<tr><input type='hidden' id='numgroup' value='${ccc.num }'>"
 		html += "<input type='hidden' id='nick' placeholder='닉네임' value='${loginUser.nick}'>"
 		html += "<td colspan='3'><textarea rows='3' cols='50' id='content'></textarea></td>"
 		html += "<td><input type='button' value='댓글달기' onclick='comment_save()'></td></tr>"
 		$.each(list, function(index,item) {
-			html += "<tr id='modify"+cnt+"'>"
-			html += "<input type='hidden' id='cnum"+cnt+"' value='"+item.cnum+"'>"
-			html += "<input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
-			html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
-			html += "<input type='hidden' id='numgroup"+cnt+"' value='"+item.numgroup+"'>"
-			html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+item.commentgroup+"'>"
-			html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
-			html += "<input type='hidden' id='savedate"+cnt+"' value='"+item.savedate+"'>"
-			if(item.step>0) {
-				html += "<td style='text-align: center; width:18px;'>"
-				html += "<img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'>"
-				html += "</td><td style='text-align: center;' id='modify_nick"+cnt+"'>"
-				html += item.nick+"<br>"
-				html += "<span style='font-size: 10pt;' id='modify_savedate"+cnt+"'>"+item.savedate+"</span></td>"
-				console.log(item.content)
-				if("${loginUser.id}"=="admin"){
+			if(cnt<comment_more_num) {
+				html += "<tr id='modify"+cnt+"'>"
+				html += "<input type='hidden' id='cnum"+cnt+"' value='"+item.cnum+"'>"
+				html += "<input type='hidden' id='nick"+cnt+"' value='"+item.nick+"'>"
+				html += "<input type='hidden' id='content"+cnt+"' value='"+item.content+"'>"
+				html += "<input type='hidden' id='numgroup"+cnt+"' value='"+item.numgroup+"'>"
+				html += "<input type='hidden' id='commentgroup"+cnt+"' value='"+item.commentgroup+"'>"
+				html += "<input type='hidden' id='step"+cnt+"' value='"+item.step+"'>"
+				html += "<input type='hidden' id='savedate"+cnt+"' value='"+item.savedate+"'>"
+				if(item.step>0) {
+					html += "<td style='text-align: center; width:18px;'>"
+					html += "<img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'>"
+					html += "</td><td style='text-align: center;' id='modify_nick"+cnt+"'>"
+					html += item.nick
+					if(item.nick=="관리자") {
+						html += "<img src='resources/main_image/admin.png' style='height:30px; vertical-align: middle;'>"
+					}else if(item.nick=="${ccc.wnick}") {
+						html += "<img src='resources/main_image/post_writer.png' style='height:30px; vertical-align: middle;'>"
+					}
+					html += "<br><span style='font-size: 10pt;' id='modify_savedate"+cnt+"'>"+item.savedate+"</span></td>"
+					if("${loginUser.id}"=="admin"){
+						html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
+						html += "<td><div id='box'><div>"
+						html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>삭제</p></div></div></td>"
+					} else if(item.nick == "${loginUser.nick}") {
+						html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
+						html += "<td><div id='box'><div style='margin-right:5px;'>"
+						html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>수정</p></div><div>"
+						html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>삭제</p></div></div></td>"
+					} else {
+						html += "<td colspan='2' id='modify_content"+cnt+"' style='width: 890px; text-align: left;'>"+item.content+"</td>"
+					}
+				}else {
+					html += "<td colspan='2' id='modify_nick"+cnt+"' style='text-align: center;'>"+item.nick
+					if(item.nick=="관리자") {
+						html += "<img src='resources/main_image/admin.png' style='height:30px; vertical-align: middle;'>"
+					}else if(item.nick=="${ccc.wnick}") {
+						html += "<img src='resources/main_image/post_writer.png' style='height:30px; vertical-align: middle;'>"
+					}
+					html += "<br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
 					html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
-					html += "<td><div id='box'><div>"
-					html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>삭제</p></div></div></td>"
-				} else if(item.nick == "${loginUser.nick}") {
-					html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
-					html += "<td><div id='box'><div>"
-					html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>수정</p></div><div>"
-					html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>삭제</p></div></div></td>"
-				} else {
-					html += "<td colspan='2' id='modify_content"+cnt+"' style='width: 890px; text-align: left;'>"+item.content+"</td>"
+					if ("${loginUser.id}"=="admin"){
+						html += "<td>"
+						html += "<div id='box'><div>"
+						html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>삭제</p></div></div>"
+						html += "<input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'></td>"
+					} else if(item.nick == "${loginUser.nick}") {
+						html += "<td><div id='box'><div style='margin-right:5px;'>"
+						html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>수정</p></div><div>"
+						html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
+						html += "<p class='arrow_box'>삭제</p></div></div><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'></td>"
+					} else {
+						html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'>"
+						html += "</td>"
+					}
+					html += "</tr><tr id='reply"+cnt+"'></tr>"
 				}
+				cnt++;
 			}else {
-				html += "<td colspan='2' id='modify_nick"+cnt+"' style='text-align: center;'>"+item.nick+"<br>"
-				html += "<span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
-				html += "<td id='modify_content"+cnt+"' style='text-align: left;'>"+item.content+"</td>"
-				if ("${loginUser.id}"=="admin"){
-					html += "<td>"
-					html += "<div id='box'><div>"
-					html += "<img src='resources/main_image/delete.png' onclick='comment_delete_admin("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>삭제</p></div></div>"
-					html += "<input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'></td>"
-				} else if(item.nick == "${loginUser.nick}") {
-					html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'>"
-					html += "<div id='box'><div>"
-					html += "<img src='resources/main_image/alter.png' onclick='comment_modify("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>수정</p></div><div>"
-					html += "<img src='resources/main_image/delete.png' onclick='comment_delete("+cnt+")' style='width:18px; vertical-align: middle;'>"
-					html += "<p class='arrow_box'>삭제</p></div></div></td>"
-				} else {
-					html += "<td><input type='button' value='댓글달기' onclick='comment_reply("+cnt+")'>"
-					html += "</td>"
-				}
-				html += "</tr><tr id='reply"+cnt+"'></tr>"
+				comment_more_num+=10;
+				return false;
 			}
-			cnt++;
-		})
+		});
+		html += "<tr style='border: none;background: white;'>"
+		html += "<td colspan='4'><input type='button' value='더보기' onclick='comment_show_more()'></td></tr>"
 		html += "<tr style='border: none;background: white;'>"
 		html += "<td style='width:30px;'></td>"
 		html += "<td style='width:180px;'></td>"
@@ -152,43 +171,68 @@ div img:hover + p.arrow_box {
 		html += "<td style='width:180px;'></td></tr>"
 		$("#comment_table").html(html)
 	}
+	// 댓글 리스트 더보기
+	function comment_show_more() {
+		showComment(comment_more_list);
+	}
+	// 댓글 리스트 가져오기
+	function getCommentList() {
+		console.log("댓글 리스트 가져오기")
+		var numgroup = $("#numgroup").val();
+		var form = {
+			numgroup : numgroup,
+		}
+		$.ajax({
+			url : "mate_getCommentList",
+			type : "POST",
+			data : form,
+			success : function(list) {
+				comment_more_list=list;
+				showComment(list);
+				console.log("성공")
+			},
+			error : function(request, status, error) {
+				console.log("실패")
+				alert("code:" + request.status + "\n" + "message:"
+						+ request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 	// 댓글 저장
 	function comment_save() {
-		var c=chk_loginUser()
-		var nick = $("#nick").val();
-		var content = $("#content").val();
-		var numgroup = $("#numgroup").val();
-		var step = $("#step").val();
-		console.log(nick)
-		console.log(content)
-		console.log(numgroup)
-		console.log(step)
-		var form = {
-			nick : nick,
-			content : content,
-			numgroup : numgroup,
-			step : step,
-		}
-		if(c==0) {
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
 			location.href="login"
-		} else if(content=="") {
-			alert("댓글 내용을 입력하세요.")
-			$("#content").focus()
-		}else{
-			$.ajax({
-				url : "mate_comment_save",
-				type : "POST",
-				data : form,
-				success : function(list) {
-					showComment(list);
-					console.log("성공")
-				},
-				error : function(request, status, error) {
-					console.log("실패")
-					alert("code:" + request.status + "\n" + "message:"
-							+ request.responseText + "\n" + "error:" + error);
-				}
-			})
+		}else {
+			var nick = $("#nick").val();
+			var content = $("#content").val();
+			var numgroup = $("#numgroup").val();
+			var step = $("#step").val();
+			var form = {
+				nick : nick,
+				content : content,
+				numgroup : numgroup,
+				step : step,
+			}
+			if(content=="") {
+				alert("댓글 내용을 입력하세요.")
+				$("#content").focus()
+			}else{
+				$.ajax({
+					url : "mate_comment_save",
+					type : "POST",
+					data : form,
+					success : function(list) {
+						showComment(list);
+						console.log("성공")
+					},
+					error : function(request, status, error) {
+						console.log("실패")
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+					}
+				});
+			}
 		}
 	}
 	// 댓글 수정 틀
@@ -206,6 +250,7 @@ div img:hover + p.arrow_box {
 	}
 	// 수정한 댓글 저장
 	function comment_modify_save(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -237,11 +282,12 @@ div img:hover + p.arrow_box {
 					alert("code:" + request.status + "\n" + "message:"
 							+ request.responseText + "\n" + "error:" + error);
 				}
-			})
+			});
 		}
 	}
 	// 댓글 삭제
 	function comment_delete(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -269,10 +315,11 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
-	// 댓글 삭제
+	// 댓글 삭제 - admin
 	function comment_delete_admin(cnt) {
+		chk_loginUser();
 		var cnum = $("#cnum"+cnt).val();
 		var nick = $("#nick" + cnt).val();
 		var content = $("#content" + cnt).val();
@@ -300,28 +347,18 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
 	// 대댓글 틀
 	function comment_reply(cnt) {
-		console.log("a;lkdsjflaksdjflaksjd")
-		var numgroup = $("#numgroup" + cnt).val();
-		//var num=$('input[name=num]').val();
+		var num=$('input[name=num]').val();
 		var cnum=$('#cnum'+cnt).val();
 		var commentgroup=$('#commentgroup'+cnt).val();
 		var step=$('#step'+cnt).val() + 1;
 		var nick='${loginUser.nick}'
-		var content = $("#content" + cnt).val();
-			//console.log(num)
-			console.log(numgroup)
-			console.log(cnum)
-			console.log(commentgroup)
-			console.log(step)
-			console.log(nick)
-			console.log(content)
 		let html=""
 		html += "<input type='hidden' id='recnum"+cnt+"' value='"+cnum+"'>"
-		html += "<input type='hidden' id='renumgroup"+cnt+"' value='"+numgroup+"'>"
+		html += "<input type='hidden' id='renumgroup"+cnt+"' value='"+num+"'>"
 		html += "<input type='hidden' id='recommentgroup"+cnt+"' value='"+commentgroup+"'>"
 		html += "<input type='hidden' id='restep"+cnt+"' value='"+step+"'>"
 		html += "<input type='hidden' id='renick"+cnt+"' value='"+nick+"'>"
@@ -331,20 +368,13 @@ div img:hover + p.arrow_box {
 	}
 	// 대댓글 저장
 	function comment_reply_save(cnt) {
+		chk_loginUser();
 		var cnum = $("#recnum" + cnt).val();
 		var nick = $("#renick" + cnt).val();
 		var content = $("#recontent" + cnt).val();
 		var numgroup = $("#renumgroup" + cnt).val();
 		var commentgroup = $("#recommentgroup" + cnt).val();
 		var step = $("#restep" + cnt).val();
-		//console.log(num)
-		console.log(numgroup)
-
-		console.log(cnum)
-		console.log(commentgroup)
-		console.log(step)
-		console.log(nick)
-		console.log(content)
 		var form = { 
 			cnum : cnum,
 			nick : nick, 
@@ -367,9 +397,65 @@ div img:hover + p.arrow_box {
 				alert("code:" + request.status + "\n" + "message:"
 						+ request.responseText + "\n" + "error:" + error);
 			}
-		})
+		});
 	}
- 
+	// 글 신고
+	function report_post() {
+		if ('${loginUser}' == "") {
+			alert("로그인 후 사용 가능합니다.")
+			location.href="login"
+		}else {
+			var content=prompt("신고 사유를 입력해주세요."+"");
+			var board = "mate_board";
+			var num = "${ccc.num }"
+			var title = "${ccc.title }"
+			var writer = "${ccc.wnick }"
+			var usernick = "${loginUser.nick }"
+			if(content==null) {
+				alert("신고를 취소합니다.")
+			}else if(content=="") {
+				alert("신고 사유를 입력하지 않아 신고를 취소합니다.\n다시 시도해주세요.")
+			}else if(usernick=="") {
+				alert("로그인 후 사용가능합니다.")
+				location.href="login"
+			}else {
+				var form = {
+					board:board,
+					num:num,
+					title:title,
+					content:content,
+					writer:writer,
+					usernick:usernick
+				}
+				$.ajax({
+					url : "report",
+					type : "POST",
+					data : form,
+					dataType: "json",
+					success : function(list) {
+						console.log(list)
+						if(list=="신고 성공") {
+							console.log("성공");
+							alert("해당 게시글을 신고하였습니다.")
+						}else if(list=="신고 실패") {
+							console.log("실패");
+							alert("이미 해당 게시글을 신고하였습니다.")
+						}else {
+							console.log("실패");
+							alert("오류로 인해 신고에 실패하였습니다.")
+						}
+					},
+					error : function(request, status, error) {
+						console.log("실패")
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+					}
+				});
+			}
+		}
+	}
+	
+	
 </script>
 </head>
 <body   class="is-preload" id="top">

@@ -44,7 +44,7 @@
 								<c:forEach var="notice" items="${noticeList }">
 									<fmt:formatDate var="date" value="${notice.savedate }"	pattern="yyyy-MM-dd"/>
 										<tr style="font-weight:bold; background: rgba(50, 50, 50, 0.05);font-size: 1.1em;">
-											<td style="text-align: center; color:red;">${notice.tag }</td>
+											<td style="text-align: center; color:red;">[${notice.tag }]</td>
 											<td style="text-align: left; color:red;">
 												<a href="contentview?num=${notice.num }" style="padding-left: 10px; border-bottom: 0;">${notice.title }</a>
 												<c:forEach var="cnum" items="${commentcount }">

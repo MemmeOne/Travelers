@@ -24,7 +24,7 @@
 				<div class="inner">
 					<form action="info_search">
 						<input type="hidden" name="page" value="1">
-						<h2 style="text-align: center;">정보 공유 게시판</h2>
+						<h2 style="text-align: center;">정보 공유 게시판</h2><br>
 						<hr style="width: 1070px; margin: 0 auto;">
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px;">
 							<tr style="vertical-align: middle;" >
@@ -40,10 +40,10 @@
 							<tr id="notis" style="font-weight:bold; background: rgba(50, 50, 50, 0.05);font-size: 1.1em;">
 								<jsp:useBean id="now1" class="java.util.Date" />
 									<fmt:formatDate value="${now1}" pattern="yyyy-MM-dd" var="today" />
-									<fmt:formatDate var="savedate" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
+									<fmt:formatDate var="savedate2" value="${notis.savedate }" pattern="yyyy-MM-dd"/>
 									<th style="text-align: center;color:red;">[${notis.tag }]</th>
 									<c:choose>
-										<c:when test="${notis==today}">
+										<c:when test="${savedate2==today}">
 											<th style="text-align: left;color:red;">
 												<a href="info_post?num=${notis.num }"> ${notis.title }</a>
 												<img src="resources/main_image/new.png" style="width:25px;">

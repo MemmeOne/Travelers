@@ -32,6 +32,7 @@
 				<div class="inner">
 					<form action="info_save" id="frm">
 						<input type="hidden" name="nick" value="${loginUser.nick }" >
+						<h4><a href="info_list?page=1" style="border-bottom: 0;">>> 정보 공유 게시판</a></h4><br>
 					<table>
 						<tr style="background: white;">
 							<td style="width:60px;text-align: center;">태그</td>
@@ -117,7 +118,7 @@
 						</tr>
 						<tr>
 						<td style="text-align: left: ;">
-						<input type="button" value="목록보기" onclick="location.href('info_list?page=1')">	
+						<input type="button" value="전체목록보기" onclick="location.href='info_list?page=1'">	
 						</td>
 						<td style="text-align: right;">
 						<input type="button" value="완료" id="contentRegBtn">

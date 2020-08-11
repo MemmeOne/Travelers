@@ -91,7 +91,10 @@ public class AdminController {
 	@RequestMapping("package_save")
 	public String package_save(PackageDTO dto) {
 		System.out.println("컨트롤러");
-		System.out.println(dto.getTitle());
+		String s=dto.getStart_date().replace("T", " ");
+		String e=dto.getEnd_date().replace("T", " ");
+		dto.setStart_date(s);
+		dto.setEnd_date(e);
 		//int result=service.package_save(dto);
 		service.package_save(dto);
 		return "redirect:package_list";
@@ -107,14 +110,15 @@ public class AdminController {
 	}
 	
 	@RequestMapping("p_save") 
-	public String p_save(PackageDTO dto) {
+		public String p_save(PackageDTO dto) {
 		System.out.println("컨트롤러");
 		System.out.println("title="+dto.getTitle());
-		service.package_save(dto);
-		return "package/package_list"; 
-	}
 
-
+			service.package_save(dto);
+			return "package/package_list"; 
+		}
+	 
+	
 	// 결제 페이지
 	@RequestMapping("payment")
 	public String payment(HttpSession session) {

@@ -17,7 +17,6 @@
 					<form action="info_search">
 						<input type="hidden" name="page" value="1">
 						<h2 style="text-align: center;">정보 공유 게시판</h2>
-						<hr style="width: 1070px;">
 						<form action="info_search"><input type="hidden" name="page" value="1">
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 							<tr style="vertical-align: middle;" >
@@ -55,7 +54,7 @@
 														<img src="resources/main_image/new.png" style="width:25px;">
 													</td>
 													<td>${list.nick }</td>
-													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="hh:mm"/>
+													<fmt:formatDate var="savedate" value="${list.savedate }" pattern="HH:mm"/>
 													<td>
 														${savedate}
 													</td>

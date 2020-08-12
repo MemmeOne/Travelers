@@ -281,13 +281,6 @@ public class InfoDAO {
 	}
 	// 대댓글 저장 기능
 	public void comment_reply_save(final InfoCommentDTO dto) {
-		System.out.println(dto.getCnum());
-		System.out.println(dto.getCommentgroup());
-		System.out.println(dto.getContent());
-		System.out.println(dto.getNick());
-		System.out.println(dto.getNumgroup());
-		System.out.println(dto.getStep());
-		System.out.println(dto.getSavedate());
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override

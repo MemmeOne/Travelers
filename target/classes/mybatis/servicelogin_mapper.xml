@@ -33,9 +33,50 @@
 		values(#{id}, #{pwd}, #{nick}, #{email}, #{gender}, #{birth})
 	</insert>
 	<!-- 회원 정보 수정 -->
+	<select id="getNick" resultType="String">
+		select nick from travelers where id=#{id}
+	</select>
 	<update id="update_user">
 		update travelers set nick=#{nick}, email=#{email}, gender=#{gender}, birth=#{birth} where id=#{id}
 	</update>
+	<!-- 각 테이블 nick 바꾸기 -->
+	<update id="update_info_nick" parameterType="map">
+		update info_board set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_review_nick" parameterType="map">
+		update review_board set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_free_nick" parameterType="map">
+		update free_board set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_mate_nick" parameterType="map">
+		update mate_board set wnick=#{new_nick} where wnick=#{old_nick}
+	</update>
+	<update id="update_info_comment_nick" parameterType="map">
+		update info_board_comment set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_review_comment_nick" parameterType="map">
+		update review_board_comment set cnick=#{new_nick} where cnick=#{old_nick}
+	</update>
+	<update id="update_free_comment_nick" parameterType="map">
+		update free_board_comment set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_mate_comment_nick" parameterType="map">
+		update mate_board_comment set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_mate_reply_nick" parameterType="map">
+		update mate_board_reply set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_diary_comment_nick" parameterType="map">
+		update traveldiary set nick=#{new_nick} where nick=#{old_nick}
+	</update>
+	<update id="update_report_writer_nick" parameterType="map">
+		update report_post set usernick=#{new_nick} where usernick=#{old_nick}
+	</update>
+	<update id="update_report_nick" parameterType="map">
+		update report_post set usernick=#{new_nick} where usernick=#{old_nick}
+	</update>
+					
 	<!-- 비밀번호 수정 -->
 	<update id="change_pwd_save">
 		update travelers set pwd=#{pwd} where id=#{id}

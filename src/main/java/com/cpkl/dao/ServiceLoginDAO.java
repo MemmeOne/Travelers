@@ -1,4 +1,7 @@
 package com.cpkl.dao;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,12 +161,32 @@ public class ServiceLoginDAO {
 		}
 	}
 	// 정보 수정
+	String nickname;
 	public void update_user(final TravelersDTO dto) {
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
-					servicelogin_sqlSession.selectOne(namespace+".update_user", dto);
+					String id=dto.getId();
+					nickname=servicelogin_sqlSession.selectOne(namespace+".getNick", id);
+					servicelogin_sqlSession.update(namespace+".update_user", dto);
+					Map<String, String> map=new HashMap<String, String>();
+					map.put("old_nick", nickname);
+					map.put("new_nick", dto.getNick());
+					System.out.println(nickname);
+					System.out.println(dto.getNick());
+					servicelogin_sqlSession.update(namespace+".update_info_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_review_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_free_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_mate_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_info_comment_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_review_comment_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_free_comment_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_mate_comment_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_mate_reply_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_diary_comment_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_report_writer_nick", map);
+					servicelogin_sqlSession.update(namespace+".update_report_nick", map);
 				}
 			});
 		}catch (Exception e) {

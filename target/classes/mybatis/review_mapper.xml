@@ -98,6 +98,11 @@
 	<select id="nation" resultType="String">
 		select*from nation
 	</select>
+	
+	<!-- 방문 나라 랭크 -->
+	<select id="nationRank" resultType="String">
+		select nation, rownum, A.*from(select nation, (count(*))count from traveldiary group by nation order by count desc, nation asc)A  where rownum between 1 and 5
+	</select>
 
 	<!-- 여행수첩 등록  -->
 	<insert id="travelDiaryReg" parameterType="td">

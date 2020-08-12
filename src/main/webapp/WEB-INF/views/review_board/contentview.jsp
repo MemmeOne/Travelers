@@ -61,7 +61,7 @@
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
 							html += "<input type='hidden' id='comments"+i+"' value='"+item.comments+"'>"
 							if(writerNick == item.cnick){
-								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick +"<img src='resources/main_image/writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
+								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick +"<img src='resources/main_image/post_writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
 							}else if(item.cnick == '관리자'){
 								html += "<td colspan='2' style='text-align: center; width: 120px;'>"+item.cnick +"<img src='resources/main_image/admin.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>";
 							}else{
@@ -82,7 +82,7 @@
 							html += "<tr style='background-color: white;'><input type='hidden' id='cnum"+i+"' value='"+item.cnum+"'>"
 							html += "<input type='hidden' id='indent"+i+"' value='"+item.indent+"'>"
 							if(writerNick == item.cnick){
-								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick +"<img src='resources/main_image/writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
+								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick +"<img src='resources/main_image/post_writer.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
 							}else if(item.cnick == '관리자'){
 								html += "<td style='width:20px;'><img src='resources/main_image/reply.png' style='width:18px; vertical-align: middle;'></td><td id='cnick"+i+"' style='text-align: center;width: 220px;'>"+item.cnick +"<img src='resources/main_image/admin.png' style='vertical-align: middle;'><br><span style='font-size: 10pt;'>"+item.savedate+"</span></td>"
 							}else{

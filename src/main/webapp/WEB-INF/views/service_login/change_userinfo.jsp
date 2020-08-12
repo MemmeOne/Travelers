@@ -18,24 +18,34 @@
 			console.log("로그인 확인 성공")
 		}
 	}
-	var useremail=""
+</script>
+<script type="text/javascript">
+	var usernick_ok=false
+	var useremail_ok=false
+	var useremail_use=true
 	// 이메일 인증번호 보내기
 	function sendEmail() {
-		var email = $('input[name=email]').val()
-		var address = $('select[name=address]').val()
+		var useremail = $('input[name=useremail]').val()
+		var email='${loginUser.email}'
 		var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; //이메일 유효성 검사
-		if(email=='${loginUser.email}') {
+		if(email==useremail) {
+			useremail_ok=false
+			useremail_use=true
 			alert("현재 사용중인 이메일입니다.")
-			$('input[name=email]').focus()
-		}else if(email=="") {
+			$('input[name=useremail]').focus()
+		}else if(useremail=="") {
+			useremail_ok=false
+			useremail_use=false
 			alert("이메일을 입력해주세요!")
-			$('input[name=email]').focus()
-		}else if (hangulcheck.test(email)) {
+			$('input[name=useremail]').focus()
+		}else if (hangulcheck.test(useremail)) {
+			useremail_ok=false
+			useremail_use=false
 		    alert("유효하지 않은 이메일입니다. 이메일을 확인해주세요.");
-		    $('input[name=email]').val("")
-		    $('input[name=email]').focus();
+		    $('input[name=useremail]').val("")
+		    $('input[name=useremail]').focus();
 		}else {
-			var form = { email : email }
+			var form = { email : useremail }
 			let html=""
 			$.ajax({
 				url : "email_chk",
@@ -44,9 +54,11 @@
 				success : function(result) {
 					if (result=="중복") {
 						console.log("이미 사용 중인 이메일")
+						useremail_ok=false
+						useremail_use=false
 						alert("이미 사용 중인 이메일입니다. 다른 이메일를 입력해주세요.")
-						$('input[name=email]').val("")
-						$('input[name=email]').focus()
+						$('input[name=useremail]').val("");
+						$('input[name=useremail]').focus()
 					} else {
 						console.log("사용 가능한 이메일")
 						$.ajax({
@@ -54,32 +66,27 @@
 							type : "POST",
 							data : form,
 							success : function(code) {
-								useremail=email
-								html="<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-								html+="<br><label>이메일이 발송되었습니다. 이메일 발송시 최대 5분의 시간이 소요 될 수 있습니다.</label><br>"
-								html+="<input type='text' name='usercode'>"
-								html+="<input type='button' value='인증번호확인' onclick='code_chk()'>"
-								$("#input_code").html(html)
+								useremail_ok=true
 								console.log("성공 : "+code)
 							},
 							error : function(request, status, error) {
+								useremail_ok=false
+								useremail_use=false
 								console.log("실패")
 								alert("code:" + request.status + "\n" + "message:"
 										+ request.responseText + "\n" + "error:" + error);
-								html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-								html += "<br><label>이메일 인증에 실패했습니다. 인증번호 재발송 버튼을 눌러주세요.</label><br>"
-								$("#input_code").html(html)
+								alert("유효하지 않은 이메일입니다. 이메일을 확인해주세요.");
 							}
 						})
 					}
 				},
 				error : function(request, status, error) {
+					useremail_ok=false
+					useremail_use=false
 					console.log("실패")
 					alert("code:" + request.status + "\n" + "message:"
 							+ request.responseText + "\n" + "error:" + error);
-					html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-					html += "<br><label>이메일 인증에 실패했습니다. 인증번호 재발송 버튼을 눌러주세요.</label><br>"
-					$("#input_code").html(html)
+					alert("유효하지 않은 이메일입니다. 이메일을 확인해주세요.");
 				}
 			})
 		}
@@ -89,55 +96,56 @@
 		var usercode = $('input[name=usercode]').val()
 		let html = ""
 		var form = { usercode : usercode }
-		$.ajax({
-			url : "code_chk",
-			type : "POST",
-			data : form,
-			success : function(result) {
-				if (result=="인증 완료") {
-					html="<input type='button' value='인증번호 재발송' onclick='sendEmail()'><br>"
-					html += "<label>이메일 인증이 완료되었습니다.</label><br>"
-					html += "<input type='hidden' value='"+useremail+"' name='useremail'>"
-					$("#input_code").html(html)
-				} else {
-					html += "<input type='button' value='인증번호 재발송' onclick='sendEmail()'>"
-					html += "<br><label>이메일 인증에 실패했습니다.<br>이메일 주소를 확인하시고 인증번호 재발송 버튼을 눌러주세요.</label><br>"
-					$("#input_code").html(html)
+		if(usercode=="") {
+			alert("인증코드를 입력해주세요.")
+		}else {
+			$.ajax({
+				url : "code_chk",
+				type : "POST",
+				data : form,
+				success : function(result) {
+					if (result=="인증 완료") {
+						useremail_ok=true
+						html += "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>이메일 인증이 완료되었습니다.</span><br>"
+						$("#code_chk_ok").html(html)
+					} else {
+						html += "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>인증 실패</span>"
+						$("#code_chk_ok").html(html)
+						$('input[name=usercode]').focus
+					}
+				},
+				error : function(request, status, error) {
+					console.log("실패")
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:"
+							+ error);
+					html += "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>인증 실패</span>"
+					$("#code_chk_ok").html(html)
 					$('input[name=usercode]').focus
 				}
-			},
-			error : function(request, status, error) {
-				console.log("실패")
-				alert("code:" + request.status + "\n" + "message:"
-						+ request.responseText + "\n" + "error:"
-						+ error);
-				html = "<input type='button' value='인증번호 재발송' onclick='sendEmail()'>"
-				html += "<br><label>이메일 인증에 실패했습니다.<br>이메일 주소를 확인하시고 인증번호 재발송 버튼을 눌러주세요.</label><br>"
-				$("#input_code").html(html)
-				$('input[name=usercode]').focus
-			}
-		})
+			})
+		}
 	}
 	// 닉네임 중복 확인
 	function nick_chk() {
-		var usernick = $('input[name=nick]').val()
+		var usernick = $('input[name=usernick]').val()
 		let html = ""
-		if (usernick=="")  {
+		if (usernick==null)  {
 			alert("닉네임을 입력해주세요!")
-			$('input[name=nick]').focuss
+			$("#input_nick").html(html)
+			$('input[name=usernick]').focus
 		}else {	
 			var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
 			if ( usernick=='${loginUser.nick}' ) {
 				alert("현재 사용중인 닉네임입니다.")
-				$('input[name=nick]').focus
+				$("#input_nick").html(html)
+				$('input[name=usernick]').focus
 			} else {
 			    if (!nickNameCheck.test(usernick)) {
 				    alert("닉네임은  2 ~ 10자의 영어와 한글, 숫자를 사용하세요.");
-				    html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
-					html += "<br><label>사용할 수 없는 닉네임입니다. 다른 닉네임를 입력해주세요.</label>"
 					$("#input_nick").html(html)
-				    $('input[name=nick]').val("")
-				    $('input[name=nick]').focus();
+				    $('input[name=usernick]').val("")
+				    $('input[name=usernick]').focus();
 				}else {
 					var form = { usernick : usernick }
 					$.ajax({
@@ -147,15 +155,16 @@
 						success : function(result) {
 							console.log("닉네임 체크 성공")
 							if (result=="중복") {
-								html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
-								html += "<br><label>이미 있는 닉네임입니다. 다른 닉네임를 입력해주세요.</label>"
+								html += "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>이미 사용 중인 닉네임입니다.</span>"
 								$("#input_nick").html(html)
-								$('input[name=nick]').focus
+								$('input[name=usernick]').val("")
 							} else {
-								html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
-								html += "<br><label>사용 가능한 닉네임</label>"
+								usernick_ok=true
+								html += "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>사용 가능한 닉네임</span>"
 								html += "<input type='hidden' value='"+usernick+"' name='usernick'>"
 								$("#input_nick").html(html)
+								nickchk=true
+								$('input[name=usernick]').focus
 							}
 						},
 						error : function(request, status, error) {
@@ -163,8 +172,7 @@
 							alert("code:" + request.status + "\n" + "message:"
 									+ request.responseText + "\n" + "error:"
 									+ error);
-							html += "<input type='button' value='중복확인' onclick='nick_chk()'>"
-								html += "<br><label>이미 있는 닉네임입니다. 다른 닉네임를 입력해주세요.</label><br>"
+								html += "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;<span>이미 사용 중인 닉네임입니다.</span><br>"
 								$("#input_nick").html(html)
 								$('input[name=nick]').focus
 						}
@@ -180,12 +188,31 @@
 		var useremail = $('input[name=useremail]').val()
 		var usergender = $('input:radio[name=gender]:checked').val()
 		var userbirth = $('input[name=birth]').val()
+		console.log(userid)
+		console.log(usernick)
+		console.log(useremail)
+		console.log(usergender)
+		console.log(userbirth)
 		console.log($('input:radio[name=gender]:checked').val())
+		if(userid=='${loginUser.id}' && usernick=='${loginUser.nick}' && useremail=='${loginUser.email}' 
+				&& usergender=='${loginUser.gender}' && userbirth=='${loginUser.birth}') {
+			alert("수정된 정보가 없습니다. 마이페이지로 돌아갑니다.")
+			location.href="mypage"
+		}else {
+		if(usernick=='${loginUser.nick}') {
+			nickchk=true
+		}
 		if(usernick==null) {
 			alert("닉네임을 확인해주세요.")
 			$('input[name=nick]').focus()
+		}else if(nickchk==false) {
+			alert("닉네임 중복확인을 확인해주세요.")
+			$('input[name=nick]').focus()
 		}else if(useremail==null) {
 			alert("이메일을 확인해주세요.")
+			$('input[name=email]').focus()
+		}else if(useremail_ok==false && useremail_use==false) {
+			alert("이메일 인증을 해주세요.")
 			$('input[name=email]').focus()
 		}else if(usergender==null) {
 			alert("성별을 선택해주세요.")
@@ -203,8 +230,8 @@
 				success : function(result) {
 					console.log(result)
 					if(result!=null) {
-						alert("정보 수정 완료!");
-						location.href="mypage"
+						alert("회원 정보가 수정되었습니다.\n다시 로그인해주세요.");
+						location.href="login"
 					}else {
 						console.log("수정 실패")
 					}
@@ -216,6 +243,7 @@
 							+ error);
 				}
 			})
+		}
 		}
 	}
 </script>
@@ -250,6 +278,7 @@
 										<ul class="alt">
 											<li><a href="mypage">내정보</a></li>
 											<li><a href="travelDiary">여행수첩</a></li>
+											<li><a href="note?nick=${loginUser.nick }">쪽지함</a></li>
 											<li><a href="myPost?page=1&nick=${loginUser.nick }">작성한 글 관리</a></li>
 											<li><a href="chk_pwd?page=change_userinfo">회원정보 수정</a></li>
 											<li><a href="chk_pwd?page=change_pwd">비밀번호 수정</a></li>
@@ -262,31 +291,27 @@
 								<h3>회원 정보 수정</h3>
 								<table class="form" border="1">
 									<tr style="height: 100px;vertical-align: middle;">
-										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">아이디</td>
+										<td style="text-align: center;height:100px; vertical-align: middle;width:100px;">아이디</td>
 										<td>&nbsp;&nbsp;${loginUser.id }</td>
 										<input type="hidden" name="userid" value="${loginUser.id }">
-										<input type="hidden" name="usernick" value="${loginUser.nick }">
-										<input type="hidden" name="useremail" value="${loginUser.email }">
-									</tr>
+										</tr>
 									<tr id="none">
-										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:130px;">닉네임</td>
+										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:100px;">닉네임</td>
 										<td>&nbsp;&nbsp;2자 이상의 영어와 한글, 숫자를 사용하세요.</td>
 									</tr>
 									<tr>
 										<td>
-											<div style="display: flex;margin: 10px;"><input type="text" name="nick" placeholder="닉네임" style="width:380px;" value="${loginUser.nick }">
-												<span id="input_nick">&nbsp;&nbsp;<input type="button" value="중복확인" onclick="nick_chk()"></span>
+											<div style="display: flex;margin: 10px;"><input type="text" name="usernick" id="usernick" placeholder="닉네임" style="width:330px;" value="${loginUser.nick }">
+												&nbsp;&nbsp;<input type="button" value="중복확인" onclick="nick_chk()"><span id="input_nick"></span>
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:180px;">Email</td>
+										<td rowspan="2" style="text-align: center;height:100px; vertical-align: middle;width:100px;">Email</td>
 										<td>
 											<div style="display: flex;margin: 10px; vertical-align: middle;">
-											<input type="text" name="email" placeholder="이메일" style="width:380px;" value="${loginUser.email }">
-											<span id="input_code">
+											<input type="text" name="useremail" placeholder="이메일" style="width:380px;" value="${loginUser.email }">
 											&nbsp;&nbsp;<input type="button" value="인증코드발송" onclick="sendEmail()">
-											</span>
 											</div>
 										</td>
 									</tr>
@@ -298,7 +323,7 @@
 										</td>
 									</tr>
 									<tr style="background: white;">
-										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">성별</td>
+										<td style="text-align: center;height:100px; vertical-align: middle;width:100px;">성별</td>
 										<td style="display: flex;height: 28px; vertical-align: middle;border: 0px solid 0.0;">
 											<c:choose>
 												<c:when test="${loginUser.gender eq '여자' }">
@@ -321,7 +346,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: center;height:100px; vertical-align: middle;width:130px;">생년월일</td>
+										<td style="text-align: center;height:100px; vertical-align: middle;width:100px;">생년월일</td>
 										<td style="height:100px; vertical-align: middle;">
 											<input type="date" name="birth" max="2001-12-31" min="1940-01-01" style="color:black; width:200px;text-align: center;"  value="${loginUser.birth }">
 										</td>
@@ -335,59 +360,64 @@
 										</td>
 									</tr>
 								</table>
-								<!-- 비밀번호 유효성 실시간으로 확인하는 자바스크립트 -->
-								<script type="text/javascript">
-									var pwdchk=false
-									var pwdokchk=false
-									document.getElementById('pwd').onkeyup = function() {
-										var msg = '', val = this.value;
-										var id = '${loginUser.id}';
-										var pwd = $('input[name=pwd]').val()
-										var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,20}$/;
-										var hangulcheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-										if (false === reg.test(pwd)) {
-											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;유효하지 않는 비밀번호입니다."
-										} else if (/(\w)\1\1\1/.test(pwd)) {
-											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;같은 문자를 4번 이상 사용하실 수 없습니다."
-										} else if ( (pwd.search(id) > -1 ) && id!="") {
-											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 아이디가 포함되었습니다."
-										} else if (pwd.search(/\s/) != -1) {
-											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호는 공백 없이 입력해주세요."
-										} else if (hangulcheck.test(pwd)) {
-											msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 한글을 사용 할 수 없습니다."
-										} else {
-												pwdchk=true
-												msg = GetAjaxPW(val);
-										}
-										$("#pwc").html(msg)
-									};
-									var GetAjaxPW = function(val) {
-										// ajax func....
-										return "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;사용 가능한 비밀번호입니다."
-									}
-									document.getElementById('pwdok').onkeyup = function() {
-										let html = ""
-										var msg = '', val = this.value;
-										if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
-											if(pwdchk) {
-												html = "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 서로 일치합니다."
-												html += "<input type='hidden' value='"
-														+ $('input[name=pwdok]').val() + "' name='userpwd'>"
-											}
-										} else {
-											html = GetAjaxPWok(val);
-										};
-										$("#pwokc").html(html)
-									};
-							
-									var GetAjaxPWok = function(val) {
-										// ajax func....
-										return "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 일치하지 않습니다."
-									}
-								</script>
+								
 							</div>
 						</div>
 					</section>
+					<script type="text/javascript">
+						var nickchk=false
+						var pwdokchk=false
+						document.getElementById('usernick').onkeyup = function() {
+							var msg = '', val = this.value;
+							var id = '${loginUser.id}';
+							if(val=='${loginUser.nick}') {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;현재 사용중인 닉네임입니다."
+								nickchk=true
+							} else if(usernick!=val) {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;닉네임 중복확인을 해주세요."
+								nickchk=true
+							}
+							
+							/* if (false === reg.test(pwd)) {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;유효하지 않는 비밀번호입니다."
+							} else if (/(\w)\1\1\1/.test(pwd)) {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;같은 문자를 4번 이상 사용하실 수 없습니다."
+							} else if ( (pwd.search(id) > -1 ) && id!="") {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 아이디가 포함되었습니다."
+							} else if (pwd.search(/\s/) != -1) {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호는 공백 없이 입력해주세요."
+							} else if (hangulcheck.test(pwd)) {
+								msg = "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호에 한글을 사용 할 수 없습니다."
+							} else {
+									pwdchk=true
+									msg = GetAjaxPW(val);
+							} */
+							$("#input_nick").html(msg)
+						};
+						var GetAjaxPW = function(val) {
+							// ajax func....
+							return "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;사용 가능한 비밀번호입니다."
+						}
+						/* document.getElementById('pwdok').onkeyup = function() {
+							let html = ""
+							var msg = '', val = this.value;
+							if (($('input[name=pwd]').val() == $('input[name=pwdok]').val())) {
+								if(pwdchk) {
+									html = "&nbsp;&nbsp;<img src='resources/main_image/okay.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 서로 일치합니다."
+									html += "<input type='hidden' value='"
+											+ $('input[name=pwdok]').val() + "' name='userpwd'>"
+								}
+							} else {
+								html = GetAjaxPWok(val);
+							};
+							$("#pwokc").html(html)
+						};
+				
+						var GetAjaxPWok = function(val) {
+							// ajax func....
+							return "&nbsp;&nbsp;<img src='resources/main_image/x.png' style='width:30px;vertical-align: middle;'>&nbsp;&nbsp;비밀번호가 일치하지 않습니다."
+						} */
+					</script>
 				</div>
 			</section>
 		</article>

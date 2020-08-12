@@ -96,9 +96,16 @@ public class LoginService {
 	}
 	// 회원 정보 수정
 	public void update_user(TravelersDTO dto, HttpSession session) {
+		System.out.println(dto.getId());
+		System.out.println(dto.getNick());
+		System.out.println(dto.getEmail());
+		System.out.println(dto.getPwd());
+		System.out.println(dto.getGender());
+		System.out.println(dto.getBirth());
 		dao.update_user(dto);
 		TravelersDTO dtoresult=dao.change_session_value(dto.getId());
-		session.setAttribute("loginUser", dtoresult);
+		sessions.get(dto.getId()).invalidate();
+		sessions.remove(dto.getId());
 	}
 	// 회원 탈퇴
 	public void delete_User(TravelersDTO dto, HttpSession session) {

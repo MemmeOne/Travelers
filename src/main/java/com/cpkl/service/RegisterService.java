@@ -58,8 +58,9 @@ public class RegisterService {
 		}
 		return result;
 	}
-	// 아이디 중복 확인
+	// 이메일 중복 확인
 	public String email_chk(String email) {
+		System.out.println(email);
 		TravelersDTO dto=dao.email_chk(email);
 		if(dto!=null) {
 			result="중복";

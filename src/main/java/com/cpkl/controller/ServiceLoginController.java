@@ -140,7 +140,7 @@ public class ServiceLoginController {
 		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
-	// 닉네임 중복 확인
+	// 회원가입
 	@RequestMapping(value="insert_user",method=RequestMethod.POST,
 			produces = "application/json;charset=utf-8")
 	@ResponseBody

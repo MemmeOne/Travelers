@@ -16,6 +16,10 @@
 		}
 	}
 </script>
+<style type="text/css">
+.box{ -ms-overflow-style: none; } 
+.box::-webkit-scrollbar{ display:none; }
+</style>
 </head>
 <body class="is-preload">
 	<%@ include file="../default/header.jsp"%>
@@ -27,16 +31,33 @@
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
-					<div align="center">
+				<div style="display: flex;">
+					<div>
+						<div class="box" align="center" style="position:relative; right: 300px; top: 100px; width: 200px; height: 250px; border:1px solid #BDBDBD; border-radius: 10px; overflow: auto;">
+							<div style="margin-bottom: 10px; font-size: 13pt; font-weight: bold; text-align: center;">Traveler List</div>
+							<table style="width: 100px; font-size: 0.7em;">
+							<c:forEach var="user" items="${loginUserList }">
+								<c:if test="${user ne '관리자' }">
+								<tr style="background-color: white; border-top: 0; border-bottom: 0;"><td style="text-align: center;">
+								<a onclick="window.open('userInfoPop?nick=${user }','','width=500,height=700')" style="border-bottom: 0; cursor: pointer;">
+								${user }
+								</a>
+								</td></tr>
+								</c:if>
+							</c:forEach>
+							</table>
+						</div>
+					</div>
+					<div align="center" style="position: relative; right: 150px;">
 						<h2 style="text-align: center;"><a href="reviewboard?page=1" style="border-bottom: 0;">여행 리뷰 게시판</a></h2>
 						<hr>
 						<form action="reviewboard" method="get">
 						<table style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 							<tr style="vertical-align: middle;" >
-								<td style="width:80px;text-align: center;">번호</td>
+								<td style="width:100px;text-align: center;">번호</td>
 								<td style="width:460px;text-align: center;">제목</td>
 								<td style="width:200px;text-align: center;">닉네임</td>
-								<td style="width:170px;text-align: center;">작성일</td>
+								<td style="width:150px;text-align: center;">작성일</td>
 								<td style="width:80px;text-align: center;">조회</td>
 								<td style="width:80px;text-align: center;">추천</td>
 							</tr>
@@ -137,6 +158,9 @@
 										</tr>
 									</c:forEach>
 								</c:when>
+								<c:when test="${param.search ne null }">
+									<td colspan="6">검색된 게시글이 없습니다</td>
+								</c:when>
 								<c:otherwise>
 									<td colspan="6">등록된 게시글이 없습니다</td>
 								</c:otherwise>
@@ -233,6 +257,7 @@
 							</tr>
 						</table>
 						</form>
+					</div>
 					</div>
 				</div>
 			</section>

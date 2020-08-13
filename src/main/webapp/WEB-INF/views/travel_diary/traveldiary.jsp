@@ -25,6 +25,7 @@
 				if(length == 0){
 					alert("여행 수첩을 추가하세요")
 				}else{
+					$("#pn").css('margin-left','100px');
 					let html = ""
 						html += '<input type="hidden" name="num" value="'+list[rn].num+'">';
 						html +=	'<h2>여행 수첩</h2>';
@@ -116,6 +117,27 @@
 								<input type="button" value="추가" onclick="window.open('form','','width=500,height=300')">
 							</div>
 							</form>
+						<div id="pn" style="margin-left: 300px;">
+							<h4>Popular Nation<img src="resources/main_image/rank.png" style="width: 30px; height: 30px;"></h4>
+							<br>
+							<table>
+							<tr>
+							<td>1</td><td><img src="resources/national flag/${nationRank[0] }.png" style="width: 60px; height: 30px;"> &nbsp;&nbsp;${nationRank[0] }</td>
+							</tr>
+							<tr>
+							<td>2</td><td><img src="resources/national flag/${nationRank[1] }.png" style="width: 60px; height: 30px;"> &nbsp;&nbsp;${nationRank[1] }</td>
+							</tr>
+							<tr>
+							<td>3</td><td><img src="resources/national flag/${nationRank[2] }.png" style="width: 60px; height: 30px;"> &nbsp;&nbsp;${nationRank[2] }</td>
+							</tr>
+							<tr>
+							<td>4</td><td><img src="resources/national flag/${nationRank[3] }.png" style="width: 60px; height: 30px;"> &nbsp;&nbsp;${nationRank[3] }</td>
+							</tr>
+							<tr>
+							<td>5</td><td><img src="resources/national flag/${nationRank[4] }.png" style="width: 60px; height: 30px;"> &nbsp;&nbsp;${nationRank[4] }</td>
+							</tr>
+							</table>
+						</div>
 						</div>
 					</section>
 				</div>

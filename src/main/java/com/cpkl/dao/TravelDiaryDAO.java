@@ -40,4 +40,9 @@ public class TravelDiaryDAO {
 	public void travelDiaryDel(int num) {
 		sqlSession.delete(namespace+".travelDiaryDel", num);
 	}
+	
+	public List<String> nationRank() {
+		return sqlSession.selectList(namespace+".nationRank");
+	}
+	
 }

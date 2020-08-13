@@ -104,4 +104,9 @@ public class ReviewBoardService {
 		return dao.favorite(dto);
 	}
 	
+	public void loginUserList(Model model) {
+		List<String> list = LoginService.loginUserList;
+		model.addAttribute("loginUserList", list);
+	}
+	
 }

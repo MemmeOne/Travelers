@@ -1,5 +1,7 @@
 package com.cpkl.service;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -22,22 +24,28 @@ public class LoginService {
 	PasswordEncoder passwordEncoder;
 	
 	public static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
+	public static ArrayList<String> loginUserList = new ArrayList<String>();
+	public String loginUser;
 
 	// 로그인
 	public String login_chk(TravelersDTO dto, HttpSession session) {
 		TravelersDTO dtoresult=dao.login_chk(dto.getId());
 		if (dtoresult!=null) {
+			loginUser = dtoresult.getNick();
 			if(passwordEncoder.matches(dto.getPwd(), dtoresult.getPwd())) {
 				if(sessions.get(dto.getId()) == null) {
 					result=dto.getId();
 					session.setAttribute("loginUser", dtoresult);
 					sessions.put(dto.getId(), session);
+					loginUserList.add(loginUser);
 				}else {
 					sessions.get(dto.getId()).invalidate();
 					sessions.remove(dto.getId());
+					loginUserList.remove(loginUser);
 					result=dto.getId();
 					session.setAttribute("loginUser", dtoresult);
 					sessions.put(dto.getId(), session);
+					loginUserList.add(loginUser);
 				}
 			}else {
 				result="비밀번호가 틀렸습니다!";
@@ -106,12 +114,14 @@ public class LoginService {
 		TravelersDTO dtoresult=dao.change_session_value(dto.getId());
 		sessions.get(dto.getId()).invalidate();
 		sessions.remove(dto.getId());
+		loginUserList.remove(loginUser);
 	}
 	// 회원 탈퇴
 	public void delete_User(TravelersDTO dto, HttpSession session) {
 		dao.delete_User(dto);
 		sessions.get(dto.getId()).invalidate();
 		sessions.remove(dto.getId());
+		loginUserList.remove(loginUser);
 	}
 	// 비밀번호 변경 및 로그아웃
 	public String change_pwd_save(TravelersDTO dto, HttpSession session) {
@@ -126,6 +136,7 @@ public class LoginService {
 	        	
 	        	sessions.get(dto.getId()).invalidate();
 				sessions.remove(dto.getId());
+				loginUserList.remove(loginUser);
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,4 +159,5 @@ public class LoginService {
         }
 		return result;
 	}
+
 }

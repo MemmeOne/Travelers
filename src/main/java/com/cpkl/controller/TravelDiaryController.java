@@ -33,7 +33,8 @@ public class TravelDiaryController {
 	}
 	
 	@RequestMapping("travelDiary")
-	public String travelDiary() {
+	public String travelDiary(Model model) {
+		tds.nationRank(model);
 		return "travel_diary/traveldiary";
 	}
 	

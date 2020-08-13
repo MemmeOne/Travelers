@@ -40,4 +40,8 @@ public class TravelDiaryService {
 		dao.travelDiaryDel(num);
 	}
 	
+	public void nationRank(Model model) {
+		model.addAttribute("nationRank", dao.nationRank());
+	}
+	
 }

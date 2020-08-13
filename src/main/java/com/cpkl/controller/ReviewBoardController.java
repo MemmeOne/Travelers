@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +43,7 @@ public class ReviewBoardController {
 			map.put("search", search);
 			rbs.reviewBoard(map, model);
 		}
+		rbs.loginUserList(model);
 		return "review_board/reviewboard";
 	}
 	
@@ -111,6 +111,7 @@ public class ReviewBoardController {
 		List<ReviewBoardCommentsDTO> list = rbs.comments(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(list);
+		System.out.println(json);
 		return json;
 	}
 	
@@ -167,5 +168,5 @@ public class ReviewBoardController {
 		return json;
 	}
 	
-	
+		
 }

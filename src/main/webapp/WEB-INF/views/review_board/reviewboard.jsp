@@ -16,6 +16,10 @@
 		}
 	}
 </script>
+<style type="text/css">
+.box{ -ms-overflow-style: none; } 
+.box::-webkit-scrollbar{ display:none; }
+</style>
 </head>
 <body class="is-preload">
 	<%@ include file="../default/header.jsp"%>
@@ -27,7 +31,24 @@
 		<article id="main">
 			<section class="wrapper style5">
 				<div class="inner">
-					<div align="center">
+				<div style="display: flex;">
+					<div>
+						<div class="box" align="center" style="position:relative; right: 300px; top: 100px; width: 200px; height: 250px; border:1px solid #BDBDBD; border-radius: 10px; overflow: auto;">
+							<div style="margin-bottom: 10px; font-size: 10pt; font-weight: bold; text-align: center;">Traveler List</div>
+							<table style="width: 100px; font-size: 0.7em;">
+							<c:forEach var="user" items="${loginUserList }">
+								<c:if test="${user ne '관리자' }">
+								<tr style="background-color: white; border-top: 0; border-bottom: 0;"><td style="text-align: center;">
+								<a onclick="window.open('userInfoPop?nick=${user }','','width=500,height=700')" style="border-bottom: 0; cursor: pointer;">
+								${user }
+								</a>
+								</td></tr>
+								</c:if>
+							</c:forEach>
+							</table>
+						</div>
+					</div>
+					<div align="center" style="position: relative; right: 150px;">
 						<h2 style="text-align: center;"><a href="reviewboard?page=1" style="border-bottom: 0;">여행 리뷰 게시판</a></h2>
 						<hr>
 						<form action="reviewboard" method="get">
@@ -233,6 +254,7 @@
 							</tr>
 						</table>
 						</form>
+					</div>
 					</div>
 				</div>
 			</section>

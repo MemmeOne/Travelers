@@ -76,7 +76,22 @@
 												</c:otherwise>
 											</c:choose>
 											<td>${list.hit }</td>
-											<td>${list.recommend }</td>
+											<td>
+											   <c:set var="zero" value="true" />
+												<c:forEach var="favoriteList" items="${favoriteList }">
+													<c:choose>
+														<c:when test="${list.num eq favoriteList.num }">
+			                                            	${favoriteList.count }
+			                                            	<c:set var="zero" value="false" />
+			                                         	</c:when>
+													</c:choose>
+												</c:forEach>
+												<c:choose>
+													<c:when test="${zero==true}">
+			                                           	0
+			                                       	</c:when>
+												</c:choose>
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

@@ -1,4 +1,5 @@
 package com.cpkl.controller;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,6 +70,7 @@ public class ServiceLoginController {
 		TravelersDTO dto = (TravelersDTO) session.getAttribute("loginUser");
 		LoginService.sessions.get(dto.getId()).invalidate();
 		LoginService.sessions.remove(dto.getId());
+		LoginService.loginUserList.remove(dto.getNick());
 		return "home";
 	}
 	
@@ -215,4 +217,5 @@ public class ServiceLoginController {
 		String strJson=mapper.writeValueAsString(result);
 		return strJson;
 	}
+	
 }

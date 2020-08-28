@@ -1,9 +1,0 @@
-create table Travelers (
-id varchar2(30) primary key,
-pwd varchar2(30) not null,
-nick varchar2(30) not null,
-email varchar2(50) not null,
-gender varchar2(30) not null,
-birth date not null
-);
-insert into Travelers(id,pwd,nick,email,gender,birth) values('admin','$2a$10$pmVFa0z/bfC9l1kCC4Yrte0GgeNswxS1sTAAgkfVNBUpcRMR5.erS','관리자','travelerscpkl@gmail.com','관리자','1990/7/10');

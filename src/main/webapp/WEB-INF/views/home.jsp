@@ -86,7 +86,7 @@
 				<ul class="actions special">
 					<li><a href="mate_board_list?page=1" class="button small">여행 동행 찾기</a></li>
 				</ul>
-				<a href="#three" class="more scrolly">Made By</a>
+				<a href="#three" class="more scrolly">INTRODUCE</a>
 			</div>
 		</section>
 		
@@ -94,7 +94,7 @@
       <section id="three" class="wrapper style3 special" style="background: #436f9c;">
          <div class="inner">
             <header class="major">
-               <h2>Made By</h2>
+               <h2>USE TECHNOLOGY</h2>
                <p>
                   	제작기간 : 2020.06.25 ~ 2020.08.17
                </p>
